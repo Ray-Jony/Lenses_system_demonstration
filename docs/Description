@@ -1,0 +1,9 @@
+Description
+
+MustHave
+    Application module: app
+    Input module: input
+    Object module: modules
+
+Could Have
+    Network module: network
