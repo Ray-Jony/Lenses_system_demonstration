@@ -6,7 +6,7 @@ import Framework.LSD.app.Game;
 import test.view.HomeView;
 import test.view.PlayView;
 
-public class TestGame extends Game {
+public class Test extends Game {
 
     public static void main(String[] args) {
         launch(args);

@@ -1,5 +1,6 @@
 package Framework.LSD.app;
 
+import Framework.LSD.input.MouseInput;
 import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.scene.Scene;
@@ -27,6 +28,8 @@ public class App {
 
     private final KeyInput keyinput;
 
+    private final MouseInput mouseInput;
+
     OnLaunch onLaunch;
     OnFinish onFinish;
     OnExit onExit;
@@ -45,6 +48,8 @@ public class App {
 
         keyinput = new KeyInput();
 
+        mouseInput = new MouseInput();
+
         initFramework();
         initApp();
         initEngine();
@@ -54,6 +59,7 @@ public class App {
         Framework.app = this;
         Framework.engine = engine;
         Framework.keyinput = keyinput;
+        Framework.mouseInput = mouseInput;
     }
 
     private void initApp() {
@@ -87,6 +93,7 @@ public class App {
             }
 
             keyinput.install(stage);
+            mouseInput.install(stage);
         };
 
         engine.onUpdate = t -> {
@@ -97,9 +104,11 @@ public class App {
             }
 
             keyinput.refresh();
+            mouseInput.refresh();
         };
 
         engine.onStop = () -> {
+            mouseInput.uninstall(stage);
             keyinput.uninstall(stage);
             for (View v :
                     viewMap.values()) {
@@ -170,7 +179,8 @@ public class App {
         if (view != null && view == getCurrentView()) {
             currentView.set(null);
         }
-        //Should avoid delete currentView, otherwise the window will display nothing
+        //Should avoid delete currentView,
+        //otherwise the window will display nothing
 
     }
 

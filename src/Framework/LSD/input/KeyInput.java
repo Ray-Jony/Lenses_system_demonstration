@@ -76,15 +76,15 @@ public class KeyInput {
     }
 
     public boolean isPressed(Key key) {
-        return key != null ? units[key.ordinal()].pressed : false;
+        return key != null && units[key.ordinal()].pressed;
     }
 
     public boolean isReleased(Key key) {
-        return key != null ? units[key.ordinal()].released : false;
+        return key != null && units[key.ordinal()].released;
     }
 
     public boolean isHeld(Key key) {
-        return key != null ? units[key.ordinal()].held : false;
+        return key != null && units[key.ordinal()].held;
     }
 
     public int getTypeCount(Key key) {

@@ -35,6 +35,7 @@ public class MouseInput {
         private static final int CLICK_DURATION = 200;
 
         public Unit() {
+
         }
 
         public void press(double x, double y) {
@@ -71,7 +72,7 @@ public class MouseInput {
 
         public void drag(double x, double y) {
             dragX = (dragStoreX += x - dragMarkX);
-            dragX = (dragStoreX += x - dragMarkX);
+            dragY = (dragStoreY += y - dragMarkY);
 
             dragMarkX = x;
             dragMarkY = y;
@@ -129,9 +130,8 @@ public class MouseInput {
 
     public MouseInput() {
         units = new Unit[Mouse.values().length];
-        for (Unit u :
-                units) {
-            u = new Unit();
+        for (int i = 0; i < units.length; i++) {
+            units[i] = new Unit();
         }
     }
 
@@ -144,15 +144,15 @@ public class MouseInput {
     }
 
     public boolean isPressed(Mouse mouse) {
-        return mouse != null ? units[mouse.ordinal()].pressed : null;
+        return mouse != null && units[mouse.ordinal()].pressed;
     }
 
     public boolean isReleased(Mouse mouse) {
-        return mouse != null ? units[mouse.ordinal()].released : null;
+        return mouse != null && units[mouse.ordinal()].released;
     }
 
     public boolean isHeld(Mouse mouse) {
-        return mouse != null ? units[mouse.ordinal()].held : null;
+        return mouse != null && units[mouse.ordinal()].held;
     }
 
     public double getPressX(Mouse mouse) {
@@ -183,7 +183,7 @@ public class MouseInput {
         return getDragX(mouse) > 0 || getDragY(mouse) > 0;
     }
 
-    public double getClickCount(Mouse mouse) {
+    public int getClickCount(Mouse mouse) {
         return mouse != null ? units[mouse.ordinal()].clickCount : 0;
     }
 
@@ -191,6 +191,9 @@ public class MouseInput {
         return getClickCount(mouse) > 0;
     }
 
+    public boolean isScrolled() {
+        return scrollValue != 0;
+    }
     public double getScrollValue() {
         return scrollValue;
     }
@@ -259,7 +262,7 @@ public class MouseInput {
     }
 
     private void handleMouseScrolled(ScrollEvent scrollEvent) {
-        scroll(scrollEvent.getDeltaX());
+        scroll(scrollEvent.getDeltaY());
     }
 
     public void install(Stage stage) {

@@ -23,4 +23,9 @@ public class PlayView extends View {
 
         getPane().getChildren().add(vBox);
     }
+
+    @Override
+    public void onEnter() {
+        System.out.println("Welcome to PlayView");
+    }
 }

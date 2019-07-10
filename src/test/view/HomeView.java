@@ -2,6 +2,7 @@ package test.view;
 
 import static Framework.LSD.Framework.*;
 
+import Framework.LSD.input.Mouse;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
@@ -33,7 +34,8 @@ public class HomeView extends View {
 
     @Override
     public void onUpdate(double time) {
-        if (keyinput.isPressed(Key.NUM0)){
+
+        if (keyinput.isPressed(Key.NUM0)) {
             System.out.println("Pressed 0");
         }
 
@@ -48,5 +50,35 @@ public class HomeView extends View {
         if (keyinput.isTyped(Key.NUM2)) {
             System.out.println("Type 2:" + keyinput.getTypeCount(Key.NUM2));
         }
+
+        if (mouseInput.isPressed(Mouse.LEFT)) {
+            System.out.println("Left Pressed");
+        }
+
+        if (mouseInput.isReleased(Mouse.LEFT)) {
+            System.out.println("Left Released");
+        }
+
+        if (mouseInput.isHeld(Mouse.RIGHT)) {
+            System.out.println("Right Held");
+        }
+
+        if (mouseInput.isDragged(Mouse.LEFT)) {
+            System.out.println("Left Dragged:" +
+                    mouseInput.getDragX(Mouse.LEFT) + "," +
+                    mouseInput.getDragY(Mouse.LEFT));
+        }
+
+        if (mouseInput.isClicked(Mouse.MIDDLE)) {
+            System.out.println("Middle Clicked" +
+                    mouseInput.getClickCount(Mouse.MIDDLE));
+        }
+
+        if (mouseInput.isScrolled()) {
+            System.out.println("Scrolled" +
+                    mouseInput.getScrollValue());
+        }
+
+
     }
 }
