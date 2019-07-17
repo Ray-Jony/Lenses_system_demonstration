@@ -1,40 +1,54 @@
 Application Module
 
-Class Game
-App main Entrance: inherited class Application in JavaFX
-Lifecycle method of App: onLaunch() onFinish() onExit()
+Class Initial
+    App main Entrance:
+        inherited class Application in JavaFX
+    Lifecycle method of App:
+        onLaunch() onFinish() onExit()
 
 
 Class App
-Manage windows, scenes and panes: stage scene root
-Manage&switch between views: viewMap<String, View> currentView
-                             getView(String)
-                             regView(String, View)
-                             unregView(String)
-                             getCurrentView()
-                             gotoView()
-Manage Engine start&stop: Engine engine
-Provide interface for the framework to init: onLaunch onFinish onExit
-Provide abstract method for framework inner call: launch() finish()
+    Manage windows, scenes and panes:
+        stage scene root
+    Manage&switch between views:
+        viewMap<String, View> currentView
+        getView(String)
+        regView(String, View)
+        unregView(String)
+        getCurrentView()
+        gotoView()
+    Manage Engine start&stop:
+        Engine engine
+    Provide interface for the framework to init:
+        onLaunch onFinish onExit
+    Provide abstract method for framework inner call:
+        launch() finish()
 
 
 Class View
-Handled pane: Pane pane
-Lifecycle method of View: onLaunch() onFinish()
-                          onEnter() onLeave()
-                          onStart() onUpdate() onStop()
+    Handled pane:
+        Pane pane
+    Lifecycle method of View:
+        onLaunch() onFinish()
+        onEnter() onLeave()
+        onStart() onUpdate() onStop()
 
 
 Class Engine
-Control the frame of the application: Timer timer
-Get current time: nowNanos (nowMillis nowSecs)
-                  lastNanos (LastMillis LastSecs)
-                  deltaNanos(deltaMillis deltaSecs)
-Get and set fps: fps npf
-                 getFps() getNpf() setFps()
-Provide methods for framework inner call: start() stop()
+    Allow me to call custom method each time when javafx finish its circulation
+    Control the frame of the application:
+        Timer timer
+    Get current time:
+        nowNanos (nowMillis nowSecs)
+        lastNanos (LastMillis LastSecs)
+        deltaNanos(deltaMillis deltaSecs)
+    Get and set fps:
+        fps npf
+        getFps() getNpf() setFps()
+    Provide methods for framework inner call:
+        start() stop()
 
 
-
-Purpose of this modules: Provide basic framework for further development
-                         Entrance (extends Game) Contains all the Views(extends View)
+Purpose of this modules:
+    Provide basic framework for further development
+    Entrance (extends Initial) Contains all the Views(extends View)

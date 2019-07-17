@@ -2,11 +2,12 @@ package test;
 
 import static Framework.LSD.Framework.*;
 
-import Framework.LSD.app.Game;
+import Framework.LSD.app.Initial;
 import test.view.HomeView;
 import test.view.PlayView;
+import test.view.DemoView;
 
-public class Test extends Game {
+public class Test extends Initial {
 
     public static void main(String[] args) {
         launch(args);
@@ -14,12 +15,13 @@ public class Test extends Game {
 
     @Override
     public void onLaunch() {
-        app.setTitle("Test game");
+        app.setTitle("Test");
         app.setWidth(800);
         app.setHeight(600);
 
         app.regView("Home", new HomeView());
         app.regView("Play", new PlayView());
+        app.regView("Demo", new DemoView());
         app.gotoView("Home");
     }
 

@@ -1,0 +1,48 @@
+Input module
+
+Enum Key
+    Contains possible keyboard inputs, structured as:
+        KeyCode code
+        String text
+
+
+Class KeyInput
+    Control all the key as single units:
+        Unit[] units
+        class Unit
+            Type Actions:
+                Pressed
+                Released
+                Held
+                press()
+                release()
+            Type Counts and Actions:
+                typeCount
+                typeStore
+                typeStamp
+                refresh()
+                reset()
+            Maximum continue type duration:
+                TYPE_DURATION
+    Key States:
+        isPressed(Key key)
+        isReleased(Key key)
+        isHeld(Key key)
+        getTypeCount(Key key)
+        install(Stage stage)
+        uninstall(Stage stage)
+        handleKeyPressed(KeyEvent event)
+        handleKeyReleased(KeyEvent event)
+        isTyped(Key key)
+    Perform Actions:
+        press(Key key)
+        release(Key key)
+        refresh()
+        reset()
+
+
+Enum Mouse
+    Contains possible mouse inputs, structured as:
+        MouseButton mouseButton
+
+Class MouseInput

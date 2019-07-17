@@ -3,7 +3,7 @@ package Framework.LSD.app;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public abstract class Game extends Application {
+public abstract class Initial extends Application {
 
     private App app;
 

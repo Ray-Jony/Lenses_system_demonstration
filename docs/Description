@@ -3,7 +3,7 @@ Description
 MustHave
     Application module: app
     Input module: input
-    Object module: modules
+    World module: world
 
 Could Have
     Network module: network

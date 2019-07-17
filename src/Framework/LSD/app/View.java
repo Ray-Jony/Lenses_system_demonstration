@@ -1,15 +1,13 @@
 package Framework.LSD.app;
 
-import javafx.scene.layout.Background;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 
 public abstract class View {
 
     private final Pane pane;
 
     public View() {
-        pane = new StackPane();
+        pane = new AnchorPane();
         pane.setBackground(Background.EMPTY);
     }
 

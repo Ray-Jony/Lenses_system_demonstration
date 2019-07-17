@@ -1,4 +1,4 @@
-###**MSc Project -- _Lenses system_**
+**MSc Project -- _Lenses system_**
 
 This project is demand to deliver an demonstrable application for explaining how the lenses works together.
 

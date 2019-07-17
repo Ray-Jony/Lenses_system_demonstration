@@ -1,6 +1,8 @@
 package Framework.LSD.app;
 
 import Framework.LSD.input.MouseInput;
+import Framework.LSD.world.Light;
+import Framework.LSD.world.LightPath;
 import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.scene.Scene;
@@ -24,6 +26,8 @@ public class App {
     private final HashMap<String, View> viewMap;
     private final ObjectProperty<View> currentView;
 
+    private final HashMap<String, Light> lightMap;
+
     private final Engine engine;
 
     private final KeyInput keyinput;
@@ -43,6 +47,8 @@ public class App {
 
         viewMap = new HashMap<>();
         currentView = new SimpleObjectProperty<>();
+
+        lightMap = new HashMap<>();
 
         engine = new Engine();
 
@@ -72,7 +78,7 @@ public class App {
             }
         });
 
-        currentView.addListener((o, ov , nv) -> {
+        currentView.addListener((o, ov, nv) -> {
             if (ov != null) {
                 ov.onLeave();
                 root.getChildren().remove(ov.getPane());
@@ -85,7 +91,7 @@ public class App {
         });
     }
 
-    private void initEngine(){
+    private void initEngine() {
         engine.onStart = () -> {
             for (View v :
                     viewMap.values()) {
@@ -99,7 +105,7 @@ public class App {
         engine.onUpdate = t -> {
             View view = getCurrentView();
 
-            if (view != null){
+            if (view != null) {
                 view.onUpdate(t);
             }
 
@@ -116,13 +122,121 @@ public class App {
             }
         };
 
-        stage.focusedProperty().addListener((o,ov,nv)->{
+        stage.focusedProperty().addListener((o, ov, nv) -> {
             if (nv) {
                 engine.start();
             } else {
                 engine.stop();
             }
         });
+    }
+
+    public void drawLight(Pane pane) {
+        pane.getChildren().removeAll();
+        for (Light l :
+                lightMap.values()) {
+            l.drawLight(pane);
+        }
+    }
+
+    public void intersectionDetect(){
+        for (Light l :
+                lightMap.values()) {
+            l.intersectionDetect();
+        }
+    }
+
+    public void regLight(String name, double startPointX, double startPointY, double direction, double waveLength) {
+        lightMap.put(name, new Light(new LightPath(startPointX,startPointY,direction,waveLength)));
+    }
+
+    public void unregLight(String name) {
+        lightMap.remove(name);
+    }
+
+    public boolean intersectionPoint(){
+        //TODO
+        return true;
+    }
+
+
+    public void regView(String name, View view) {
+        viewMap.put(name, view);
+    }
+
+    public void unregView(String name) {
+        View view = viewMap.remove(name);
+
+        if (view != null && view == getCurrentView()) {
+            currentView.set(null);
+        }
+        //Should avoid delete currentView,
+        //otherwise the window will display nothing
+
+    }
+
+    public View getCurrentView() {
+        return currentView.get();
+    }
+
+    public ReadOnlyObjectProperty<View> currentViewProperty() {
+        return currentView;
+    }
+
+    public void gotoView(String name) {
+        View view = viewMap.get(name);
+        if (view != null) {
+            currentView.set(view);
+        }
+    }
+
+    public View getView(String name) {
+        return viewMap.get(name);
+    }
+
+    public Light getLight(String name) {
+        return lightMap.get(name);
+    }
+
+    public void launch() {
+        if (onLaunch != null) {
+            onLaunch.handle();
+        }
+
+        for (View v :
+                viewMap.values()) {
+            v.onLaunch();
+        }
+        stage.requestFocus();
+        stage.show();
+    }
+
+    public void finish() {
+        for (View v :
+                viewMap.values()) {
+            v.onFinish();
+        }
+
+        if (onFinish != null) {
+            onFinish.handle();
+        }
+    }
+
+    public void exit() {
+        Platform.exit();
+    }
+
+    interface OnLaunch {
+        void handle();
+    }
+
+
+    interface OnFinish {
+        void handle();
+    }
+
+    interface OnExit {
+        boolean handle();
     }
 
     public Stage getStage() {
@@ -168,80 +282,4 @@ public class App {
     public DoubleProperty heightProperty() {
         return root.minHeightProperty();
     }
-
-    public void regView(String name, View view) {
-        viewMap.put(name, view);
-    }
-
-    public void unregView(String name) {
-        View view = viewMap.remove(name);
-
-        if (view != null && view == getCurrentView()) {
-            currentView.set(null);
-        }
-        //Should avoid delete currentView,
-        //otherwise the window will display nothing
-
-    }
-
-    public View getCurrentView() {
-        return currentView.get();
-    }
-
-    public ReadOnlyObjectProperty<View> currentViewProperty() {
-        return currentView;
-    }
-
-    public void gotoView(String name) {
-        View view = viewMap.get(name);
-        if (view != null) {
-            currentView.set(view);
-        }
-    }
-
-    public View getView(String name) {
-        return viewMap.get(name);
-    }
-
-    public void launch() {
-        if (onLaunch != null) {
-            onLaunch.handle();
-        }
-
-        for (View v :
-                viewMap.values()) {
-            v.onLaunch();
-        }
-        stage.requestFocus();
-        stage.show();
-    }
-
-    public void finish() {
-        for (View v :
-                viewMap.values()) {
-            v.onFinish();
-        }
-
-        if (onFinish != null) {
-            onFinish.handle();
-        }
-    }
-
-    public void exit() {
-        Platform.exit();
-    }
-
-    interface OnLaunch {
-        void handle();
-    }
-
-
-    interface OnFinish {
-        void handle();
-    }
-
-    interface OnExit {
-        boolean handle();
-    }
-
 }
