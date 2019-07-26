@@ -20,9 +20,11 @@ public class Test extends Initial {
         app.setHeight(600);
 
         app.regView("Home", new HomeView());
-        app.regView("Play", new PlayView());
+//        app.regView("Play", new PlayView());
         app.regView("Demo", new DemoView());
         app.gotoView("Home");
+
+        System.out.println(app.getHeight());
     }
 
     @Override

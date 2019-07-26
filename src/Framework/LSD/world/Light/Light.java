@@ -1,17 +1,16 @@
-package Framework.LSD.world;
+package Framework.LSD.world.Light;
 
-import javafx.application.Platform;
+import Framework.LSD.world.Intersection;
 import javafx.scene.layout.Pane;
 
-import java.util.HashMap;
+import java.util.*;
 
-/**
- * @author :
- * @version :
- */
 public class Light {
 
-    static final int MAXIMUM_LIGHT_PATH_NUMBER = 10;
+    ArrayList<Intersection> CircleMirrorIntersectionList = new ArrayList<>();
+    ArrayList<Intersection> FlatMirrorIntersectionList = new ArrayList<>();
+
+    static final int MAXIMUM_LIGHT_PATH_NUMBER = 5;
 
     static int lightPathId = 0;
 
@@ -55,8 +54,11 @@ public class Light {
     }
 
     public void intersectionDetect() {
+        FlatMirrorIntersectionList.clear();
+        CircleMirrorIntersectionList.clear();
+        ArrayList<LightPath> temp = new ArrayList<>(lightPathMap.values());
         for (LightPath l :
-                lightPathMap.values()) {
+                temp) {
             l.intersectionDetect();
         }
     }

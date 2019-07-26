@@ -29,7 +29,7 @@ public class HomeView extends View {
         exitBtn.setOnAction(e -> app.exit());
 
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(playBtn, demoBtn,exitBtn);
+        vBox.getChildren().addAll(demoBtn, exitBtn);
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(20);
 
@@ -38,7 +38,7 @@ public class HomeView extends View {
 
     @Override
     public void onEnter() {
-        System.out.println(app.getWidth() +" " +app.getHeight());
+        System.out.println(app.getMinWidth() + " " + app.getMinHeight());
     }
 
     @Override

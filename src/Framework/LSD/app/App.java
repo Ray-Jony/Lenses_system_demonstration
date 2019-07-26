@@ -1,11 +1,13 @@
 package Framework.LSD.app;
 
 import Framework.LSD.input.MouseInput;
-import Framework.LSD.world.Light;
-import Framework.LSD.world.LightPath;
+import Framework.LSD.world.Light.Light;
+import Framework.LSD.world.Light.LightPath;
+import Framework.LSD.world.Mirror.Mirror;
 import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -15,6 +17,8 @@ import javafx.stage.WindowEvent;
 import Framework.LSD.Framework;
 import Framework.LSD.input.KeyInput;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class App {
@@ -27,6 +31,8 @@ public class App {
     private final ObjectProperty<View> currentView;
 
     private final HashMap<String, Light> lightMap;
+
+    private final HashMap<String, Mirror> mirrorMap;
 
     private final Engine engine;
 
@@ -41,7 +47,7 @@ public class App {
     public App(Stage stage) {
         this.stage = stage;
 
-        root = new StackPane();
+        root = new AnchorPane();
         scene = new Scene(root);
         stage.setScene(scene);
 
@@ -49,6 +55,8 @@ public class App {
         currentView = new SimpleObjectProperty<>();
 
         lightMap = new HashMap<>();
+
+        mirrorMap = new HashMap<>();
 
         engine = new Engine();
 
@@ -132,14 +140,29 @@ public class App {
     }
 
     public void drawLight(Pane pane) {
-        pane.getChildren().removeAll();
+
         for (Light l :
                 lightMap.values()) {
             l.drawLight(pane);
         }
     }
 
-    public void intersectionDetect(){
+    public void drawMirror(Pane pane) {
+
+        for (Mirror m :
+                mirrorMap.values()) {
+            m.drawMirror(pane);
+        }
+    }
+
+    public void draw(Pane pane){
+        pane.getChildren().clear();
+        pane.getChildren().removeAll();//This probably not working
+        drawLight(pane);
+        drawMirror(pane);
+    }
+
+    public void intersectionDetect() {
         for (Light l :
                 lightMap.values()) {
             l.intersectionDetect();
@@ -147,14 +170,22 @@ public class App {
     }
 
     public void regLight(String name, double startPointX, double startPointY, double direction, double waveLength) {
-        lightMap.put(name, new Light(new LightPath(startPointX,startPointY,direction,waveLength)));
+        lightMap.put(name, new Light(new LightPath(startPointX, startPointY, direction, waveLength)));
     }
 
     public void unregLight(String name) {
         lightMap.remove(name);
     }
 
-    public boolean intersectionPoint(){
+    public void regMirror(String name, Mirror mirror) {
+        mirrorMap.put(name, mirror);
+    }
+
+    public void unregMirror(String name) {
+        mirrorMap.remove(name);
+    }
+
+    public boolean intersectionPoint() {
         //TODO
         return true;
     }
@@ -196,6 +227,14 @@ public class App {
 
     public Light getLight(String name) {
         return lightMap.get(name);
+    }
+
+    public HashMap<String, Light> getLightMap() {
+        return lightMap;
+    }
+
+    public Collection<Mirror> getMirrorMapValues() {
+        return mirrorMap.values();
     }
 
     public void launch() {
@@ -260,6 +299,10 @@ public class App {
     }
 
     public double getWidth() {
+        return root.getWidth();
+    }
+
+    public double getMinWidth() {
         return root.getMinWidth();
     }
 
@@ -272,6 +315,10 @@ public class App {
     }
 
     public double getHeight() {
+        return root.getHeight();
+    }
+
+    public double getMinHeight() {
         return root.getMinHeight();
     }
 
