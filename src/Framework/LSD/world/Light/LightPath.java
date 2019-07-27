@@ -4,9 +4,9 @@ import Framework.LSD.world.Intersection;
 import Framework.LSD.world.Mirror.CircleMirror;
 import Framework.LSD.world.Mirror.FlatMirror;
 import Framework.LSD.world.Mirror.Mirror;
-import javafx.scene.AccessibleRole;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +16,12 @@ import static Framework.LSD.Framework.*;
 public class LightPath {
 
     Light light;
+
+    private boolean detected;
+
+    private Intersection intersection;
+
+    private int lightPathID = 0;
 
     public static final double RED_LIGHT_WAVE_LENGTH = 656.3; //nm
     public static final double BLUE_LIGHT_WAVE_LENGTH = 486.1; //nm
@@ -41,8 +47,9 @@ public class LightPath {
         this.len = len;
         this.direction = direction;
         this.waveLength = waveLength;
-
+        this.detected = false;
     }
+
 
     public double getStartPointX() {
         return startPointX;
@@ -65,15 +72,31 @@ public class LightPath {
     }
 
     public double getEndPointY() {
-        return startPointY - len * Math.sin(direction);
+        return startPointY + len * Math.sin(direction);
     }
 
     public double getWaveLength() {
         return waveLength;
     }
 
+    public int getLightPathID() {
+        return lightPathID;
+    }
+
+    public void setLightPathID(int lightPathID) {
+        this.lightPathID = lightPathID;
+    }
+
     void setLen(double len) {
         this.len = len;
+    }
+
+    boolean isDetected() {
+        return detected;
+    }
+
+    void setDetected(boolean detected) {
+        this.detected = detected;
     }
 
     public void setStartPointX(double startPointX) {
@@ -144,8 +167,15 @@ public class LightPath {
         double nearestDistance = Double.MAX_VALUE;
         for (int index :
                 IntersectionConfirmedTemp.keySet()) {
-            Intersection.point point = IntersectionConfirmedTemp.get(index).calculateIntersectionPoint();
-            double distance = IntersectionConfirmedTemp.get(index).getA().distanceTo(point);
+            Intersection.point currentPoint = IntersectionConfirmedTemp.get(index).calculateIntersectionPoint();
+            if (!isInitialLightPath()) {
+                Intersection previousIntersection = light.getLightPathMap().get(getLightPathID() - 1).intersection;
+                //TODO Optimization needed, Store the point information only
+                if (isPreviousIntersectionPoint(currentPoint, previousIntersection.calculateIntersectionPoint())) {
+                    continue;
+                }
+            }
+            double distance = IntersectionConfirmedTemp.get(index).getA().distanceTo(currentPoint);
             if (distance < nearestDistance) {
                 nearestDistance = distance;
                 nearestEventIndex = index;
@@ -153,51 +183,32 @@ public class LightPath {
         }
 
         if (nearestEventIndex != -1) {
-            reflectionDetected(IntersectionConfirmedTemp.get(nearestEventIndex));
+            this.intersection = IntersectionConfirmedTemp.get(nearestEventIndex);
+            reflectionDetected(this.intersection);
         }
+    }
 
+    public boolean isPreviousIntersectionPoint(Intersection.point currentPoint, Intersection.point previousPoint) {
+        double deviation = 0.1;//Precision Factor
+        double distance = currentPoint.distanceTo(previousPoint);
+        return distance < deviation;
+    }
 
-//        for (int i = 0; i < intersectionDetected.size(); i++) {
-//            reflectionDetected(intersectionDetected.get(i));
-//        }
-//
-
-
-        //Edge detect
-//        Intersection left = new Intersection(startPointX, startPointY, getEndPointX(), getEndPointY(),
-//                0, 0, 0, app.getHeight());
-//        Intersection right = new Intersection(startPointX, startPointY, getEndPointX(), getEndPointY(),
-//                app.getWidth(), 0, app.getWidth(), app.getHeight());
-//        Intersection top = new Intersection(startPointX, startPointY, getEndPointX(), getEndPointY(),
-//                0, 0, app.getWidth(), 0);
-//        Intersection bottom = new Intersection(startPointX, startPointY, getEndPointX(), getEndPointY(),
-//                0, app.getHeight(), app.getWidth(), app.getHeight());
-//
-//        if (left.isInLineSegments()) {
-//            reflectionDetected(left);
-//        }
-//        if (right.isInLineSegments()) {
-//            reflectionDetected(right);
-//        }
-//        if (top.isInLineSegments()) {
-//            reflectionDetected(top);
-//        }
-//        if (bottom.isInLineSegments()) {
-//            reflectionDetected(bottom);
-//        }
-
-
+    public boolean isInitialLightPath() {
+        return getLightPathID() == 0;
     }
 
     public void reflectionDetected(Intersection intersection) {
-        setLen(reCalculateLength(intersection) - 1);
+        setLen(reCalculateLength(intersection));
         intersection.refreshLight(startPointX, startPointY, getEndPointX(), getEndPointY());
         light.intersectionListener.intersectionDetected(MAXIMUM_LENGTH, intersection.reflectedDirection());
     }
 
-    public double reCalculateLength(Intersection intersection) {
+    public double reCalculateLength(@NotNull Intersection intersection) {
 
         Intersection.point point = intersection.calculateIntersectionPoint();
+        light.getIntersectionPointMap().put(getLightPathID(), point);
+
         double x = point.getX();
         double y = point.getY();
 

@@ -16,8 +16,8 @@ public class Test extends Initial {
     @Override
     public void onLaunch() {
         app.setTitle("Test");
-        app.setWidth(800);
-        app.setHeight(600);
+        app.setWidth(1000);
+        app.setHeight(800);
 
         app.regView("Home", new HomeView());
 //        app.regView("Play", new PlayView());

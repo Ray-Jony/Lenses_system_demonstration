@@ -6,35 +6,59 @@ import Framework.LSD.input.Mouse;
 import Framework.LSD.world.Light.LightPath;
 import Framework.LSD.world.Mirror.CircleMirror;
 import Framework.LSD.world.Mirror.FlatMirror;
-import Framework.LSD.world.Mirror.Mirror;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 
 import static Framework.LSD.Framework.*;
-import static Framework.LSD.Framework.mouseInput;
 
 public class DemoView extends View {
 
     public static double direction = 0;
 
-    private Button homeBtn;
+    private Pane demonstratePane;
 
+    private Button homeBtn;
+    private Button changeBtn;
+
+    private Text angle;
 
     @Override
     public void onLaunch() {
+        demonstratePane = new AnchorPane();
+        demonstratePane.setLayoutX(10);
+        demonstratePane.setLayoutY(50);
+
         homeBtn = new Button();
         homeBtn.setText("Home");
+        homeBtn.setLayoutX(10);
+        homeBtn.setLayoutY(10);
         homeBtn.setOnAction(e ->
                 app.gotoView("Home")
         );
-        getPane().getChildren().add(homeBtn);
+        changeBtn = new Button();
+        changeBtn.setText("change");
+        changeBtn.setLayoutX(60);
+        changeBtn.setLayoutY(10);
+        changeBtn.setOnAction(e ->
+                changeDirection()
+        );
 
-        app.regLight("RedLight", 200, 50, Math.PI / 8, LightPath.RED_LIGHT_WAVE_LENGTH);
-        System.out.println(app.getHeight());
+        angle = new Text(String.valueOf(direction));
+        angle.setLayoutX(110);
+        angle.setLayoutY(10);
+
+
+        getPane().getChildren().addAll(demonstratePane, homeBtn, changeBtn,angle);
+
+        app.regLight("RedLight", 200, 50, 0, LightPath.RED_LIGHT_WAVE_LENGTH);
+
         app.regMirror("RightEdge", new FlatMirror(400, 0, 800, 600));
         app.regMirror("LeftEdge", new FlatMirror(0, 0, 0, 600));
         app.regMirror("TopEdge", new FlatMirror(0, 0, 800, 0));
         app.regMirror("BottomEdge", new FlatMirror(0, 600, 800, 600));
-        app.regMirror("Circle", new CircleMirror(400,300,100));
+        app.regMirror("Circle", new CircleMirror(400, 300, 100));
 
 
     }
@@ -48,9 +72,10 @@ public class DemoView extends View {
     public void onUpdate(double time) {
 
         app.intersectionDetect();
-        app.draw(getPane());
-//        app.drawLight(getPane());
-//        app.drawMirror(getPane());
+
+        app.draw(demonstratePane);
+
+        angle.setText(String.valueOf(direction));
 
 //        changeDirection();
 //        System.out.println(app.getWidth() + "" + app.getHeight());
@@ -103,6 +128,6 @@ public class DemoView extends View {
     public void changeDirection() {
         app.unregLight("RedLight");
         app.regLight("RedLight", 200, 50, direction, LightPath.RED_LIGHT_WAVE_LENGTH);
-        direction += 0.001;
+        direction += 0.01;
     }
 }

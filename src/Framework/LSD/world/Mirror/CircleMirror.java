@@ -1,7 +1,10 @@
 package Framework.LSD.world.Mirror;
 
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+
+import javax.swing.plaf.ColorUIResource;
 
 public class CircleMirror extends Mirror {
 
@@ -18,6 +21,8 @@ public class CircleMirror extends Mirror {
     @Override
     public void drawMirror(Pane pane) {
         Circle circle = new Circle(centerX,centerY,radius);
+        circle.setFill(Color.TRANSPARENT);
+        circle.setStroke(Color.BLACK);
         pane.getChildren().addAll(circle);
     }
 

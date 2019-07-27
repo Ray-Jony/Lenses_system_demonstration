@@ -15,6 +15,8 @@ public class FlatMirror extends Mirror {
     private double endPointX;
     private double endPointY;
 
+//    private double
+
 
     public FlatMirror(double startPointX, double startPointY, double endPointX, double endPointY) {
         this.startPointX = startPointX;

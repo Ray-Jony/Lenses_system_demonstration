@@ -3,9 +3,10 @@ package Framework.LSD.world;
 import Framework.LSD.world.Light.LightPath;
 import Framework.LSD.world.Mirror.CircleMirror;
 import Framework.LSD.world.Mirror.FlatMirror;
+import org.jetbrains.annotations.NotNull;
+
 
 public class Intersection {
-
 
     private point A, B;
 
@@ -14,7 +15,7 @@ public class Intersection {
     private point center;
     private double radius;
 
-    public Intersection(){
+    public Intersection() {
 
     }
 
@@ -122,20 +123,38 @@ public class Intersection {
         return isInLineSegment(calculateIntersectionPoint(), A, B) && isInLineSegment(calculateIntersectionPoint(), C, D);
     }
 
+    //    public double reflectedDirection() {
+//        double angle1;
+//        double angle2;
+//
+//        if (center != null) {
+//            angle1 = Math.atan2(Dy1(), Dx1());
+//            angle2 = calculateIntersectionPoint().directionTo(center) + Math.PI / 2;
+//        } else {
+//
+//            angle1 = Math.atan2(Dy1(), Dx1());
+//            angle2 = Math.atan2(Dy2(), Dx2());
+//        }
+//        return 2 * Math.abs(angle2) - angle1;
+//    }
     public double reflectedDirection() {
-        double seita1;
-        double seita2;
-
+        vector2D N;
         if (center != null) {
-            seita1 = Math.atan2(getDy1(), getDx1());
-            seita2 = calculateIntersectionPoint().directionTo(center) + Math.PI / 2;
+            point point = calculateIntersectionPoint();
+            N = new vector2D(point.getX() - center.getX(), point.getY() - center.getY()).normalize();
         } else {
-
-            seita1 = Math.atan2(getDy1(), getDx1());
-            seita2 = Math.atan2(getDy2(), getDx2());
+            N = getNormalVectorL(C, D).normalize();
         }
-        return 2 * seita2 + seita1;
+        vector2D L = new vector2D(getDx1(), getDy1()).normalize();
+
+        //L is the vector of the light
+        //N is the normal vector of mirror
+        //R is the vector of the reflected light
+        // R - L = 2 * (N dot (-L)) * N
+        vector2D R = L.subtract(N.multiply(2 * N.dotProduct(L))).normalize();
+        return R.getRadian();
     }
+
 
     public point nearestPointInLine(point p, lineSegment line) {
         double a = -1 / line.getSlope();
@@ -149,6 +168,35 @@ public class Intersection {
         if (isInLineSegment(point, A, B))
             return radius >= center.distanceTo(point);
         else return false;
+    }
+
+    public vector2D getNormalVectorL(point A, point B) {
+        if (B.x - A.x == 0 && B.y - A.y == 0) {
+            System.out.println("This two point is the same point, does not have an normal vector");
+            return new vector2D();
+        } else if (B.x - A.x == 0) {
+            if (B.y - A.y >= 0) {
+                return new vector2D(-1, 0);
+            } else return new vector2D(1, 0);
+        } else if (B.y - A.y == 0) {
+            if (B.x - A.x >= 0) {
+                return new vector2D(0, 1);
+            } else return new vector2D(0, -1);
+        } else return new vector2D(-(B.y - A.y), B.x - A.x).normalize();
+    }
+
+    public vector2D getNormalVectorR(point A, point B) throws Exception {
+        if (B.x - A.x == 0 && B.y - A.y == 0) {
+            throw new Exception("This two point is the same point, does not have an normal vector");
+        } else if (B.x - A.x == 0) {
+            if (B.y - A.y >= 0) {
+                return new vector2D(1, 0);
+            } else return new vector2D(-1, 0);
+        } else if (B.y - A.y == 0) {
+            if (B.x - A.x >= 0) {
+                return new vector2D(0, -1);
+            } else return new vector2D(0, 1);
+        } else return new vector2D(B.y - A.y, -(B.x - A.x)).normalize();
     }
 
 
@@ -243,7 +291,7 @@ public class Intersection {
         }
 
 
-        public double distanceTo(point p) {
+        public double distanceTo(@NotNull point p) {
             return Math.sqrt(Math.pow(this.getX() - p.getX(), 2) + Math.pow(this.getY() - p.getY(), 2));
         }
 
@@ -262,12 +310,12 @@ public class Intersection {
 
     public class lineSegment {
 
-        double startPointX;
-        double startPointY;
-        double endPointX;
-        double endPointY;
+        private double startPointX;
+        private double startPointY;
+        private double endPointX;
+        private double endPointY;
 
-        public lineSegment(double startPointX, double startPointY, double endPointX, double endPointY) {
+        lineSegment(double startPointX, double startPointY, double endPointX, double endPointY) {
             this.startPointX = startPointX;
             this.startPointY = startPointY;
             this.endPointX = endPointX;
@@ -290,8 +338,117 @@ public class Intersection {
             return endPointY;
         }
 
-        public double getSlope() {
+        double getSlope() {
             return (endPointY - startPointY) / (endPointX - startPointX);
+        }
+    }
+
+    class vector2D {
+        private double x;
+        private double y;
+
+        public vector2D() {
+            this.x = 0;
+            this.y = 0;
+        }
+
+        public vector2D(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public vector2D clone() {
+            return new vector2D(x, y);
+        }
+
+        public double getRadian() {
+            return Math.atan2(y, x);
+        }
+
+        public double getLength() {
+            return Math.sqrt(x * x + y * y);
+        }
+
+        public boolean isZeroVector() {
+            return x == 0 && y == 0;
+        }
+
+        public void setLength(double length) {
+            double angle = getRadian();
+            x = length * Math.cos(angle);
+            y = length * Math.sin(angle);
+        }
+
+        public vector2D normalize() {
+            double len = getLength();
+            x = x / len;
+            y = y / len;
+            return this;
+        }
+
+        public boolean isNormalized() {
+            return getLength() == 1.0;
+        }
+
+        public double dotProduct(vector2D vector) {
+            return x * vector.x + y * vector.y;
+        }
+
+        public double crossProduct(vector2D vector) {
+            return x * vector.y - y * vector.x;
+        }
+
+        public double radianTo(vector2D vector) {
+            // v1 * v2 / |v1| *|v2|= cos<v1,v2>
+
+            vector2D v1, v2;
+
+            v1 = this.clone().normalize();
+
+            v2 = vector.clone().normalize();
+
+            return Math.acos(v1.dotProduct(v2));
+        }
+
+        public vector2D add(vector2D vector) {
+            x = x + vector.x;
+            y = y + vector.y;
+            return this;
+        }
+
+        public vector2D subtract(vector2D vector) {
+            x = x - vector.x;
+            y = y - vector.y;
+            return this;
+        }
+
+        public vector2D multiply(double value) {
+            x = x * value;
+            y = y * value;
+            return this;
+        }
+
+        public vector2D divide(double value) {
+            x = x / value;
+            y = y / value;
+            return this;
+        }
+
+
+        public double getX() {
+            return x;
+        }
+
+        public double getY() {
+            return y;
+        }
+
+        public void setX(double x) {
+            this.x = x;
+        }
+
+        public void setY(double y) {
+            this.y = y;
         }
     }
 

@@ -12,16 +12,21 @@ public class Light {
 
     static final int MAXIMUM_LIGHT_PATH_NUMBER = 5;
 
-    static int lightPathId = 0;
+    int lightPathId = 0;
 
     private HashMap<Integer, LightPath> lightPathMap = new HashMap<>();
+
+    private HashMap<Integer, Intersection.point> intersectionPointMap = new HashMap<>();
+
     IntersectionListener intersectionListener = (len, direction) ->
             addLightPath(len, direction);
+
 
     public Light(LightPath... lightPath) {
 
         for (LightPath l : lightPath) {
             l.light = this;
+            l.setLightPathID(lightPathId);
             lightPathMap.put(lightPathId, l);
             lightPathId++;
         }
@@ -33,6 +38,7 @@ public class Light {
             return;
         }
         LightPath previousLightPath = lightPathMap.get(lightPathId - 1);
+        previousLightPath.setDetected(true);
         LightPath newLightPath = new LightPath(
                 previousLightPath.getEndPointX(),
                 previousLightPath.getEndPointY(),
@@ -42,6 +48,7 @@ public class Light {
         );
         newLightPath.light = this;
         lightPathMap.put(lightPathId, newLightPath);
+        newLightPath.setLightPathID(lightPathId);
         lightPathId++;
         intersectionDetect();
     }
@@ -59,8 +66,17 @@ public class Light {
         ArrayList<LightPath> temp = new ArrayList<>(lightPathMap.values());
         for (LightPath l :
                 temp) {
-            l.intersectionDetect();
+            if (!l.isDetected())
+                l.intersectionDetect();
         }
+    }
+
+    public HashMap<Integer, LightPath> getLightPathMap() {
+        return lightPathMap;
+    }
+
+    public HashMap<Integer, Intersection.point> getIntersectionPointMap() {
+        return intersectionPointMap;
     }
 
     public interface IntersectionListener {
