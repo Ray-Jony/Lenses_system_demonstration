@@ -2,9 +2,13 @@ package Framework.LSD.world.Lens;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 
-public class CircleLens extends Lens {
+public class CircleLensSurface {
+
+    public static final int LEFT = 1;
+    public static final int RIGHT = 2;
 
     private double centerX;
     private double centerY;
@@ -22,7 +26,7 @@ public class CircleLens extends Lens {
     //传统上nD>1.60，VD>50和nD<1.60，VD>55的各类玻璃定为冕(K)玻璃，其余各类玻璃定为火石(F)玻璃。
     //冕玻璃一般作凸透镜，火石玻璃作凹透镜。
 
-    public CircleLens(double centerX, double centerY, double radius) {
+    public CircleLensSurface(double centerX, double centerY, double radius) {
         this.centerX = centerX;
         this.centerY = centerY;
         this.radius = radius;
@@ -34,12 +38,17 @@ public class CircleLens extends Lens {
         this.Vd = 58.95;
     }
 
-    @Override
-    public void drawLens(Pane pane) {
-        Circle circle = new Circle(centerX, centerY, radius);
-        circle.setFill(Color.TRANSPARENT);
-        circle.setStroke(Color.BLACK);
-        pane.getChildren().addAll(circle);
+    public void drawLens(Pane pane, double startDegree, double duration) {
+
+        Arc arc = new Arc(centerX, centerY, radius, radius, startDegree, duration);
+        arc.setFill(Color.TRANSPARENT);
+        arc.setStroke(Color.BLACK);
+        arc.setStrokeWidth(2);
+        pane.getChildren().addAll(arc);
+//        Circle circle = new Circle(centerX, centerY, radius);
+//        circle.setFill(Color.TRANSPARENT);
+//        circle.setStroke(Color.BLACK);
+//        pane.getChildren().addAll(circle);
     }
 
     public double getCenterX() {

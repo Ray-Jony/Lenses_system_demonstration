@@ -28,6 +28,7 @@ public class FlatMirror extends Mirror {
     @Override
     public void drawMirror(Pane pane) {
         Line mirror = new Line(startPointX, startPointY, getEndPointX(), getEndPointY());
+        mirror.setStrokeWidth(3);
         pane.getChildren().addAll(mirror);
     }
 

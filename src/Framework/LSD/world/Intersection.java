@@ -1,6 +1,7 @@
 package Framework.LSD.world;
 
-import Framework.LSD.world.Lens.CircleLens;
+import Framework.LSD.world.Lens.CircleLensSurface;
+import Framework.LSD.world.Lens.ConvexLens;
 import Framework.LSD.world.Light.LightPath;
 import Framework.LSD.world.Mirror.CircleMirror;
 import Framework.LSD.world.Mirror.FlatMirror;
@@ -11,8 +12,12 @@ public class Intersection {
 
     public static final int REFLECTION = 1;
     public static final int REFRACTION = 2;
+    public static final int REFRACTION_IN = 21;
+    public static final int REFRACTION_OUT = 22;
+    public static final int TOTAL_INTERNAL_REFLECTION = 3;
 
     private int intersectionType;
+    private int subIntersectionType;
 
     private point A, B;
 
@@ -20,6 +25,10 @@ public class Intersection {
 
     private point center;
     private double radius;
+    private double height;
+    private int LorR_ID;
+    private point currentPoint;
+    private point anotherPoint; //point that been calculated to be far away from start point
 
     public Intersection() {
         intersectionType = 0;
@@ -37,10 +46,12 @@ public class Intersection {
         this.intersectionType = REFLECTION;
     }
 
-    public Intersection(LightPath lightPath, CircleLens circleLens) {
+    public Intersection(int LorR_ID, LightPath lightPath, CircleLensSurface circleLensSurface, double height) {
         this(lightPath.getStartPointX(), lightPath.getStartPointY(), lightPath.getEndPointX(), lightPath.getEndPointY(),
-                circleLens.getCenterX(), circleLens.getCenterY(), circleLens.getRadius());
+                circleLensSurface.getCenterX(), circleLensSurface.getCenterY(), circleLensSurface.getRadius());
         this.intersectionType = REFRACTION;
+        this.height = height;
+        this.LorR_ID = LorR_ID;
     }
 
     private Intersection(double v1, double v2, double v3, double v4,
@@ -112,14 +123,38 @@ public class Intersection {
             point point1 = new point(t.getX() - dx, t.getY() - dy);
             point point2 = new point(t.getX() + dx, t.getY() + dy);
 
-            return A.distanceTo(point2) > A.distanceTo(point1) ? point1 : point2;
+            double d1 = A.distanceTo(point1);
+            double d2 = A.distanceTo(point2);
+            double d3 = point1.distanceTo(point2);
+
+            if (d1 < d3 && d2 < d3) {
+                if (isInLineSegment(point1, new point(A.x, A.y), new point(B.x, B.y))) {
+                    return point1;
+                } else return point2;
+            } else {
+                return d1 < d2 ? point1 : point2;
+            }
+
+
+//
+//            if (A.distanceTo(point2) > A.distanceTo(point1)) {
+//                anotherPoint = point2;
+//                currentPoint = point1;
+//                return point1;
+//            } else {
+//                currentPoint = point2;
+//                anotherPoint = point1;
+//                return point2;
+//            }
+//            return A.distanceTo(point2) > A.distanceTo(point1) ? point1 : point2;
 
         } else {
 
             double x = C.x + (D.x - C.x) * getT2() / getT1();
             double y = C.y + (D.y - C.y) * getT2() / getT1();
-
-            return new point(x, y);
+            point point = new point(x, y);
+            currentPoint = point;
+            return point;
         }
     }
 
@@ -167,6 +202,9 @@ public class Intersection {
         } else {
             N = getNormalVectorL(C, D).normalize();
         }
+        if (subIntersectionType == REFRACTION_OUT) {
+            N.multiply(-1);
+        }
         vector2D L = new vector2D(getDx1(), getDy1()).normalize();
         double cos01 = -L.dotProduct(N);
         double cos02 = Math.sqrt(1 - (1 / (n * n)) * (1 - cos01 * cos01));
@@ -178,17 +216,47 @@ public class Intersection {
 
 
     public point nearestPointInLine(point p, lineSegment line) {
-        double a = -1 / line.getSlope();
-        double b = p.getY() - a * p.getX();
-        return new Intersection(p.getX(), p.getY(), 5000, 5000 * a + b,
-                line.startPointX, line.startPointY, line.endPointX, line.endPointY).calculateIntersectionPoint();
+        if (line.getSlope() == 0) {
+            return new point(p.getX(), line.startPointY);
+        } else if (line.getSlope() > 100000) {
+            return new point(line.startPointX, p.getY());
+        } else {
+            double a = -1 / line.getSlope();
+            double b = p.getY() - a * p.getX();
+            return new Intersection(p.getX(), p.getY(), 5000, 5000 * a + b,
+                    line.startPointX, line.startPointY, line.endPointX, line.endPointY).calculateIntersectionPoint();
+        }
     }
 
     public boolean isInCircle() {
         point point = nearestPointInLine(center, new lineSegment(A.x, A.y, B.x, B.y));
-        if (isInLineSegment(point, A, B))
-            return radius >= center.distanceTo(point);
-        else return false;
+        return radius >= center.distanceTo(point);
+    }
+
+    public boolean isIntersectsCircle() {
+        if (!isInCircle()) {
+            return false;
+        }
+        point point = calculateIntersectionPoint();
+        return isInLineSegment(point, A, B);
+    }
+
+    public boolean isInArc() {
+        if (!isIntersectsCircle()) {
+            return false;
+        }
+        point point = calculateIntersectionPoint();
+        if (height / 2 < Math.abs(point.getY() - center.getY()))
+            return false;
+        if (LorR_ID == CircleLensSurface.LEFT) {
+            if (point.getX() > center.getX())
+                return false;
+        }
+        if (LorR_ID == CircleLensSurface.RIGHT) {
+            if (point.getX() < center.getX())
+                return false;
+        }
+        return true;
     }
 
     public vector2D getNormalVectorL(point A, point B) {
@@ -306,6 +374,22 @@ public class Intersection {
         return intersectionType;
     }
 
+    public int getSubIntersectionType() {
+        return subIntersectionType;
+    }
+
+    public void setSubIntersectionType(int subIntersectionType) {
+        this.subIntersectionType = subIntersectionType;
+    }
+
+    public point getAnotherPoint() {
+        return anotherPoint;
+    }
+
+    public point getCurrentPoint() {
+        return currentPoint;
+    }
+
     public class point {
         double x;
         double y;
@@ -320,7 +404,7 @@ public class Intersection {
             return Math.sqrt(Math.pow(this.getX() - p.getX(), 2) + Math.pow(this.getY() - p.getY(), 2));
         }
 
-        public double directionTo(point p) {
+        public double directionTo(@NotNull point p) {
             return Math.atan2(this.getY() - p.getY(), p.getX() - this.getX());
         }
 
@@ -364,6 +448,8 @@ public class Intersection {
         }
 
         double getSlope() {
+            if (endPointX - startPointX < 0.00001)
+                return 100001;
             return (endPointY - startPointY) / (endPointX - startPointX);
         }
     }

@@ -166,6 +166,12 @@ public class App {
         }
     }
 
+    public void reset() {
+        lensMap.clear();
+        mirrorMap.clear();
+        lightMap.clear();
+    }
+
     public void draw(Pane pane) {
         pane.getChildren().clear();
         pane.getChildren().removeAll();//This probably not working

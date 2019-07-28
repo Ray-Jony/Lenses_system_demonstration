@@ -2,6 +2,7 @@ package Framework.LSD.world.Light;
 
 import Framework.LSD.world.Intersection;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Arc;
 
 import java.util.*;
 
@@ -9,7 +10,9 @@ public class Light {
 
     ArrayList<Intersection> CircleMirrorIntersectionList = new ArrayList<>();
     ArrayList<Intersection> FlatMirrorIntersectionList = new ArrayList<>();
-    ArrayList<Intersection> CircleLensIntersectionList = new ArrayList<>();
+    ArrayList<Intersection> LeftCircleLensSurfaceIntersectionList = new ArrayList<>();
+    ArrayList<Intersection> RightCircleLensSurfaceIntersectionList = new ArrayList<>();
+//    ArrayList<Intersection> CircleLensIntersectionList = new ArrayList<>();
 
     static final int MAXIMUM_LIGHT_PATH_NUMBER = 5;
 
@@ -19,21 +22,18 @@ public class Light {
 
     private HashMap<Integer, Intersection.point> intersectionPointMap = new HashMap<>();
 
-    IntersectionListener intersectionListener = (len, direction) ->
-            addLightPath(len, direction);
+    IntersectionListener intersectionListener = (len, direction, intersectionType) ->
+            addLightPath(len, direction, intersectionType);
 
 
-    public Light(LightPath... lightPath) {
-
-        for (LightPath l : lightPath) {
-            l.light = this;
-            l.setLightPathID(lightPathId);
-            lightPathMap.put(lightPathId, l);
-            lightPathId++;
-        }
+    public Light(LightPath lightPath) {
+        lightPath.light = this;
+        lightPath.setLightPathID(lightPathId);
+        lightPathMap.put(lightPathId, lightPath);
+        lightPathId++;
     }
 
-    public void addLightPath(double len, double direction) {
+    public void addLightPath(double len, double direction, int intersectionType) {
 
         if (lightPathMap.values().size() > MAXIMUM_LIGHT_PATH_NUMBER) {
             return;
@@ -50,6 +50,15 @@ public class Light {
         newLightPath.light = this;
         lightPathMap.put(lightPathId, newLightPath);
         newLightPath.setLightPathID(lightPathId);
+//        if (intersectionType == Intersection.REFRACTION) {
+//            if (previousLightPath.isInMedium()) {
+//                newLightPath.setInMedium(false);
+//            } else newLightPath.setInMedium(true);
+//        } else if (intersectionType == Intersection.TOTAL_INTERNAL_REFLECTION) {
+//            newLightPath.setInMedium(true);
+//        } else if (intersectionType == Intersection.REFLECTION) {
+//            newLightPath.setInMedium(previousLightPath.isInMedium());
+//        }
         lightPathId++;
         intersectionDetect();
     }
@@ -62,13 +71,13 @@ public class Light {
     }
 
     public void intersectionDetect() {
-        FlatMirrorIntersectionList.clear();
-        CircleMirrorIntersectionList.clear();
+
         ArrayList<LightPath> temp = new ArrayList<>(lightPathMap.values());
         for (LightPath l :
                 temp) {
-            if (!l.isDetected())
+            if (!l.isDetected()) {
                 l.intersectionDetect();
+            }
         }
     }
 
@@ -81,6 +90,6 @@ public class Light {
     }
 
     public interface IntersectionListener {
-        void intersectionDetected(double len, double direction);
+        void intersectionDetected(double len, double direction, int intersectionType);
     }
 }

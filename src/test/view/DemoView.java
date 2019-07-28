@@ -3,7 +3,6 @@ package test.view;
 import Framework.LSD.app.View;
 import Framework.LSD.input.Key;
 import Framework.LSD.input.Mouse;
-import Framework.LSD.world.Lens.CircleLens;
 import Framework.LSD.world.Light.LightPath;
 import Framework.LSD.world.Mirror.CircleMirror;
 import Framework.LSD.world.Mirror.FlatMirror;
@@ -16,14 +15,19 @@ import static Framework.LSD.Framework.*;
 
 public class DemoView extends View {
 
-    public static double direction = 0;
+    private double direction = 0;
+    private double speed = 0;
+    private double tempSpeed = 0;
 
     private Pane demonstratePane;
 
     private Button homeBtn;
-    private Button changeBtn;
+    private Button controlBtn;
+    private Button speedUpBtn;
+    private Button speedDownBtn;
 
-    private Text angle;
+    private Text angleText;
+    private Text speedText;
 
     @Override
     public void onLaunch() {
@@ -38,20 +42,70 @@ public class DemoView extends View {
         homeBtn.setOnAction(e ->
                 app.gotoView("Home")
         );
-        changeBtn = new Button();
-        changeBtn.setText("change");
-        changeBtn.setLayoutX(60);
-        changeBtn.setLayoutY(10);
-        changeBtn.setOnAction(e ->
-                changeDirection()
+
+        controlBtn = new Button();
+        controlBtn.setText("Start");
+        controlBtn.setLayoutX(70);
+        controlBtn.setLayoutY(10);
+        controlBtn.setOnAction(e -> {
+                    if (controlBtn.getText().equals("Start")) {
+                        controlBtn.setText("Pause");
+                        speed = tempSpeed;
+                    } else {
+                        controlBtn.setText("Start");
+                        tempSpeed = speed;
+                        speed = 0;
+                    }
+                }
         );
 
-        angle = new Text(String.valueOf(direction));
-        angle.setLayoutX(110);
-        angle.setLayoutY(10);
+        speedUpBtn = new Button();
+        speedUpBtn.setText("+++");
+        speedUpBtn.setLayoutX(130);
+        speedUpBtn.setLayoutY(10);
+        speedUpBtn.setOnAction(e -> {
+                    tempSpeed += 0.0005;
+                    if (controlBtn.getText().equals("Pause")) {
+                        speed = tempSpeed;
+                    }
+                }
+        );
+
+        speedDownBtn = new Button();
+        speedDownBtn.setText("---");
+        speedDownBtn.setLayoutX(190);
+        speedDownBtn.setLayoutY(10);
+        speedDownBtn.setOnAction(e -> {
+                    tempSpeed -= 0.0005;
+                    if (controlBtn.getText().equals("Pause")) {
+                        speed = tempSpeed;
+                    }
+                }
+        );
+
+        angleText = new Text(String.valueOf(Math.toDegrees(direction)));
+        angleText.setLayoutX(10);
+        angleText.setLayoutY(50);
+
+        speedText = new Text(String.valueOf(tempSpeed));
+        speedText.setLayoutX(250);
+        speedText.setLayoutY(30);
 
 
-        getPane().getChildren().addAll(demonstratePane, homeBtn, changeBtn,angle);
+        getPane().getChildren().addAll(
+                demonstratePane,
+                homeBtn,
+                controlBtn,
+                speedUpBtn,
+                speedDownBtn,
+                angleText,
+                speedText);
+
+    }
+
+    @Override
+    public void onEnter() {
+        app.reset();
 
         app.regLight("RedLight", 200, 50, 0, LightPath.RED_LIGHT_WAVE_LENGTH);
 
@@ -59,14 +113,7 @@ public class DemoView extends View {
         app.regMirror("LeftEdge", new FlatMirror(0, 0, 0, 600));
         app.regMirror("TopEdge", new FlatMirror(0, 0, 800, 0));
         app.regMirror("BottomEdge", new FlatMirror(0, 600, 800, 600));
-//        app.regMirror("Circle", new CircleMirror(400, 300, 100));
-        app.regLens("CircleLens", new CircleLens(400,300,100));
-
-    }
-
-    @Override
-    public void onEnter() {
-        System.out.println("Welcome to DemoView");
+        app.regMirror("Circle", new CircleMirror(400, 300, 100));
     }
 
     @Override
@@ -76,7 +123,8 @@ public class DemoView extends View {
 
         app.draw(demonstratePane);
 
-        angle.setText(String.valueOf(direction));
+        angleText.setText(String.valueOf(direction));
+        speedText.setText(String.valueOf(tempSpeed));
 
         changeDirection();
 
@@ -130,6 +178,6 @@ public class DemoView extends View {
     public void changeDirection() {
         app.unregLight("RedLight");
         app.regLight("RedLight", 200, 50, direction, LightPath.RED_LIGHT_WAVE_LENGTH);
-        direction += 0.0005;
+        direction += speed;
     }
 }

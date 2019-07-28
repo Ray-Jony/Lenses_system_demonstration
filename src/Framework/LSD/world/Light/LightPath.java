@@ -1,14 +1,15 @@
 package Framework.LSD.world.Light;
 
 import Framework.LSD.world.Intersection;
-import Framework.LSD.world.Lens.CircleLens;
+import Framework.LSD.world.Lens.CircleLensSurface;
+import Framework.LSD.world.Lens.ConvexLens;
 import Framework.LSD.world.Lens.Lens;
 import Framework.LSD.world.Mirror.CircleMirror;
 import Framework.LSD.world.Mirror.FlatMirror;
 import Framework.LSD.world.Mirror.Mirror;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +21,8 @@ public class LightPath {
     Light light;
 
     private boolean detected;
+
+//    private boolean inMedium;
 
     private Intersection.point intersectionPoint;
 
@@ -109,6 +112,14 @@ public class LightPath {
         this.detected = detected;
     }
 
+//    public boolean isInMedium() {
+//        return inMedium;
+//    }
+//
+//    public void setInMedium(boolean inMedium) {
+//        this.inMedium = inMedium;
+//    }
+
     public void setStartPointX(double startPointX) {
         this.startPointX = startPointX;
     }
@@ -128,6 +139,14 @@ public class LightPath {
     public void drawLightPath(Pane pane) {
 
         Line light = new Line(getStartPointX(), getStartPointY(), getEndPointX(), getEndPointY());
+        if (waveLength == RED_LIGHT_WAVE_LENGTH) {
+            light.setStroke(Color.RED);
+        } else if (waveLength == GREEN_LIGHT_WAVE_LENGTH) {
+            light.setStroke(Color.GREEN);
+        } else if (waveLength == BLUE_LIGHT_WAVE_LENGTH) {
+            light.setStroke(Color.BLUE);
+        }
+        light.setStrokeWidth(1);
         pane.getChildren().addAll(light);
 
     }
@@ -136,23 +155,56 @@ public class LightPath {
     public void addNewIntersectionDetection(Mirror mirror) {
 
         if (mirror.getClass().equals(FlatMirror.class))
-            light.FlatMirrorIntersectionList.add(new Intersection(this, (FlatMirror) mirror));
+            light.FlatMirrorIntersectionList.add(
+                    new Intersection(this, (FlatMirror) mirror));
         if (mirror.getClass().equals(CircleMirror.class)) {
-            light.CircleMirrorIntersectionList.add(new Intersection(this, (CircleMirror) mirror));
+            light.CircleMirrorIntersectionList.add(
+                    new Intersection(this, (CircleMirror) mirror));
         }
         //TODO add another type mirror
     }
 
     public void addNewIntersectionDetection(Lens lens) {
 
-        if (lens.getClass().equals(CircleLens.class))
-            light.CircleLensIntersectionList.add(new Intersection(this, (CircleLens) lens));
+        if (lens.getClass().equals(ConvexLens.class)) {
+
+            light.LeftCircleLensSurfaceIntersectionList.add(
+                    new Intersection(
+                            CircleLensSurface.LEFT,
+                            this,
+                            ((ConvexLens) lens).getLeftSurface(),
+                            ((ConvexLens) lens).getHeight()
+                    )
+            );
+
+            light.LeftCircleLensSurfaceIntersectionList
+                    .get(light.LeftCircleLensSurfaceIntersectionList.size() - 1)
+                    .setSubIntersectionType(Intersection.REFRACTION_IN);
+
+            light.RightCircleLensSurfaceIntersectionList.add(
+                    new Intersection(
+                            CircleLensSurface.RIGHT,
+                            this,
+                            ((ConvexLens) lens).getRightSurface(),
+                            ((ConvexLens) lens).getHeight()
+                    )
+            );
+
+            light.RightCircleLensSurfaceIntersectionList
+                    .get(light.RightCircleLensSurfaceIntersectionList.size() - 1)
+                    .setSubIntersectionType(Intersection.REFRACTION_OUT);
+        }
         //TODO add another type lens
 
     }
 
 
     public void intersectionDetect() {
+
+        light.LeftCircleLensSurfaceIntersectionList.clear();
+        light.RightCircleLensSurfaceIntersectionList.clear();
+        light.FlatMirrorIntersectionList.clear();
+        light.CircleMirrorIntersectionList.clear();
 
         ArrayList<Mirror> mirrorsTemp = new ArrayList<>(app.getMirrorMapValues());
         ArrayList<Lens> lensesTemp = new ArrayList<>(app.getLensMapValues());
@@ -166,9 +218,14 @@ public class LightPath {
         }
 
         //Clone different list of Intersections
-        ArrayList<Intersection> FlatMirrorTemp = new ArrayList<>(light.FlatMirrorIntersectionList);
-        ArrayList<Intersection> CircleMirrorTemp = new ArrayList<>(light.CircleMirrorIntersectionList);
-        ArrayList<Intersection> CircleLensTemp = new ArrayList<>(light.CircleLensIntersectionList);
+        ArrayList<Intersection> FlatMirrorTemp =
+                new ArrayList<>(light.FlatMirrorIntersectionList);
+        ArrayList<Intersection> CircleMirrorTemp =
+                new ArrayList<>(light.CircleMirrorIntersectionList);
+        ArrayList<Intersection> LeftLensSurfaceTemp =
+                new ArrayList<>(light.LeftCircleLensSurfaceIntersectionList);
+        ArrayList<Intersection> RightLensSurfaceTemp =
+                new ArrayList<>(light.RightCircleLensSurfaceIntersectionList);
 
         HashMap<Integer, Intersection> IntersectionConfirmedTemp = new HashMap<>();
 
@@ -191,13 +248,20 @@ public class LightPath {
         }
 
         for (Intersection intersection :
-                CircleLensTemp) {
-            if (intersection.isInCircle()) {
+                LeftLensSurfaceTemp) {
+            if (intersection.isInArc()) {
                 IntersectionConfirmedTemp.put(i, intersection);
                 i++;
             }
         }
 
+        for (Intersection intersection :
+                RightLensSurfaceTemp) {
+            if (intersection.isInArc()) {
+                IntersectionConfirmedTemp.put(i, intersection);
+                i++;
+            }
+        }
 
         Intersection.point previousIntersectionPoint;
 
@@ -223,10 +287,16 @@ public class LightPath {
         if (nearestEventIndex != -1) {
             Intersection intersection = IntersectionConfirmedTemp.get(nearestEventIndex);
             this.intersectionPoint = intersection.calculateIntersectionPoint();
-            if (intersection.getIntersectionType() == Intersection.REFLECTION)
+            if (intersection.getIntersectionType() == Intersection.REFLECTION) {
                 reflectionDetected(intersection);
-            if (intersection.getIntersectionType() == Intersection.REFRACTION)
-                refractionDetected(intersection);
+            }
+            if (intersection.getIntersectionType() == Intersection.REFRACTION) {
+                if (intersection.getSubIntersectionType() == Intersection.REFRACTION_IN) {
+                    refractionInDetected(intersection);
+                } else if (intersection.getSubIntersectionType() == Intersection.REFRACTION_OUT) {
+                    refractionOutDetected(intersection);
+                }
+            }
         }
     }
 
@@ -243,13 +313,22 @@ public class LightPath {
     public void reflectionDetected(Intersection intersection) {
         setLen(reCalculateLength());
         intersection.refreshLight(startPointX, startPointY, getEndPointX(), getEndPointY());
-        light.intersectionListener.intersectionDetected(MAXIMUM_LENGTH, intersection.reflectedDirection());
+        light.intersectionListener.intersectionDetected(
+                MAXIMUM_LENGTH, intersection.reflectedDirection(), intersection.getIntersectionType());
     }
 
-    public void refractionDetected(Intersection intersection) {
+    public void refractionInDetected(Intersection intersection) {
         setLen(reCalculateLength());
         intersection.refreshLight(startPointX, startPointY, getEndPointX(), getEndPointY());
-        light.intersectionListener.intersectionDetected(MAXIMUM_LENGTH, intersection.refractionDirection(1.51549));//TODO temp
+        light.intersectionListener.intersectionDetected(
+                MAXIMUM_LENGTH, intersection.refractionDirection(getN()), intersection.getIntersectionType());//TODO temp
+    }
+
+    public void refractionOutDetected(Intersection intersection) {
+        setLen(reCalculateLength());
+        intersection.refreshLight(startPointX, startPointY, getEndPointX(), getEndPointY());
+        light.intersectionListener.intersectionDetected(
+                MAXIMUM_LENGTH, intersection.refractionDirection(1 / getN()), intersection.getIntersectionType());//TODO temp
     }
 
     public double reCalculateLength() {
@@ -264,4 +343,14 @@ public class LightPath {
 
     }
 
+    public double getN() {
+
+        if (waveLength == RED_LIGHT_WAVE_LENGTH)
+            return 1.51549;
+        if (waveLength == GREEN_LIGHT_WAVE_LENGTH)
+            return 1.51810;
+        if (waveLength == BLUE_LIGHT_WAVE_LENGTH)
+            return 1.52428;
+        return 0;
+    }
 }

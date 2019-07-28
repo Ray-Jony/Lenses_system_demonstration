@@ -23,6 +23,7 @@ public class CircleMirror extends Mirror {
         Circle circle = new Circle(centerX,centerY,radius);
         circle.setFill(Color.TRANSPARENT);
         circle.setStroke(Color.BLACK);
+        circle.setStrokeWidth(3);
         pane.getChildren().addAll(circle);
     }
 

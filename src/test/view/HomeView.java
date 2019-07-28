@@ -16,6 +16,7 @@ public class HomeView extends View {
     private Button playBtn;
     private Button exitBtn;
     private Button demoBtn;
+    private Button lensDemoBtn;
 
     @Override
     public void onLaunch() {
@@ -25,11 +26,14 @@ public class HomeView extends View {
         demoBtn = new Button("Demo");
         demoBtn.setOnAction(e -> app.gotoView("Demo"));
 
+        lensDemoBtn = new Button("LensDemo");
+        lensDemoBtn.setOnAction(e -> app.gotoView("LensDemo"));
+
         exitBtn = new Button("Exit");
         exitBtn.setOnAction(e -> app.exit());
 
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(demoBtn, exitBtn);
+        vBox.getChildren().addAll(demoBtn, lensDemoBtn, exitBtn);
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(20);
 
