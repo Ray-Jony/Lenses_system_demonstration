@@ -3,6 +3,7 @@ package test.view;
 import Framework.LSD.app.View;
 import Framework.LSD.input.Key;
 import Framework.LSD.input.Mouse;
+import Framework.LSD.world.Lens.CircleLens;
 import Framework.LSD.world.Light.LightPath;
 import Framework.LSD.world.Mirror.CircleMirror;
 import Framework.LSD.world.Mirror.FlatMirror;
@@ -58,8 +59,8 @@ public class DemoView extends View {
         app.regMirror("LeftEdge", new FlatMirror(0, 0, 0, 600));
         app.regMirror("TopEdge", new FlatMirror(0, 0, 800, 0));
         app.regMirror("BottomEdge", new FlatMirror(0, 600, 800, 600));
-        app.regMirror("Circle", new CircleMirror(400, 300, 100));
-
+//        app.regMirror("Circle", new CircleMirror(400, 300, 100));
+        app.regLens("CircleLens", new CircleLens(400,300,100));
 
     }
 
@@ -77,7 +78,8 @@ public class DemoView extends View {
 
         angle.setText(String.valueOf(direction));
 
-//        changeDirection();
+        changeDirection();
+
 //        System.out.println(app.getWidth() + "" + app.getHeight());
 
         if (keyinput.isPressed(Key.NUM0)) {
@@ -128,6 +130,6 @@ public class DemoView extends View {
     public void changeDirection() {
         app.unregLight("RedLight");
         app.regLight("RedLight", 200, 50, direction, LightPath.RED_LIGHT_WAVE_LENGTH);
-        direction += 0.01;
+        direction += 0.0005;
     }
 }

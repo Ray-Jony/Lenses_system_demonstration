@@ -1,5 +1,6 @@
 package Framework.LSD.world;
 
+import Framework.LSD.world.Lens.CircleLens;
 import Framework.LSD.world.Light.LightPath;
 import Framework.LSD.world.Mirror.CircleMirror;
 import Framework.LSD.world.Mirror.FlatMirror;
@@ -7,6 +8,11 @@ import org.jetbrains.annotations.NotNull;
 
 
 public class Intersection {
+
+    public static final int REFLECTION = 1;
+    public static final int REFRACTION = 2;
+
+    private int intersectionType;
 
     private point A, B;
 
@@ -16,17 +22,25 @@ public class Intersection {
     private double radius;
 
     public Intersection() {
-
+        intersectionType = 0;
     }
 
     public Intersection(LightPath lightPath, FlatMirror mirror) {
         this(lightPath.getStartPointX(), lightPath.getStartPointY(), lightPath.getEndPointX(), lightPath.getEndPointY(),
                 mirror.getStartPointX(), mirror.getStartPointY(), mirror.getEndPointX(), mirror.getEndPointY());
+        this.intersectionType = REFLECTION;
     }
 
     public Intersection(LightPath lightPath, CircleMirror circleMirror) {
         this(lightPath.getStartPointX(), lightPath.getStartPointY(), lightPath.getEndPointX(), lightPath.getEndPointY(),
                 circleMirror.getCenterX(), circleMirror.getCenterY(), circleMirror.getRadius());
+        this.intersectionType = REFLECTION;
+    }
+
+    public Intersection(LightPath lightPath, CircleLens circleLens) {
+        this(lightPath.getStartPointX(), lightPath.getStartPointY(), lightPath.getEndPointX(), lightPath.getEndPointY(),
+                circleLens.getCenterX(), circleLens.getCenterY(), circleLens.getRadius());
+        this.intersectionType = REFRACTION;
     }
 
     private Intersection(double v1, double v2, double v3, double v4,
@@ -36,7 +50,6 @@ public class Intersection {
         center = new point(centerX, centerY);
         this.radius = radius;
     }
-
 
     private Intersection(double v1, double v2, double v3, double v4,
                          double v5, double v6, double v7, double v8) {
@@ -123,21 +136,11 @@ public class Intersection {
         return isInLineSegment(calculateIntersectionPoint(), A, B) && isInLineSegment(calculateIntersectionPoint(), C, D);
     }
 
-    //    public double reflectedDirection() {
-//        double angle1;
-//        double angle2;
-//
-//        if (center != null) {
-//            angle1 = Math.atan2(Dy1(), Dx1());
-//            angle2 = calculateIntersectionPoint().directionTo(center) + Math.PI / 2;
-//        } else {
-//
-//            angle1 = Math.atan2(Dy1(), Dx1());
-//            angle2 = Math.atan2(Dy2(), Dx2());
-//        }
-//        return 2 * Math.abs(angle2) - angle1;
-//    }
     public double reflectedDirection() {
+        //L is the vector of the light
+        //N is the normal vector of mirror
+        //R is the vector of the reflected light
+        // R - L = 2 * (N dot (-L)) * N
         vector2D N;
         if (center != null) {
             point point = calculateIntersectionPoint();
@@ -146,13 +149,31 @@ public class Intersection {
             N = getNormalVectorL(C, D).normalize();
         }
         vector2D L = new vector2D(getDx1(), getDy1()).normalize();
-
-        //L is the vector of the light
-        //N is the normal vector of mirror
-        //R is the vector of the reflected light
-        // R - L = 2 * (N dot (-L)) * N
         vector2D R = L.subtract(N.multiply(2 * N.dotProduct(L))).normalize();
         return R.getRadian();
+    }
+
+    public double refractionDirection(double n) {
+        //L is the vector of the light
+        //N is the normal vector of the lens surface
+        //T is the vector of the refracted light
+        //cos01 is the radian between L and N
+        //cos02 is the radian between T and N
+
+        vector2D N;
+        if (center != null) {
+            point point = calculateIntersectionPoint();
+            N = new vector2D(point.getX() - center.getX(), point.getY() - center.getY()).normalize();
+        } else {
+            N = getNormalVectorL(C, D).normalize();
+        }
+        vector2D L = new vector2D(getDx1(), getDy1()).normalize();
+        double cos01 = -L.dotProduct(N);
+        double cos02 = Math.sqrt(1 - (1 / (n * n)) * (1 - cos01 * cos01));
+
+        vector2D T = L.divide(n).add(N.multiply((cos01 / n) - cos02)).normalize();
+
+        return T.getRadian();
     }
 
 
@@ -279,6 +300,10 @@ public class Intersection {
 
     public double getRadius() {
         return radius;
+    }
+
+    public int getIntersectionType() {
+        return intersectionType;
     }
 
     public class point {

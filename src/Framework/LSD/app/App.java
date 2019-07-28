@@ -1,6 +1,7 @@
 package Framework.LSD.app;
 
 import Framework.LSD.input.MouseInput;
+import Framework.LSD.world.Lens.Lens;
 import Framework.LSD.world.Light.Light;
 import Framework.LSD.world.Light.LightPath;
 import Framework.LSD.world.Mirror.Mirror;
@@ -17,6 +18,7 @@ import javafx.stage.WindowEvent;
 import Framework.LSD.Framework;
 import Framework.LSD.input.KeyInput;
 
+import java.net.CookieHandler;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,6 +35,8 @@ public class App {
     private final HashMap<String, Light> lightMap;
 
     private final HashMap<String, Mirror> mirrorMap;
+
+    private final HashMap<String, Lens> lensMap;
 
     private final Engine engine;
 
@@ -55,13 +59,12 @@ public class App {
         currentView = new SimpleObjectProperty<>();
 
         lightMap = new HashMap<>();
-
         mirrorMap = new HashMap<>();
+        lensMap = new HashMap<>();
 
         engine = new Engine();
 
         keyinput = new KeyInput();
-
         mouseInput = new MouseInput();
 
         initFramework();
@@ -155,11 +158,20 @@ public class App {
         }
     }
 
-    public void draw(Pane pane){
+    public void drawLens(Pane pane) {
+
+        for (Lens l :
+                lensMap.values()) {
+            l.drawLens(pane);
+        }
+    }
+
+    public void draw(Pane pane) {
         pane.getChildren().clear();
         pane.getChildren().removeAll();//This probably not working
         drawLight(pane);
         drawMirror(pane);
+        drawLens(pane);
     }
 
     public void intersectionDetect() {
@@ -185,11 +197,13 @@ public class App {
         mirrorMap.remove(name);
     }
 
-    public boolean intersectionPoint() {
-        //TODO
-        return true;
+    public void regLens(String name, Lens lens) {
+        lensMap.put(name, lens);
     }
 
+    public void unregLens(String name) {
+        lensMap.remove(name);
+    }
 
     public void regView(String name, View view) {
         viewMap.put(name, view);
@@ -201,9 +215,7 @@ public class App {
         if (view != null && view == getCurrentView()) {
             currentView.set(null);
         }
-        //Should avoid delete currentView,
-        //otherwise the window will display nothing
-
+        //TODO Should avoid delete currentView, otherwise the window will display nothing
     }
 
     public View getCurrentView() {
@@ -229,12 +241,16 @@ public class App {
         return lightMap.get(name);
     }
 
-    public HashMap<String, Light> getLightMap() {
-        return lightMap;
+    public Collection<Light> getLightMapValues() {
+        return lightMap.values();
     }
 
     public Collection<Mirror> getMirrorMapValues() {
         return mirrorMap.values();
+    }
+
+    public Collection<Lens> getLensMapValues() {
+        return lensMap.values();
     }
 
     public void launch() {

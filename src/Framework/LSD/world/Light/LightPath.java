@@ -1,6 +1,8 @@
 package Framework.LSD.world.Light;
 
 import Framework.LSD.world.Intersection;
+import Framework.LSD.world.Lens.CircleLens;
+import Framework.LSD.world.Lens.Lens;
 import Framework.LSD.world.Mirror.CircleMirror;
 import Framework.LSD.world.Mirror.FlatMirror;
 import Framework.LSD.world.Mirror.Mirror;
@@ -19,7 +21,7 @@ public class LightPath {
 
     private boolean detected;
 
-    private Intersection intersection;
+    private Intersection.point intersectionPoint;
 
     private int lightPathID = 0;
 
@@ -87,6 +89,14 @@ public class LightPath {
         this.lightPathID = lightPathID;
     }
 
+    public Intersection.point getIntersectionPoint() {
+        return intersectionPoint;
+    }
+
+    public void setIntersectionPoint(Intersection.point intersectionPoint) {
+        this.intersectionPoint = intersectionPoint;
+    }
+
     void setLen(double len) {
         this.len = len;
     }
@@ -130,6 +140,14 @@ public class LightPath {
         if (mirror.getClass().equals(CircleMirror.class)) {
             light.CircleMirrorIntersectionList.add(new Intersection(this, (CircleMirror) mirror));
         }
+        //TODO add another type mirror
+    }
+
+    public void addNewIntersectionDetection(Lens lens) {
+
+        if (lens.getClass().equals(CircleLens.class))
+            light.CircleLensIntersectionList.add(new Intersection(this, (CircleLens) lens));
+        //TODO add another type lens
 
     }
 
@@ -137,14 +155,23 @@ public class LightPath {
     public void intersectionDetect() {
 
         ArrayList<Mirror> mirrorsTemp = new ArrayList<>(app.getMirrorMapValues());
+        ArrayList<Lens> lensesTemp = new ArrayList<>(app.getLensMapValues());
 
         for (int i = 0; i < mirrorsTemp.size(); i++) {
             addNewIntersectionDetection(mirrorsTemp.get(i));
         }
 
+        for (int i = 0; i < lensesTemp.size(); i++) {
+            addNewIntersectionDetection(lensesTemp.get(i));
+        }
+
+        //Clone different list of Intersections
         ArrayList<Intersection> FlatMirrorTemp = new ArrayList<>(light.FlatMirrorIntersectionList);
         ArrayList<Intersection> CircleMirrorTemp = new ArrayList<>(light.CircleMirrorIntersectionList);
+        ArrayList<Intersection> CircleLensTemp = new ArrayList<>(light.CircleLensIntersectionList);
+
         HashMap<Integer, Intersection> IntersectionConfirmedTemp = new HashMap<>();
+
         int i = 0;
 
         for (Intersection intersection :
@@ -163,15 +190,26 @@ public class LightPath {
             }
         }
 
+        for (Intersection intersection :
+                CircleLensTemp) {
+            if (intersection.isInCircle()) {
+                IntersectionConfirmedTemp.put(i, intersection);
+                i++;
+            }
+        }
+
+
+        Intersection.point previousIntersectionPoint;
+
         int nearestEventIndex = -1;
         double nearestDistance = Double.MAX_VALUE;
+
         for (int index :
                 IntersectionConfirmedTemp.keySet()) {
             Intersection.point currentPoint = IntersectionConfirmedTemp.get(index).calculateIntersectionPoint();
             if (!isInitialLightPath()) {
-                Intersection previousIntersection = light.getLightPathMap().get(getLightPathID() - 1).intersection;
-                //TODO Optimization needed, Store the point information only
-                if (isPreviousIntersectionPoint(currentPoint, previousIntersection.calculateIntersectionPoint())) {
+                previousIntersectionPoint = light.getLightPathMap().get(getLightPathID() - 1).getIntersectionPoint();
+                if (isPreviousIntersectionPoint(currentPoint, previousIntersectionPoint)) {
                     continue;
                 }
             }
@@ -183,8 +221,12 @@ public class LightPath {
         }
 
         if (nearestEventIndex != -1) {
-            this.intersection = IntersectionConfirmedTemp.get(nearestEventIndex);
-            reflectionDetected(this.intersection);
+            Intersection intersection = IntersectionConfirmedTemp.get(nearestEventIndex);
+            this.intersectionPoint = intersection.calculateIntersectionPoint();
+            if (intersection.getIntersectionType() == Intersection.REFLECTION)
+                reflectionDetected(intersection);
+            if (intersection.getIntersectionType() == Intersection.REFRACTION)
+                refractionDetected(intersection);
         }
     }
 
@@ -199,18 +241,24 @@ public class LightPath {
     }
 
     public void reflectionDetected(Intersection intersection) {
-        setLen(reCalculateLength(intersection));
+        setLen(reCalculateLength());
         intersection.refreshLight(startPointX, startPointY, getEndPointX(), getEndPointY());
         light.intersectionListener.intersectionDetected(MAXIMUM_LENGTH, intersection.reflectedDirection());
     }
 
-    public double reCalculateLength(@NotNull Intersection intersection) {
+    public void refractionDetected(Intersection intersection) {
+        setLen(reCalculateLength());
+        intersection.refreshLight(startPointX, startPointY, getEndPointX(), getEndPointY());
+        light.intersectionListener.intersectionDetected(MAXIMUM_LENGTH, intersection.refractionDirection(1.51549));//TODO temp
+    }
 
-        Intersection.point point = intersection.calculateIntersectionPoint();
-        light.getIntersectionPointMap().put(getLightPathID(), point);
+    public double reCalculateLength() {
 
-        double x = point.getX();
-        double y = point.getY();
+        //an intersection point map
+        light.getIntersectionPointMap().put(getLightPathID(), this.intersectionPoint);
+
+        double x = this.intersectionPoint.getX();
+        double y = this.intersectionPoint.getY();
 
         return Math.sqrt(Math.pow(Math.abs(startPointX - x), 2) + Math.pow(Math.abs(startPointY - y), 2));
 

@@ -9,6 +9,7 @@ public class Light {
 
     ArrayList<Intersection> CircleMirrorIntersectionList = new ArrayList<>();
     ArrayList<Intersection> FlatMirrorIntersectionList = new ArrayList<>();
+    ArrayList<Intersection> CircleLensIntersectionList = new ArrayList<>();
 
     static final int MAXIMUM_LIGHT_PATH_NUMBER = 5;
 
