@@ -2,6 +2,7 @@ package Framework.LSD.world.Light;
 
 import Framework.LSD.world.Intersection;
 import Framework.LSD.world.Lens.CircleLensSurface;
+import Framework.LSD.world.Lens.ConcaveLens;
 import Framework.LSD.world.Lens.ConvexLens;
 import Framework.LSD.world.Lens.Lens;
 import Framework.LSD.world.Mirror.CircleMirror;
@@ -171,9 +172,10 @@ public class LightPath {
             light.LeftCircleLensSurfaceIntersectionList.add(
                     new Intersection(
                             CircleLensSurface.LEFT,
+                            Lens.CONVEX_LENS,
                             this,
-                            ((ConvexLens) lens).getLeftSurface(),
-                            ((ConvexLens) lens).getHeight()
+                            lens.getLeftSurface(),
+                            lens.getHeight()
                     )
             );
 
@@ -184,15 +186,48 @@ public class LightPath {
             light.RightCircleLensSurfaceIntersectionList.add(
                     new Intersection(
                             CircleLensSurface.RIGHT,
+                            Lens.CONVEX_LENS,
                             this,
-                            ((ConvexLens) lens).getRightSurface(),
-                            ((ConvexLens) lens).getHeight()
+                            lens.getRightSurface(),
+                            lens.getHeight()
                     )
             );
 
             light.RightCircleLensSurfaceIntersectionList
                     .get(light.RightCircleLensSurfaceIntersectionList.size() - 1)
                     .setSubIntersectionType(Intersection.REFRACTION_OUT);
+        }
+
+        if (lens.getClass().equals(ConcaveLens.class)) {
+
+            light.LeftCircleLensSurfaceIntersectionList.add(
+                    new Intersection(
+                            CircleLensSurface.LEFT,
+                            Lens.CONCAVE_LENS,
+                            this,
+                            lens.getLeftSurface(),
+                            lens.getHeight()
+                    )
+            );
+
+            light.LeftCircleLensSurfaceIntersectionList
+                    .get(light.LeftCircleLensSurfaceIntersectionList.size() - 1)
+                    .setSubIntersectionType(Intersection.REFRACTION_IN);
+
+            light.RightCircleLensSurfaceIntersectionList.add(
+                    new Intersection(
+                            CircleLensSurface.RIGHT,
+                            Lens.CONCAVE_LENS,
+                            this,
+                            lens.getRightSurface(),
+                            lens.getHeight()
+                    )
+            );
+
+            light.RightCircleLensSurfaceIntersectionList
+                    .get(light.RightCircleLensSurfaceIntersectionList.size() - 1)
+                    .setSubIntersectionType(Intersection.REFRACTION_OUT);
+
         }
         //TODO add another type lens
 

@@ -4,58 +4,38 @@ import javafx.scene.layout.Pane;
 
 public class ConvexLens extends Lens {
 
-    CircleLensSurface leftSurface;
-    CircleLensSurface rightSurface;
-
-    private double height;
-
-    private double leftRadius;
-    private double rightRadius;
-
 
     /**
-     * height/2 should << leftSurfaceRadius and rightRadius
+     * @param centerX
+     * @param centerY
+     * @param height      is the height of the lens, height/2 should < leftRadius and rightRadius
+     * @param leftRadius
+     * @param rightRadius
      */
-    public ConvexLens(double centerX, double centerY, double leftSurfaceRadius, double rightSurfaceRadius, double height) {
+    public ConvexLens(double centerX, double centerY, double leftRadius, double rightRadius, double height) {
+        super(centerX, centerY, height, leftRadius, rightRadius);
 
-        leftSurface = new CircleLensSurface(
-                centerX + Math.sqrt(leftSurfaceRadius * leftSurfaceRadius - (height / 2) * (height / 2)),
-                centerY, leftSurfaceRadius);
-        rightSurface = new CircleLensSurface(
-                centerX - Math.sqrt(rightSurfaceRadius * rightSurfaceRadius - (height / 2) * (height / 2)),
-                centerY, rightSurfaceRadius);
+        super.leftSurface = new CircleLensSurface(
+                centerX + Math.sqrt(leftRadius * leftRadius - (height / 2) * (height / 2)),
+                centerY,
+                leftRadius
+        );
 
-        this.height = height;
-        this.leftRadius = leftSurfaceRadius;
-        this.rightRadius = rightSurfaceRadius;
-
+        super.rightSurface = new CircleLensSurface(
+                centerX - Math.sqrt(rightRadius * rightRadius - (height / 2) * (height / 2)),
+                centerY,
+                rightRadius
+        );
     }
 
-    public CircleLensSurface getLeftSurface() {
-        return leftSurface;
-    }
 
-    public CircleLensSurface getRightSurface() {
-        return rightSurface;
-    }
 
-    public double getHeight() {
-        return height;
-    }
-
-    public double getLeftRadius() {
-        return leftRadius;
-    }
-
-    public double getRightRadius() {
-        return rightRadius;
-    }
 
     @Override
     public void drawLens(Pane pane) {
-        double leftDegree = Math.toDegrees(Math.asin((height / 2) / leftRadius));
+        double leftDegree = Math.toDegrees(Math.asin((getHeight() / 2) / getLeftRadius()));
         leftSurface.drawLens(pane, leftDegree + 180, -2 * leftDegree);
-        double rightDegree = Math.toDegrees(Math.asin((height / 2) / rightRadius));
+        double rightDegree = Math.toDegrees(Math.asin((getHeight() / 2) / getRightRadius()));
         rightSurface.drawLens(pane, rightDegree, -2 * rightDegree);
     }
 

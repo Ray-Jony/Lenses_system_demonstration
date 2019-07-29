@@ -14,7 +14,7 @@ public class Light {
     ArrayList<Intersection> RightCircleLensSurfaceIntersectionList = new ArrayList<>();
 //    ArrayList<Intersection> CircleLensIntersectionList = new ArrayList<>();
 
-    static final int MAXIMUM_LIGHT_PATH_NUMBER = 5;
+    static final int MAXIMUM_LIGHT_PATH_NUMBER = 10;
 
     int lightPathId = 0;
 

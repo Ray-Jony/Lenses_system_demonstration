@@ -1,11 +1,10 @@
 package Framework.LSD.world;
 
 import Framework.LSD.world.Lens.CircleLensSurface;
-import Framework.LSD.world.Lens.ConvexLens;
+import Framework.LSD.world.Lens.Lens;
 import Framework.LSD.world.Light.LightPath;
 import Framework.LSD.world.Mirror.CircleMirror;
 import Framework.LSD.world.Mirror.FlatMirror;
-import org.jetbrains.annotations.NotNull;
 
 
 public class Intersection {
@@ -26,6 +25,7 @@ public class Intersection {
     private point center;
     private double radius;
     private double height;
+    private int lensType;
     private int LorR_ID;
     private point currentPoint;
     private point anotherPoint; //point that been calculated to be far away from start point
@@ -46,12 +46,13 @@ public class Intersection {
         this.intersectionType = REFLECTION;
     }
 
-    public Intersection(int LorR_ID, LightPath lightPath, CircleLensSurface circleLensSurface, double height) {
+    public Intersection(int LorR_ID, int lensType, LightPath lightPath, CircleLensSurface circleLensSurface, double height) {
         this(lightPath.getStartPointX(), lightPath.getStartPointY(), lightPath.getEndPointX(), lightPath.getEndPointY(),
                 circleLensSurface.getCenterX(), circleLensSurface.getCenterY(), circleLensSurface.getRadius());
         this.intersectionType = REFRACTION;
         this.height = height;
         this.LorR_ID = LorR_ID;
+        this.lensType = lensType;
     }
 
     private Intersection(double v1, double v2, double v3, double v4,
@@ -202,7 +203,10 @@ public class Intersection {
         } else {
             N = getNormalVectorL(C, D).normalize();
         }
-        if (subIntersectionType == REFRACTION_OUT) {
+        if (lensType == Lens.CONVEX_LENS && subIntersectionType == REFRACTION_OUT) {
+            N.multiply(-1);
+        }
+        if (lensType == Lens.CONCAVE_LENS && subIntersectionType == REFRACTION_IN){
             N.multiply(-1);
         }
         vector2D L = new vector2D(getDx1(), getDy1()).normalize();
@@ -245,16 +249,31 @@ public class Intersection {
         if (!isIntersectsCircle()) {
             return false;
         }
+
         point point = calculateIntersectionPoint();
         if (height / 2 < Math.abs(point.getY() - center.getY()))
             return false;
-        if (LorR_ID == CircleLensSurface.LEFT) {
-            if (point.getX() > center.getX())
-                return false;
+
+        if (lensType == Lens.CONVEX_LENS) {
+            if (LorR_ID == CircleLensSurface.LEFT) {
+                if (point.getX() > center.getX())
+                    return false;
+            }
+            if (LorR_ID == CircleLensSurface.RIGHT) {
+                if (point.getX() < center.getX())
+                    return false;
+            }
         }
-        if (LorR_ID == CircleLensSurface.RIGHT) {
-            if (point.getX() < center.getX())
-                return false;
+
+        if (lensType == Lens.CONCAVE_LENS) {
+            if (LorR_ID == CircleLensSurface.LEFT) {
+                if (point.getX() < center.getX())
+                    return false;
+            }
+            if (LorR_ID == CircleLensSurface.RIGHT) {
+                if (point.getX() > center.getX())
+                    return false;
+            }
         }
         return true;
     }
@@ -400,11 +419,11 @@ public class Intersection {
         }
 
 
-        public double distanceTo(@NotNull point p) {
+        public double distanceTo(point p) {
             return Math.sqrt(Math.pow(this.getX() - p.getX(), 2) + Math.pow(this.getY() - p.getY(), 2));
         }
 
-        public double directionTo(@NotNull point p) {
+        public double directionTo(point p) {
             return Math.atan2(this.getY() - p.getY(), p.getX() - this.getX());
         }
 

@@ -2,12 +2,12 @@ package test.view;
 
 import static Framework.LSD.Framework.*;
 
-import Framework.LSD.input.Mouse;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import Framework.LSD.app.View;
-import Framework.LSD.input.Key;
 
 
 public class HomeView extends View {
@@ -15,29 +15,41 @@ public class HomeView extends View {
 
     private Button playBtn;
     private Button exitBtn;
-    private Button demoBtn;
-    private Button lensDemoBtn;
+    private Button reflectionDemoBtn;
+    private Button SphericalAberrationDemoBtn;
+    private Button chromaticAberrationDemoBtn;
+
+    private Pane listPane;
 
     @Override
     public void onLaunch() {
+        listPane = new StackPane();
+
         playBtn = new Button("Play");
         playBtn.setOnAction(e -> app.gotoView("Play"));
 
-        demoBtn = new Button("Demo");
-        demoBtn.setOnAction(e -> app.gotoView("Demo"));
+        reflectionDemoBtn = new Button("Reflection Demo");
+        reflectionDemoBtn.setOnAction(e -> app.gotoView("Demo"));
 
-        lensDemoBtn = new Button("LensDemo");
-        lensDemoBtn.setOnAction(e -> app.gotoView("LensDemo"));
+        SphericalAberrationDemoBtn = new Button("SphericalAberrationDemo");
+        SphericalAberrationDemoBtn.setOnAction(e -> app.gotoView("LensDemo"));
+
+        chromaticAberrationDemoBtn = new Button("Chromatic Aberration Demo");
+        chromaticAberrationDemoBtn.setOnAction(e -> app.gotoView("ChromaticAberrationDemo"));
 
         exitBtn = new Button("Exit");
         exitBtn.setOnAction(e -> app.exit());
 
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(demoBtn, lensDemoBtn, exitBtn);
+        vBox.getChildren().addAll(reflectionDemoBtn, SphericalAberrationDemoBtn, chromaticAberrationDemoBtn, exitBtn);
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(20);
 
-        getPane().getChildren().add(vBox);
+        listPane.getChildren().addAll(vBox);
+        listPane.setLayoutX(400);
+        listPane.setLayoutY(300);
+
+        getPane().getChildren().add(listPane);
     }
 
     @Override

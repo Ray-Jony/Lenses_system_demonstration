@@ -3,7 +3,6 @@ package Framework.LSD.world.Lens;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
-import javafx.scene.shape.Circle;
 
 public class CircleLensSurface {
 

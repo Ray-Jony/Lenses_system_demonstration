@@ -110,10 +110,10 @@ public class DemoView extends View {
         app.regLight("RedLight", 200, 50, 0, LightPath.RED_LIGHT_WAVE_LENGTH);
 
         app.regMirror("RightEdge", new FlatMirror(400, 0, 800, 600));
-        app.regMirror("LeftEdge", new FlatMirror(0, 0, 0, 600));
+        app.regMirror("LeftEdge", new FlatMirror(100, 0, 0, 600));
         app.regMirror("TopEdge", new FlatMirror(0, 0, 800, 0));
         app.regMirror("BottomEdge", new FlatMirror(0, 600, 800, 600));
-        app.regMirror("Circle", new CircleMirror(400, 300, 100));
+//        app.regMirror("Circle", new CircleMirror(400, 300, 100));
     }
 
     @Override
