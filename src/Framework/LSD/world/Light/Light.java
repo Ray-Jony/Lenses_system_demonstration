@@ -2,7 +2,6 @@ package Framework.LSD.world.Light;
 
 import Framework.LSD.world.Intersection;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Arc;
 
 import java.util.*;
 
@@ -12,18 +11,16 @@ public class Light {
     ArrayList<Intersection> FlatMirrorIntersectionList = new ArrayList<>();
     ArrayList<Intersection> LeftCircleLensSurfaceIntersectionList = new ArrayList<>();
     ArrayList<Intersection> RightCircleLensSurfaceIntersectionList = new ArrayList<>();
-//    ArrayList<Intersection> CircleLensIntersectionList = new ArrayList<>();
 
-    static final int MAXIMUM_LIGHT_PATH_NUMBER = 10;
+    private static final int MAXIMUM_LIGHT_PATH_NUMBER = 10;
 
-    int lightPathId = 0;
+    private int lightPathId = 0;
 
     private HashMap<Integer, LightPath> lightPathMap = new HashMap<>();
 
     private HashMap<Integer, Intersection.point> intersectionPointMap = new HashMap<>();
 
-    IntersectionListener intersectionListener = (len, direction, intersectionType) ->
-            addLightPath(len, direction, intersectionType);
+    IntersectionListener intersectionListener = this::addLightPath;
 
 
     public Light(LightPath lightPath) {
@@ -33,7 +30,7 @@ public class Light {
         lightPathId++;
     }
 
-    public void addLightPath(double len, double direction, int intersectionType) {
+    private void addLightPath(double len, double direction, int intersectionType) {
 
         if (lightPathMap.values().size() > MAXIMUM_LIGHT_PATH_NUMBER) {
             return;
@@ -81,11 +78,11 @@ public class Light {
         }
     }
 
-    public HashMap<Integer, LightPath> getLightPathMap() {
+    HashMap<Integer, LightPath> getLightPathMap() {
         return lightPathMap;
     }
 
-    public HashMap<Integer, Intersection.point> getIntersectionPointMap() {
+    HashMap<Integer, Intersection.point> getIntersectionPointMap() {
         return intersectionPointMap;
     }
 
