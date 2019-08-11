@@ -4,16 +4,15 @@ import Framework.LSD.app.View;
 import Framework.LSD.input.Key;
 import Framework.LSD.input.Mouse;
 import Framework.LSD.world.Light.LightPath;
-import Framework.LSD.world.Mirror.CircleMirror;
 import Framework.LSD.world.Mirror.FlatMirror;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
-import static Framework.LSD.Framework.*;
+import static Framework.Framework.*;
 
-public class DemoView extends View {
+public class ReflectionDemo extends View {
 
     private double direction = 0;
     private double speed = 0;

@@ -11,7 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 
-import static Framework.LSD.Framework.app;
+import static Framework.Framework.app;
 
 public class ChromaticAberrationDemo extends View {
     private Pane demonstratePane;

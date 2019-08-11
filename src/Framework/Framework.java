@@ -1,4 +1,4 @@
-package Framework.LSD;
+package Framework;
 
 import Framework.LSD.app.App;
 import Framework.LSD.app.Engine;

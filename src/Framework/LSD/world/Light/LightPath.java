@@ -15,7 +15,7 @@ import javafx.scene.shape.Line;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static Framework.LSD.Framework.*;
+import static Framework.Framework.*;
 
 public class LightPath {
 

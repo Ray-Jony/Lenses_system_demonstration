@@ -1,6 +1,6 @@
 package test.view;
 
-import static Framework.LSD.Framework.*;
+import static Framework.Framework.*;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -18,6 +18,7 @@ public class HomeView extends View {
     private Button reflectionDemoBtn;
     private Button SphericalAberrationDemoBtn;
     private Button chromaticAberrationDemoBtn;
+    private Button controllerTestViewBtn;
 
     private Pane listPane;
 
@@ -37,11 +38,18 @@ public class HomeView extends View {
         chromaticAberrationDemoBtn = new Button("Chromatic Aberration Demo");
         chromaticAberrationDemoBtn.setOnAction(e -> app.gotoView("ChromaticAberrationDemo"));
 
+        controllerTestViewBtn = new Button("ControllerTest");
+        controllerTestViewBtn.setOnAction(e -> app.gotoView("controllerTestView"));
+
         exitBtn = new Button("Exit");
         exitBtn.setOnAction(e -> app.exit());
 
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(reflectionDemoBtn, SphericalAberrationDemoBtn, chromaticAberrationDemoBtn, exitBtn);
+        vBox.getChildren().addAll(reflectionDemoBtn,
+                SphericalAberrationDemoBtn,
+                chromaticAberrationDemoBtn,
+                controllerTestViewBtn,
+                exitBtn);
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(20);
 

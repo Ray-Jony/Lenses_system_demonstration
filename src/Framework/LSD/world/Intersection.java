@@ -27,8 +27,7 @@ public class Intersection {
     private double height;
     private int lensType;
     private int LorR_ID;
-    private point currentPoint;
-    private point anotherPoint; //point that been calculated to be far away from start point
+    private double refractiveIndex;
 
     public Intersection() {
         intersectionType = 0;
@@ -154,7 +153,6 @@ public class Intersection {
             double x = C.x + (D.x - C.x) * getT2() / getT1();
             double y = C.y + (D.y - C.y) * getT2() / getT1();
             point point = new point(x, y);
-            currentPoint = point;
             return point;
         }
     }
@@ -206,7 +204,7 @@ public class Intersection {
         if (lensType == Lens.CONVEX_LENS && subIntersectionType == REFRACTION_OUT) {
             N.multiply(-1);
         }
-        if (lensType == Lens.CONCAVE_LENS && subIntersectionType == REFRACTION_IN){
+        if (lensType == Lens.CONCAVE_LENS && subIntersectionType == REFRACTION_IN) {
             N.multiply(-1);
         }
         vector2D L = new vector2D(getDx1(), getDy1()).normalize();
@@ -399,14 +397,6 @@ public class Intersection {
 
     public void setSubIntersectionType(int subIntersectionType) {
         this.subIntersectionType = subIntersectionType;
-    }
-
-    public point getAnotherPoint() {
-        return anotherPoint;
-    }
-
-    public point getCurrentPoint() {
-        return currentPoint;
     }
 
     public class point {

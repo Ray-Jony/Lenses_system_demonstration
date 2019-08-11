@@ -11,15 +11,12 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import Framework.LSD.Framework;
+import Framework.Framework;
 import Framework.LSD.input.KeyInput;
 
-import java.net.CookieHandler;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -332,9 +329,6 @@ public class App {
         root.setMinWidth(width);
     }
 
-    public DoubleProperty widthProperty() {
-        return root.minWidthProperty();
-    }
 
     public double getHeight() {
         return root.getHeight();
@@ -348,7 +342,19 @@ public class App {
         root.setMinHeight(height);
     }
 
-    public DoubleProperty heightProperty() {
+    public DoubleProperty minWidthProperty() {
+        return root.minWidthProperty();
+    }
+
+    public DoubleProperty minHeightProperty() {
         return root.minHeightProperty();
+    }
+
+    public ReadOnlyDoubleProperty widthProperty() {
+        return root.widthProperty();
+    }
+
+    public ReadOnlyDoubleProperty heightProperty() {
+        return root.heightProperty();
     }
 }

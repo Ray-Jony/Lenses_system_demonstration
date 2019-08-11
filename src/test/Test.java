@@ -1,12 +1,9 @@
 package test;
 
-import static Framework.LSD.Framework.*;
+import static Framework.Framework.*;
 
 import Framework.LSD.app.Initial;
-import test.view.ChromaticAberrationDemo;
-import test.view.HomeView;
-import test.view.SphericalAberrationDemo;
-import test.view.DemoView;
+import test.view.*;
 
 public class Test extends Initial {
 
@@ -22,10 +19,11 @@ public class Test extends Initial {
 
         app.regView("Home", new HomeView());
 //        app.regView("Play", new PlayView());
-        app.regView("Demo", new DemoView());
+        app.regView("Demo", new ReflectionDemo());
         app.regView("LensDemo", new SphericalAberrationDemo());
         app.regView("ChromaticAberrationDemo", new ChromaticAberrationDemo());
-        app.gotoView("Home");
+        app.regView("controllerTestView", new controllerTestView());
+        app.gotoView("controllerTestView");
 
         System.out.println(app.getHeight());
     }

@@ -1,15 +1,9 @@
 package test.view;
 
-import static Framework.LSD.Framework.*;
+import static Framework.Framework.*;
 
-import Framework.LSD.input.Mouse;
-import Framework.LSD.input.MouseInput;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import Framework.LSD.app.View;
 import javafx.scene.text.Text;
 

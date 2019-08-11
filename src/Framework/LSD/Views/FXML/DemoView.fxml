@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="demoPane" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../CSS/DemoView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Framework.LSD.Views.Controller.DemoViewController">
+    <top>
+        <HBox fx:id="TopMenu" fillHeight="false" prefHeight="87.0" prefWidth="1280.0" spacing="10.0">
+            <children>
+                <Label fx:id="DemoName" minHeight="-Infinity" minWidth="-Infinity" text="DemoName">
+                    <font>
+                        <Font name="Roboto Black" size="46.0" />
+                    </font>
+                </Label>
+                <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="81.0" prefWidth="1318.0" HBox.hgrow="ALWAYS" />
+                <VBox prefHeight="105.0" prefWidth="204.0" HBox.hgrow="NEVER">
+                    <children>
+                        <JFXComboBox fx:id="JFxLensName" minHeight="-Infinity" minWidth="-Infinity" prefHeight="47.0" prefWidth="204.0" />
+                        <Label fx:id="LensCode" text="518590">
+                            <font>
+                                <Font name="Roboto Light" size="28.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+                <Label fx:id="nD" minWidth="-Infinity" text="nD = 1.518 " HBox.hgrow="NEVER">
+                    <HBox.margin>
+                        <Insets top="30.0" />
+                    </HBox.margin>
+                    <font>
+                        <Font name="Roboto Medium" size="25.0" />
+                    </font>
+                </Label>
+                <VBox minWidth="-Infinity" prefHeight="81.0" prefWidth="504.0" HBox.hgrow="NEVER">
+                    <children>
+                        <HBox prefHeight="53.0" prefWidth="948.0" VBox.vgrow="ALWAYS">
+                            <padding>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </padding>
+                            <children>
+                                <Label fx:id="nF" text="nF = 1.52428 ">
+                                    <font>
+                                        <Font name="Roboto Medium" size="25.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="nC" text="nC = 1.51549 ">
+                                    <font>
+                                        <Font name="Roboto Medium" size="25.0" />
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets left="10.0" right="10.0" />
+                                    </HBox.margin>
+                                </Label>
+                                <Label fx:id="Vd" text="Vd = 1.51549 ">
+                                    <font>
+                                        <Font name="Roboto Medium" size="25.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="10.0" prefHeight="53.0" prefWidth="948.0" VBox.vgrow="ALWAYS">
+                            <children>
+                                <Label fx:id="nF2" text="nF' = 1.52478 ">
+                                    <font>
+                                        <Font name="Roboto Medium" size="25.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="nC2" text="nC' = 1.51592">
+                                    <font>
+                                        <Font name="Roboto Medium" size="25.0" />
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets left="10.0" right="10.0" />
+                                    </HBox.margin>
+                                </Label>
+                                <Label fx:id="Vd2" text="V'd = 1.51592">
+                                    <font>
+                                        <Font name="Roboto Medium" size="25.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                            <padding>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </padding>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+        </HBox>
+    </top>
+    <bottom>
+        <HBox fx:id="BottomMenu" prefHeight="71.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXComboBox fx:id="JFxLightSelector" minWidth="-Infinity" prefHeight="25.0" prefWidth="235.0" HBox.hgrow="NEVER">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </JFXComboBox>
+            <VBox minWidth="-Infinity" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+               <children>
+                  <JFXRadioButton fx:id="JFx_Red" text="Red" />
+                  <JFXRadioButton fx:id="JFx_Green" text="Green" />
+                  <JFXRadioButton fx:id="JFx_Blue" text="Blue" />
+               </children>
+            </VBox>
+            <Pane prefHeight="71.0" prefWidth="1232.0" HBox.hgrow="ALWAYS" />
+            <Label minWidth="-Infinity" text="WaveLength:" HBox.hgrow="NEVER">
+               <font>
+                  <Font name="Roboto" size="20.0" />
+               </font>
+               <HBox.margin>
+                  <Insets bottom="15.0" left="15.0" right="5.0" top="15.0" />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="waveLength" layoutX="385.0" layoutY="35.0" minWidth="-Infinity" text="102nm">
+               <font>
+                  <Font name="Roboto" size="20.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="15.0" />
+               </HBox.margin>
+            </Label>
+            <Pane layoutX="375.0" layoutY="20.0" prefHeight="71.0" prefWidth="1232.0" />
+            <Label layoutX="444.0" layoutY="20.0" minWidth="-Infinity" text="Frequency:" HBox.hgrow="NEVER">
+               <font>
+                  <Font name="Roboto" size="20.0" />
+               </font>
+               <HBox.margin>
+                  <Insets bottom="15.0" left="15.0" right="5.0" top="15.0" />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="Frequency" layoutX="599.0" layoutY="20.0" minWidth="-Infinity" text="3000000Hz">
+               <font>
+                  <Font name="Roboto" size="20.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="15.0" />
+               </HBox.margin>
+            </Label>
+            <Pane layoutX="686.0" layoutY="20.0" prefHeight="71.0" prefWidth="1232.0" />
+            <JFXButton fx:id="addNewLight" buttonType="RAISED" minWidth="-Infinity" ripplerFill="BLACK" text="addNewLight">
+               <HBox.margin>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </HBox.margin>
+               <effect>
+                  <Shadow height="41.51" radius="26.987499999999997" width="68.44" />
+               </effect>
+            </JFXButton>
+            <JFXButton fx:id="deleteThisLight" buttonType="RAISED" layoutX="794.0" layoutY="20.0" minWidth="-Infinity" ripplerFill="BLACK" text="DeleteThisLight">
+               <HBox.margin>
+                  <Insets bottom="15.0" right="15.0" top="15.0" />
+               </HBox.margin>
+            </JFXButton>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding></HBox>
+    </bottom>
+</BorderPane>

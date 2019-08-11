@@ -13,7 +13,6 @@ public class CircleLensSurface {
     private double centerY;
     private double radius;
 
-    private LensMaterial lensMaterial;
     //refractive indices of the material at the wavelengths of the Fraunhofer
     // D-, F- and C- spectral lines
     private double nD; //589.3nm GREEN
