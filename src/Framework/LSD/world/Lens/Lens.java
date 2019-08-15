@@ -17,18 +17,21 @@ public abstract class Lens {
     private double leftRadius;
     private double rightRadius;
 
+    private LensInfo lensInfo;
+
     private double nD; //589.3nm GREEN
     private double nF; //486.1nm BLUE
     private double nC; //656.3nm RED
 
     private double Vd; //Abbe Number Vd = (nD - 1) / (nF - nC)
 
-    public Lens(double centerX, double centerY, double height, double leftRadius, double rightRadius) {
+    public Lens(double centerX, double centerY, double height, double leftRadius, double rightRadius, LensInfo lensInfo) {
         this.centerX = centerX;
         this.centerY = centerY;
         this.height = height;
         this.leftRadius = leftRadius;
         this.rightRadius = rightRadius;
+        this.lensInfo = lensInfo;
     }
 
 

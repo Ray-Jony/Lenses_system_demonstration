@@ -38,8 +38,8 @@ public class HomeView extends View {
         chromaticAberrationDemoBtn = new Button("Chromatic Aberration Demo");
         chromaticAberrationDemoBtn.setOnAction(e -> app.gotoView("ChromaticAberrationDemo"));
 
-        controllerTestViewBtn = new Button("ControllerTest");
-        controllerTestViewBtn.setOnAction(e -> app.gotoView("controllerTestView"));
+        controllerTestViewBtn = new Button("ZoomingDemo");
+        controllerTestViewBtn.setOnAction(e -> app.gotoView("ZoomingDemo"));
 
         exitBtn = new Button("Exit");
         exitBtn.setOnAction(e -> app.exit());
@@ -62,7 +62,7 @@ public class HomeView extends View {
 
     @Override
     public void onEnter() {
-        System.out.println(app.getMinWidth() + " " + app.getMinHeight());
+//        System.out.println(app.getMinWidth() + " " + app.getMinHeight());
     }
 
     @Override

@@ -3,6 +3,7 @@ package Framework.LSD.app;
 import Framework.LSD.input.MouseInput;
 import Framework.LSD.world.Lens.Lens;
 import Framework.LSD.world.Light.Light;
+import Framework.LSD.world.Light.LightInfo;
 import Framework.LSD.world.Light.LightPath;
 import Framework.LSD.world.Mirror.Mirror;
 import javafx.application.Platform;
@@ -139,6 +140,11 @@ public class App {
         });
     }
 
+    public void highlightLight(Pane pane, String LightName) {
+        if (lightMap.containsKey(LightName))
+            lightMap.get(LightName).highlightLight(pane);
+    }
+
     public void drawLight(Pane pane) {
 
         for (Light l :
@@ -184,8 +190,8 @@ public class App {
         }
     }
 
-    public void regLight(String name, double startPointX, double startPointY, double direction, double waveLength) {
-        lightMap.put(name, new Light(new LightPath(startPointX, startPointY, direction, waveLength)));
+    public void regLight(String name, double startPointX, double startPointY, double direction, LightInfo lightInfo) {
+        lightMap.put(name, new Light(new LightPath(startPointX, startPointY, direction, lightInfo)));
     }
 
     public void unregLight(String name) {

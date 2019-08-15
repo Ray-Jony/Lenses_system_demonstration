@@ -21,6 +21,8 @@ public class LightPath {
 
     Light light;
 
+    private Line lightDraw;
+
     private boolean detected;
 
 //    private boolean inMedium;
@@ -41,18 +43,18 @@ public class LightPath {
 
     private double direction;
 
-    private double waveLength;
+    private LightInfo lightInfo;
 
-    public LightPath(double startPointX, double startPointY, double direction, double waveLength) {
-        this(startPointX, startPointY, MAXIMUM_LENGTH, direction, waveLength);
+    public LightPath(double startPointX, double startPointY, double direction, LightInfo lightInfo) {
+        this(startPointX, startPointY, MAXIMUM_LENGTH, direction, lightInfo);
     }
 
-    LightPath(double startPointX, double startPointY, double len, double direction, double waveLength) {
+    LightPath(double startPointX, double startPointY, double len, double direction, LightInfo lightInfo) {
         this.startPointX = startPointX;
         this.startPointY = startPointY;
         this.len = len;
         this.direction = direction;
-        this.waveLength = waveLength;
+        this.lightInfo = lightInfo;
         this.detected = false;
     }
 
@@ -69,6 +71,7 @@ public class LightPath {
         return len;
     }
 
+
     public double getDirection() {
         return direction;
     }
@@ -81,8 +84,12 @@ public class LightPath {
         return startPointY + len * Math.sin(direction);
     }
 
+    public LightInfo getLightInfo() {
+        return lightInfo;
+    }
+
     public double getWaveLength() {
-        return waveLength;
+        return lightInfo.getWaveLength();
     }
 
     public int getLightPathID() {
@@ -133,23 +140,45 @@ public class LightPath {
         this.direction = direction;
     }
 
-    public void setWaveLength(double waveLength) {
-        this.waveLength = waveLength;
+
+    public void initLightDraw() {
+        lightDraw = new Line(getStartPointX(), getStartPointY(), getEndPointX(), getEndPointY());
+        switch (lightInfo) {
+            case RED:
+                lightDraw.setStroke(Color.RED);
+                break;
+            case GREEN:
+                lightDraw.setStroke(Color.GREEN);
+                break;
+            case BLUE:
+                lightDraw.setStroke(Color.BLUE);
+                break;
+            default:
+                lightDraw.setStroke(Color.BLACK);
+                break;
+        }
+
+
+//        if (waveLength == RED_LIGHT_WAVE_LENGTH) {
+//            lightDraw.setStroke(Color.RED);
+//        } else if (waveLength == GREEN_LIGHT_WAVE_LENGTH) {
+//            lightDraw.setStroke(Color.GREEN);
+//        } else if (waveLength == BLUE_LIGHT_WAVE_LENGTH) {
+//            lightDraw.setStroke(Color.BLUE);
+//        }
     }
 
+
     public void drawLightPath(Pane pane) {
+        initLightDraw();
+        lightDraw.setStrokeWidth(1);
+        pane.getChildren().addAll(lightDraw);
+    }
 
-        Line light = new Line(getStartPointX(), getStartPointY(), getEndPointX(), getEndPointY());
-        if (waveLength == RED_LIGHT_WAVE_LENGTH) {
-            light.setStroke(Color.RED);
-        } else if (waveLength == GREEN_LIGHT_WAVE_LENGTH) {
-            light.setStroke(Color.GREEN);
-        } else if (waveLength == BLUE_LIGHT_WAVE_LENGTH) {
-            light.setStroke(Color.BLUE);
-        }
-        light.setStrokeWidth(1);
-        pane.getChildren().addAll(light);
-
+    public void highlightLightPath(Pane pane) {
+        initLightDraw();
+        lightDraw.setStrokeWidth(3);
+        pane.getChildren().add(lightDraw);
     }
 
 
@@ -158,10 +187,10 @@ public class LightPath {
         if (mirror.getClass().equals(FlatMirror.class))
             light.FlatMirrorIntersectionList.add(
                     new Intersection(this, (FlatMirror) mirror));
-        if (mirror.getClass().equals(CircleMirror.class)) {
+        if (mirror.getClass().equals(CircleMirror.class))
             light.CircleMirrorIntersectionList.add(
                     new Intersection(this, (CircleMirror) mirror));
-        }
+
         //TODO add another type mirror
     }
 
@@ -346,24 +375,27 @@ public class LightPath {
     }
 
     public void reflectionDetected(Intersection intersection) {
-        setLen(reCalculateLength());
-        intersection.refreshLight(startPointX, startPointY, getEndPointX(), getEndPointY());
-        light.intersectionListener.intersectionDetected(
-                MAXIMUM_LENGTH, intersection.reflectedDirection(), intersection.getIntersectionType());
+
+        if (!intersection.isOpacity()) {
+            setLen(reCalculateLength());
+            intersection.refreshLight(startPointX, startPointY, getEndPointX(), getEndPointY());
+            light.intersectionListener.intersectionDetected(
+                    MAXIMUM_LENGTH, intersection.reflectedDirection(), intersection.getIntersectionType());
+        } else setLen(reCalculateLength() + 50);
     }
 
     public void refractionInDetected(Intersection intersection) {
         setLen(reCalculateLength());
         intersection.refreshLight(startPointX, startPointY, getEndPointX(), getEndPointY());
         light.intersectionListener.intersectionDetected(
-                MAXIMUM_LENGTH, intersection.refractionDirection(getN()), intersection.getIntersectionType());//TODO temp
+                MAXIMUM_LENGTH, intersection.refractionDirection(getN(intersection)), intersection.getIntersectionType());
     }
 
     public void refractionOutDetected(Intersection intersection) {
         setLen(reCalculateLength());
         intersection.refreshLight(startPointX, startPointY, getEndPointX(), getEndPointY());
         light.intersectionListener.intersectionDetected(
-                MAXIMUM_LENGTH, intersection.refractionDirection(1 / getN()), intersection.getIntersectionType());//TODO temp
+                MAXIMUM_LENGTH, intersection.refractionDirection(1 / getN(intersection)), intersection.getIntersectionType());//TODO temp
     }
 
     public double reCalculateLength() {
@@ -378,14 +410,24 @@ public class LightPath {
 
     }
 
-    public double getN() {
+    public double getN(Intersection intersection) {
+        switch (lightInfo) {
+            case RED:
+                return intersection.getLensInfo().getnC();
+            case GREEN:
+                return intersection.getLensInfo().getnD();
+            case BLUE:
+                return intersection.getLensInfo().getnF();
+            default:
+                return 0;
+        }
 
-        if (waveLength == RED_LIGHT_WAVE_LENGTH)
-            return 1.51549;
-        if (waveLength == GREEN_LIGHT_WAVE_LENGTH)
-            return 1.51810;
-        if (waveLength == BLUE_LIGHT_WAVE_LENGTH)
-            return 1.52428;
-        return 0;
+//        if (waveLength == RED_LIGHT_WAVE_LENGTH)
+//            return 1.51549;
+//        if (waveLength == GREEN_LIGHT_WAVE_LENGTH)
+//            return 1.51810;
+//        if (waveLength == BLUE_LIGHT_WAVE_LENGTH)
+//            return 1.52428;
+//        return 0;
     }
 }

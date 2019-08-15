@@ -3,6 +3,8 @@ package test.view;
 import Framework.LSD.app.View;
 import Framework.LSD.world.Lens.ConcaveLens;
 import Framework.LSD.world.Lens.ConvexLens;
+import Framework.LSD.world.Lens.LensInfo;
+import Framework.LSD.world.Light.LightInfo;
 import Framework.LSD.world.Light.LightPath;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
@@ -79,12 +81,12 @@ public class ChromaticAberrationDemo extends View {
         app.unregLight("GreenLightDown");
 
 
-        app.regLight("BlueLightUp", 0, 210, 0, LightPath.BLUE_LIGHT_WAVE_LENGTH);
-        app.regLight("BlueLightDown", 0, 390, 0, LightPath.BLUE_LIGHT_WAVE_LENGTH);
-        app.regLight("RedLightUp", 0, 210, 0, LightPath.RED_LIGHT_WAVE_LENGTH);
-        app.regLight("RedLightDown", 0, 390, 0, LightPath.RED_LIGHT_WAVE_LENGTH);
-        app.regLight("GreenLightUp", 0, 210, 0, LightPath.GREEN_LIGHT_WAVE_LENGTH);
-        app.regLight("GreenLightDown", 0, 390, 0, LightPath.GREEN_LIGHT_WAVE_LENGTH);
+        app.regLight("BlueLightUp", 0, 210, 0, LightInfo.BLUE);
+        app.regLight("BlueLightDown", 0, 390, 0, LightInfo.BLUE);
+        app.regLight("RedLightUp", 0, 210, 0, LightInfo.RED);
+        app.regLight("RedLightDown", 0, 390, 0, LightInfo.RED);
+        app.regLight("GreenLightUp", 0, 210, 0, LightInfo.GREEN);
+        app.regLight("GreenLightDown", 0, 390, 0, LightInfo.GREEN);
 
         app.intersectionDetect();
 
@@ -97,9 +99,9 @@ public class ChromaticAberrationDemo extends View {
     public void changeLensRadius() {
         app.unregLens("ConcaveLens");
         app.regLens("ConcaveLens",
-                new ConcaveLens(400, 300, lensRadius, lensRadius, 30, 200));
+                new ConcaveLens(400, 300, lensRadius, lensRadius, 30, 200, LensInfo.H_K10));
         app.unregLens("ConvexLens");
         app.regLens("ConvexLens",
-                new ConvexLens(300, 300, lensRadius, lensRadius, 200));
+                new ConvexLens(300, 300, lensRadius, lensRadius, 200,LensInfo.H_K10));
     }
 }

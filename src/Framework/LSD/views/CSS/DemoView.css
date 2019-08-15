@@ -1,0 +1,49 @@
+#TopMenu {
+    -fx-background-color: #ff9278;
+}
+
+#BottomMenu {
+    -fx-background-color: #ffef79;
+}
+
+#JFxLensName {
+    -fx-font-size: 30;
+}
+
+#addNewLight {
+    -fx-background-color: #f477ff;
+}
+
+#addNewLight:hover {
+    -fx-background-color: #7836a4;
+    -fx-text-fill: white;
+}
+
+#deleteThisLight {
+    -fx-background-color: #77ff1b;
+}
+
+#deleteThisLight:hover {
+    -fx-background-color: #144e00;
+    -fx-text-fill: white;
+
+}
+
+#lightColor_Red {
+    -jfx-selected-color: red;
+    -jfx-unselected-color: red;
+    /*-fx-text-fill: red;*/
+}
+
+#lightColor_Green {
+    -jfx-selected-color: green;
+    -jfx-unselected-color: green;
+    /*-fx-text-fill: green;*/
+}
+
+#lightColor_Blue {
+    -jfx-selected-color: blue;
+    -jfx-unselected-color: blue;
+    /*-fx-text-fill: blue;*/
+}
+

@@ -14,7 +14,7 @@ public class Test extends Initial {
     @Override
     public void onLaunch() {
         app.setTitle("Test");
-        app.setWidth(1000);
+        app.setWidth(1280);
         app.setHeight(800);
 
         app.regView("Home", new HomeView());
@@ -22,10 +22,11 @@ public class Test extends Initial {
         app.regView("Demo", new ReflectionDemo());
         app.regView("LensDemo", new SphericalAberrationDemo());
         app.regView("ChromaticAberrationDemo", new ChromaticAberrationDemo());
-        app.regView("controllerTestView", new controllerTestView());
-        app.gotoView("controllerTestView");
+        app.regView("ZoomingDemo", new ZoomingDemo());
+//        app.gotoView("ZoomingDemo");
+        app.gotoView("Home");
 
-        System.out.println(app.getHeight());
+//        System.out.println(app.getHeight());
     }
 
     @Override

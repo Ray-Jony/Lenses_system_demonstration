@@ -3,6 +3,7 @@ package test.view;
 import Framework.LSD.app.View;
 import Framework.LSD.input.Key;
 import Framework.LSD.input.Mouse;
+import Framework.LSD.world.Light.LightInfo;
 import Framework.LSD.world.Light.LightPath;
 import Framework.LSD.world.Mirror.FlatMirror;
 import javafx.scene.control.Button;
@@ -106,12 +107,12 @@ public class ReflectionDemo extends View {
     public void onEnter() {
         app.reset();
 
-        app.regLight("RedLight", 200, 50, 0, LightPath.RED_LIGHT_WAVE_LENGTH);
+        app.regLight("RedLight", 200, 50, 0, LightInfo.GREEN);
 
-        app.regMirror("RightEdge", new FlatMirror(400, 0, 800, 600));
-        app.regMirror("LeftEdge", new FlatMirror(100, 0, 0, 600));
-        app.regMirror("TopEdge", new FlatMirror(0, 0, 800, 0));
-        app.regMirror("BottomEdge", new FlatMirror(0, 600, 800, 600));
+        app.regMirror("RightEdge", new FlatMirror(400, 0, 800, 600,false));
+        app.regMirror("LeftEdge", new FlatMirror(100, 0, 0, 600,false));
+        app.regMirror("TopEdge", new FlatMirror(0, 0, 800, 0,false));
+        app.regMirror("BottomEdge", new FlatMirror(0, 600, 800, 600,false));
 //        app.regMirror("Circle", new CircleMirror(400, 300, 100));
     }
 
@@ -176,7 +177,7 @@ public class ReflectionDemo extends View {
 
     public void changeDirection() {
         app.unregLight("RedLight");
-        app.regLight("RedLight", 200, 50, direction, LightPath.RED_LIGHT_WAVE_LENGTH);
+        app.regLight("RedLight", 200, 50, direction, LightInfo.GREEN);
         direction += speed;
     }
 }

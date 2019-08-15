@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXSlider?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="demoPane" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../CSS/DemoView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Framework.LSD.views.Controller.DemoViewController">
+    <top>
+        <HBox fx:id="TopMenu" alignment="CENTER_LEFT" fillHeight="false" prefHeight="80.0" prefWidth="1280.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label fx:id="DemoName" minHeight="-Infinity" minWidth="-Infinity" text="DemoName">
+                    <font>
+                        <Font name="Roboto Black" size="46.0" />
+                    </font>
+               <HBox.margin>
+                  <Insets left="15.0" />
+               </HBox.margin>
+                </Label>
+                <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="81.0" prefWidth="1318.0" HBox.hgrow="ALWAYS" />
+            <VBox alignment="CENTER_LEFT" minWidth="-Infinity" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="Lens">
+                     <font>
+                        <Font name="Roboto" size="25.0" />
+                     </font>
+                  </Label>
+                  <Label text="Material">
+                     <font>
+                        <Font name="Roboto" size="25.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+                <VBox alignment="CENTER_LEFT" prefHeight="105.0" prefWidth="204.0" HBox.hgrow="NEVER">
+                    <children>
+                        <JFXComboBox fx:id="JFxLensName" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="204.0" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Pane prefHeight="36.0" prefWidth="18.0" />
+                              <Label fx:id="LensCode" text="518590">
+                                  <font>
+                                      <Font name="Roboto Light" size="22.0" />
+                                  </font>
+                              </Label>
+                     </children>
+                  </HBox>
+                    </children>
+                </VBox>
+            <Pane layoutX="272.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="81.0" prefWidth="1318.0" />
+                <Label fx:id="nD" minWidth="-Infinity" text="nD = 1.518 " HBox.hgrow="NEVER">
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                    <font>
+                        <Font name="Bodoni MT" size="23.0" />
+                    </font>
+                </Label>
+            <Pane layoutX="1274.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="81.0" prefWidth="1318.0" />
+            <VBox alignment="CENTER_LEFT" minWidth="-Infinity" prefHeight="86.0" prefWidth="138.0">
+               <children>
+                          <Label fx:id="nF" text="nF = 1.52428 ">
+                              <font>
+                                  <Font name="Bodoni MT" size="23.0" />
+                              </font>
+                          </Label>
+                          <Label fx:id="nF2" text="nF' = 1.52478 ">
+                              <font>
+                                  <Font name="Bodoni MT" size="23.0" />
+                              </font>
+                          </Label>
+               </children>
+            </VBox>
+            <Pane layoutX="1081.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="81.0" prefWidth="1318.0" />
+            <VBox alignment="CENTER_LEFT" minWidth="-Infinity" prefHeight="86.0" prefWidth="141.0">
+               <children>
+                          <Label fx:id="nC" text="nC = 1.51549 ">
+                              <font>
+                                  <Font name="Bodoni MT" size="23.0" />
+                              </font>
+                          </Label>
+                          <Label fx:id="nC2" text="nC' = 1.51592">
+                              <font>
+                                  <Font name="Bodoni MT" size="23.0" />
+                              </font>
+                          </Label>
+               </children>
+            </VBox>
+            <Pane layoutX="563.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="81.0" prefWidth="1318.0" />
+            <VBox alignment="CENTER_LEFT" minWidth="-Infinity" prefHeight="81.0" prefWidth="145.0">
+               <children>
+                          <Label fx:id="Vd" text="Vd = 1.51549 ">
+                              <font>
+                                  <Font name="Bodoni MT" size="23.0" />
+                              </font>
+                          </Label>
+                          <Label fx:id="Vd2" prefHeight="28.0" prefWidth="161.0" text="V'd = 1.51592">
+                              <font>
+                                  <Font name="Bodoni MT" size="23.0" />
+                              </font>
+                          </Label>
+               </children>
+            </VBox>
+            <Pane layoutX="918.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="81.0" prefWidth="1318.0" />
+            </children>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+        </HBox>
+    </top>
+    <bottom>
+        <HBox fx:id="BottomMenu" alignment="CENTER" fillHeight="false" prefHeight="90.0" prefWidth="1280.0" BorderPane.alignment="TOP_RIGHT">
+         <children>
+            <JFXButton fx:id="addNewLight" buttonType="RAISED" minWidth="-Infinity" ripplerFill="BLACK" text="addNewLight">
+               <HBox.margin>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </HBox.margin>
+               <effect>
+                  <Shadow height="41.51" radius="26.987499999999997" width="68.44" />
+               </effect>
+               <font>
+                  <Font name="Microsoft YaHei" size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="deleteThisLight" buttonType="RAISED" layoutX="794.0" layoutY="20.0" minWidth="-Infinity" ripplerFill="BLACK" text="DeleteThisLight">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <font>
+                  <Font name="Microsoft YaHei" size="16.0" />
+               </font>
+            </JFXButton>
+            <Pane layoutX="461.0" layoutY="10.0" prefHeight="71.0" prefWidth="1232.0" />
+            <JFXComboBox fx:id="JFxLightSelector" minWidth="-Infinity" prefHeight="25.0" prefWidth="236.0" HBox.hgrow="NEVER">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </JFXComboBox>
+            <Pane prefHeight="71.0" prefWidth="1232.0" HBox.hgrow="ALWAYS" />
+            <VBox alignment="CENTER" minWidth="-Infinity" prefHeight="90.0" prefWidth="246.0">
+               <children>
+                  <Label minWidth="-Infinity" text="Light Color  ">
+                     <font>
+                        <Font name="Roboto" size="20.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="21.0" prefWidth="212.0" spacing="20.0">
+                     <children>
+                        <JFXRadioButton fx:id="lightColor_Red" text="RED">
+                           <font>
+                              <Font name="Roboto" size="16.0" />
+                           </font>
+                        </JFXRadioButton>
+                        <JFXRadioButton fx:id="lightColor_Green" text="GREEN">
+                           <font>
+                              <Font name="Roboto" size="16.0" />
+                           </font>
+                        </JFXRadioButton>
+                        <JFXRadioButton fx:id="lightColor_Blue" text="BLUE">
+                           <font>
+                              <Font name="Roboto" size="16.0" />
+                           </font>
+                        </JFXRadioButton>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+            <Pane layoutX="960.0" layoutY="20.0" prefHeight="71.0" prefWidth="1232.0" />
+            <VBox alignment="CENTER" minWidth="-Infinity" prefHeight="90.0" prefWidth="120.0">
+               <children>
+                  <Label minWidth="-Infinity" text="Wave Length  ">
+                     <font>
+                        <Font name="Roboto" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="waveLength" minWidth="-Infinity" text="102">
+                     <font>
+                        <Font name="Roboto" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label text="nm">
+                     <font>
+                        <Font name="Roboto Italic" size="19.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <Pane layoutX="375.0" layoutY="20.0" prefHeight="71.0" prefWidth="1232.0" />
+            <VBox alignment="CENTER" minWidth="-Infinity" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label minWidth="-Infinity" text="Frequency  ">
+                     <font>
+                        <Font name="Roboto" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="Frequency" minWidth="-Infinity" text="3000000">
+                     <font>
+                        <Font name="Roboto" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label text="Hz">
+                     <font>
+                        <Font name="Roboto Italic" size="19.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <Pane layoutX="686.0" layoutY="20.0" prefHeight="71.0" prefWidth="1232.0" />
+         </children></HBox>
+    </bottom>
+   <center>
+      <VBox alignment="BOTTOM_CENTER" maxHeight="900.0" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="BOTTOM_CENTER">
+         <children>
+            <AnchorPane fx:id="lensControllerPane" minHeight="-Infinity" prefHeight="40.0" prefWidth="1280.0" style="-fx-background-color: purple;" VBox.vgrow="NEVER">
+               <children>
+                  <JFXSlider fx:id="lensPositionSlider" layoutX="10.0" layoutY="19.0" majorTickUnit="50.0" minorTickCount="1" prefHeight="14.0" prefWidth="856.0" showTickLabels="true" showTickMarks="true" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="19.0" />
+               </children></AnchorPane>
+            <AnchorPane fx:id="mainDemoPane" minWidth="800.0" prefHeight="40.0" prefWidth="1280.0" style="-fx-background-color: pink;" VBox.vgrow="ALWAYS" />
+         </children>
+      </VBox>
+   </center>
+   <left>
+      <AnchorPane fx:id="lightControllerPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: blue;" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <AnchorPane fx:id="infoPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: red;" BorderPane.alignment="CENTER" />
+   </right>
+</BorderPane>

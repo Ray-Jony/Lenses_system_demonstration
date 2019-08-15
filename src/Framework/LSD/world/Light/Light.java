@@ -42,7 +42,7 @@ public class Light {
                 previousLightPath.getEndPointY(),
                 len,
                 direction,
-                previousLightPath.getWaveLength()
+                previousLightPath.getLightInfo()
         );
         newLightPath.light = this;
         lightPathMap.put(lightPathId, newLightPath);
@@ -64,6 +64,13 @@ public class Light {
         for (LightPath l :
                 lightPathMap.values()) {
             l.drawLightPath(pane);
+        }
+    }
+
+    public void highlightLight(Pane pane) {
+        for (LightPath l :
+                lightPathMap.values()) {
+            l.highlightLightPath(pane);
         }
     }
 

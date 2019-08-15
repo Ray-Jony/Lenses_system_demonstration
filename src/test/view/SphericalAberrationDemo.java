@@ -3,6 +3,8 @@ package test.view;
 import Framework.LSD.app.View;
 import Framework.LSD.world.Lens.ConcaveLens;
 import Framework.LSD.world.Lens.ConvexLens;
+import Framework.LSD.world.Lens.LensInfo;
+import Framework.LSD.world.Light.LightInfo;
 import Framework.LSD.world.Light.LightPath;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
@@ -82,6 +84,8 @@ public class SphericalAberrationDemo extends View {
 
         standardLine = new Line(0, 300, 2000, 300);
 
+        demonstratePane.getChildren().add(standardLine);
+
         getPane().getChildren().addAll(
                 demonstratePane,
                 homeBtn,
@@ -110,19 +114,19 @@ public class SphericalAberrationDemo extends View {
         app.unregLight("BlueLight7");
         app.unregLight("BlueLight8");
 
-        app.regLight("BlueLight1", 0, 210, 0, LightPath.BLUE_LIGHT_WAVE_LENGTH);
-        app.regLight("BlueLight2", 0, 220, 0, LightPath.BLUE_LIGHT_WAVE_LENGTH);
-        app.regLight("BlueLight3", 0, 230, 0, LightPath.BLUE_LIGHT_WAVE_LENGTH);
-        app.regLight("BlueLight4", 0, 240, 0, LightPath.BLUE_LIGHT_WAVE_LENGTH);
-        app.regLight("BlueLight5", 0, 360, 0, LightPath.BLUE_LIGHT_WAVE_LENGTH);
-        app.regLight("BlueLight6", 0, 370, 0, LightPath.BLUE_LIGHT_WAVE_LENGTH);
-        app.regLight("BlueLight7", 0, 380, 0, LightPath.BLUE_LIGHT_WAVE_LENGTH);
-        app.regLight("BlueLight8", 0, 390, 0, LightPath.BLUE_LIGHT_WAVE_LENGTH);
+        app.regLight("BlueLight1", 0, 210, 0, LightInfo.BLUE);
+        app.regLight("BlueLight2", 0, 220, 0, LightInfo.BLUE);
+        app.regLight("BlueLight3", 0, 230, 0, LightInfo.BLUE);
+        app.regLight("BlueLight4", 0, 240, 0, LightInfo.BLUE);
+        app.regLight("BlueLight5", 0, 360, 0, LightInfo.BLUE);
+        app.regLight("BlueLight6", 0, 370, 0, LightInfo.BLUE);
+        app.regLight("BlueLight7", 0, 380, 0, LightInfo.BLUE);
+        app.regLight("BlueLight8", 0, 390, 0, LightInfo.BLUE);
 
         app.intersectionDetect();
 
         app.draw(demonstratePane);
-        demonstratePane.getChildren().add(standardLine);
+
         moveLens2();
         moveLens1();
         moveLens3();
@@ -133,18 +137,18 @@ public class SphericalAberrationDemo extends View {
     public void moveLens2() {
         app.unregLens("ConvexLens2");
         app.regLens("ConvexLens2",
-                new ConvexLens(position2X, 300, 500, 500, 200));
+                new ConvexLens(position2X, 300, 500, 500, 200, LensInfo.H_K10));
     }
 
     public void moveLens1() {
         app.unregLens("ConvexLens1");
         app.regLens("ConvexLens1",
-                new ConvexLens(position1X, 300, 500, 500, 200));
+                new ConvexLens(position1X, 300, 500, 500, 200,LensInfo.H_K10));
     }
 
     public void moveLens3() {
         app.unregLens("ConcaveLens");
         app.regLens("ConcaveLens",
-                new ConcaveLens(position3X, 300, 500, 500, 30, 200));
+                new ConcaveLens(position3X, 300, 500, 500, 30, 200,LensInfo.H_K10));
     }
 }

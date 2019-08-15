@@ -2,6 +2,7 @@ package Framework.LSD.world;
 
 import Framework.LSD.world.Lens.CircleLensSurface;
 import Framework.LSD.world.Lens.Lens;
+import Framework.LSD.world.Lens.LensInfo;
 import Framework.LSD.world.Light.LightPath;
 import Framework.LSD.world.Mirror.CircleMirror;
 import Framework.LSD.world.Mirror.FlatMirror;
@@ -26,8 +27,11 @@ public class Intersection {
     private double radius;
     private double height;
     private int lensType;
+    private LensInfo lensInfo;
     private int LorR_ID;
     private double refractiveIndex;
+
+    private boolean isOpacity;
 
     public Intersection() {
         intersectionType = 0;
@@ -37,6 +41,7 @@ public class Intersection {
         this(lightPath.getStartPointX(), lightPath.getStartPointY(), lightPath.getEndPointX(), lightPath.getEndPointY(),
                 mirror.getStartPointX(), mirror.getStartPointY(), mirror.getEndPointX(), mirror.getEndPointY());
         this.intersectionType = REFLECTION;
+        this.isOpacity = mirror.isOpacity();
     }
 
     public Intersection(LightPath lightPath, CircleMirror circleMirror) {
@@ -52,6 +57,7 @@ public class Intersection {
         this.height = height;
         this.LorR_ID = LorR_ID;
         this.lensType = lensType;
+        this.lensInfo = circleLensSurface.getLensInfo();
     }
 
     private Intersection(double v1, double v2, double v3, double v4,
@@ -389,6 +395,14 @@ public class Intersection {
 
     public int getIntersectionType() {
         return intersectionType;
+    }
+
+    public boolean isOpacity() {
+        return isOpacity;
+    }
+
+    public LensInfo getLensInfo() {
+        return lensInfo;
     }
 
     public int getSubIntersectionType() {

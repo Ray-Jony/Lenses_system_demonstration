@@ -15,20 +15,23 @@ public class FlatMirror extends Mirror {
     private double endPointX;
     private double endPointY;
 
-//    private double
+    private boolean isOpacity;
 
 
-    public FlatMirror(double startPointX, double startPointY, double endPointX, double endPointY) {
+    public FlatMirror(double startPointX, double startPointY, double endPointX, double endPointY, boolean isOpacity) {
         this.startPointX = startPointX;
         this.startPointY = startPointY;
         this.endPointX = endPointX;
         this.endPointY = endPointY;
+        this.isOpacity = isOpacity;
     }
 
     @Override
     public void drawMirror(Pane pane) {
         Line mirror = new Line(startPointX, startPointY, getEndPointX(), getEndPointY());
-        mirror.setStrokeWidth(3);
+        if (isOpacity)
+            mirror.setStrokeWidth(0);
+        else mirror.setStrokeWidth(3);
         pane.getChildren().addAll(mirror);
     }
 
@@ -49,5 +52,7 @@ public class FlatMirror extends Mirror {
         return endPointY;
     }
 
-
+    public boolean isOpacity() {
+        return isOpacity;
+    }
 }
