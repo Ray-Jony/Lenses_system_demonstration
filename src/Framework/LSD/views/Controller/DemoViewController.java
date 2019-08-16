@@ -1,9 +1,6 @@
 package Framework.LSD.views.Controller;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXRadioButton;
-import com.jfoenix.controls.JFXSlider;
+import com.jfoenix.controls.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -109,6 +106,24 @@ public class DemoViewController implements Initializable {
     @FXML
     private JFXSlider lensPositionSlider;
 
+    @FXML
+    private JFXSlider lightPositionSlider;
+
+    @FXML
+    private JFXSlider lightDirectionSlider;
+
+    @FXML
+    private JFXButton choseLensMaterialBtn;
+
+    @FXML
+    private JFXButton lightDirectionReset;
+
+    @FXML
+    private JFXToggleButton SymmetricalRayToggleBtn;
+
+
+    private ToggleGroup lightColor;
+
 
     public DemoViewController() {
     }
@@ -126,7 +141,7 @@ public class DemoViewController implements Initializable {
         Label BLUE = new Label("BLUE");
         RED.setTextFill(Color.BLUE);
 
-        ToggleGroup lightColor = new ToggleGroup();
+        lightColor = new ToggleGroup();
 
         lightColor_Red.setToggleGroup(lightColor);
         lightColor_Red.setSelected(true);
@@ -215,5 +230,29 @@ public class DemoViewController implements Initializable {
 
     public AnchorPane getInfoPane() {
         return infoPane;
+    }
+
+    public JFXSlider getLightPositionSlider() {
+        return lightPositionSlider;
+    }
+
+    public JFXSlider getLightDirectionSlider() {
+        return lightDirectionSlider;
+    }
+
+    public JFXButton getChoseLensMaterialBtn() {
+        return choseLensMaterialBtn;
+    }
+
+    public JFXButton getLightDirectionResetBtn() {
+        return lightDirectionReset;
+    }
+
+    public JFXToggleButton getSymmetricalRayToggleBtn() {
+        return SymmetricalRayToggleBtn;
+    }
+
+    public ToggleGroup getLightColorSelector() {
+        return lightColor;
     }
 }

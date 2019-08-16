@@ -381,7 +381,7 @@ public class LightPath {
             intersection.refreshLight(startPointX, startPointY, getEndPointX(), getEndPointY());
             light.intersectionListener.intersectionDetected(
                     MAXIMUM_LENGTH, intersection.reflectedDirection(), intersection.getIntersectionType());
-        } else setLen(reCalculateLength() + 50);
+        } else setLen(reCalculateLength());
     }
 
     public void refractionInDetected(Intersection intersection) {
