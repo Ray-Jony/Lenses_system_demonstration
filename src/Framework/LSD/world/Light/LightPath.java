@@ -413,11 +413,11 @@ public class LightPath {
     public double getN(Intersection intersection) {
         switch (lightInfo) {
             case RED:
-                return intersection.getLensInfo().getnC();
+                return intersection.getLensMaterial().getnC();
             case GREEN:
-                return intersection.getLensInfo().getnD();
+                return intersection.getLensMaterial().getnD();
             case BLUE:
-                return intersection.getLensInfo().getnF();
+                return intersection.getLensMaterial().getnF();
             default:
                 return 0;
         }

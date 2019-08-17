@@ -3,9 +3,8 @@ package test.view;
 import Framework.LSD.app.View;
 import Framework.LSD.world.Lens.ConcaveLens;
 import Framework.LSD.world.Lens.ConvexLens;
-import Framework.LSD.world.Lens.LensInfo;
+import Framework.LSD.world.Lens.LensMaterial;
 import Framework.LSD.world.Light.LightInfo;
-import Framework.LSD.world.Light.LightPath;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollBar;
@@ -99,9 +98,9 @@ public class ChromaticAberrationDemo extends View {
     public void changeLensRadius() {
         app.unregLens("ConcaveLens");
         app.regLens("ConcaveLens",
-                new ConcaveLens(400, 300, lensRadius, lensRadius, 30, 200, LensInfo.H_K10));
+                new ConcaveLens(400, 300, lensRadius, lensRadius, 30, 200, LensMaterial.H_K10));
         app.unregLens("ConvexLens");
         app.regLens("ConvexLens",
-                new ConvexLens(300, 300, lensRadius, lensRadius, 200,LensInfo.H_K10));
+                new ConvexLens(300, 300, lensRadius, lensRadius, 200, LensMaterial.H_K10));
     }
 }

@@ -21,8 +21,8 @@ public class ConcaveLens extends Lens {
      * @param leftRadius
      * @param rightRadius
      */
-    public ConcaveLens(double centerX, double centerY, double leftRadius, double rightRadius, double minWidth, double height, LensInfo lensInfo) {
-        super(centerX, centerY, height, leftRadius, rightRadius, lensInfo);
+    public ConcaveLens(double centerX, double centerY, double leftRadius, double rightRadius, double minWidth, double height, LensMaterial lensMaterial) {
+        super(centerX, centerY, height, leftRadius, rightRadius, lensMaterial);
 
         this.minWidth = minWidth;
 
@@ -30,14 +30,14 @@ public class ConcaveLens extends Lens {
                 centerX - ((minWidth / 2) + leftRadius),
                 centerY,
                 leftRadius,
-                lensInfo
+                lensMaterial
         );
 
         super.rightSurface = new CircleLensSurface(
                 centerX + ((minWidth / 2) + rightRadius),
                 centerY,
                 rightRadius,
-                lensInfo
+                lensMaterial
         );
     }
 

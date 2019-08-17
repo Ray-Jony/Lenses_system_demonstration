@@ -1,8 +1,6 @@
 package Framework.LSD.world.Lens;
 
-import java.util.Queue;
-
-public enum LensInfo {
+public enum LensMaterial {
 
     H_FK61(1, "497816", 1.49513, 1.49543, 1.49694, 1.50123, 1.50157),
     H_FK61B(2, "497816", 1.49513, 1.49543, 1.49694, 1.50123, 1.50157),
@@ -265,7 +263,7 @@ public enum LensInfo {
     private double Vd;
     private double Vd2;
 
-    LensInfo(int sequenceNumber, String lensCode, double nC, double nC2, double nD, double nF, double nF2) {
+    LensMaterial(int sequenceNumber, String lensCode, double nC, double nC2, double nD, double nF, double nF2) {
         this.sequenceNumber = sequenceNumber;
         this.lensCode = lensCode;
         this.nD = nD;
@@ -278,11 +276,11 @@ public enum LensInfo {
     }
 
 
-    public static LensInfo find(String lensCode) {
-        for (LensInfo lensInfo :
+    public static LensMaterial find(String lensCode) {
+        for (LensMaterial lensMaterial :
                 values()) {
-            if (lensInfo.lensCode != null && lensInfo.lensCode.equals(lensCode)) {
-                return lensInfo;
+            if (lensMaterial.lensCode != null && lensMaterial.lensCode.equals(lensCode)) {
+                return lensMaterial;
             }
         }
         return null;

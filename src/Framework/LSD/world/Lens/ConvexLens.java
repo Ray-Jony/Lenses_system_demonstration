@@ -12,21 +12,21 @@ public class ConvexLens extends Lens {
      * @param leftRadius
      * @param rightRadius
      */
-    public ConvexLens(double centerX, double centerY, double leftRadius, double rightRadius, double height, LensInfo lensInfo) {
-        super(centerX, centerY, height, leftRadius, rightRadius, lensInfo);
+    public ConvexLens(double centerX, double centerY, double leftRadius, double rightRadius, double height, LensMaterial lensMaterial) {
+        super(centerX, centerY, height, leftRadius, rightRadius, lensMaterial);
 
         super.leftSurface = new CircleLensSurface(
                 centerX + Math.sqrt(leftRadius * leftRadius - (height / 2) * (height / 2)),
                 centerY,
                 leftRadius,
-                lensInfo
+                lensMaterial
         );
 
         super.rightSurface = new CircleLensSurface(
                 centerX - Math.sqrt(rightRadius * rightRadius - (height / 2) * (height / 2)),
                 centerY,
                 rightRadius,
-                lensInfo
+                lensMaterial
         );
     }
 

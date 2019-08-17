@@ -3,9 +3,8 @@ package test.view;
 import Framework.LSD.app.View;
 import Framework.LSD.world.Lens.ConcaveLens;
 import Framework.LSD.world.Lens.ConvexLens;
-import Framework.LSD.world.Lens.LensInfo;
+import Framework.LSD.world.Lens.LensMaterial;
 import Framework.LSD.world.Light.LightInfo;
-import Framework.LSD.world.Light.LightPath;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollBar;
@@ -137,18 +136,18 @@ public class SphericalAberrationDemo extends View {
     public void moveLens2() {
         app.unregLens("ConvexLens2");
         app.regLens("ConvexLens2",
-                new ConvexLens(position2X, 300, 500, 500, 200, LensInfo.H_K10));
+                new ConvexLens(position2X, 300, 500, 500, 200, LensMaterial.H_K10));
     }
 
     public void moveLens1() {
         app.unregLens("ConvexLens1");
         app.regLens("ConvexLens1",
-                new ConvexLens(position1X, 300, 500, 500, 200,LensInfo.H_K10));
+                new ConvexLens(position1X, 300, 500, 500, 200, LensMaterial.H_K10));
     }
 
     public void moveLens3() {
         app.unregLens("ConcaveLens");
         app.regLens("ConcaveLens",
-                new ConcaveLens(position3X, 300, 500, 500, 30, 200,LensInfo.H_K10));
+                new ConcaveLens(position3X, 300, 500, 500, 30, 200, LensMaterial.H_K10));
     }
 }

@@ -1,18 +1,13 @@
 package Framework.LSD.views.Controller;
 
+import Framework.LSD.world.Light.LightInfo;
 import com.jfoenix.controls.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
 
 
 import java.net.URL;
@@ -37,7 +32,7 @@ public class DemoViewController implements Initializable {
     private Label DemoName;
 
     @FXML
-    private JFXComboBox<Label> JFxLensName;
+    private JFXComboBox<String> JFxLensSelector;
 
     @FXML
     private Label LensCode;
@@ -67,13 +62,11 @@ public class DemoViewController implements Initializable {
     private HBox BottomMenu;
 
     @FXML
-    private JFXComboBox<Label> JFxLightSelector;
+    private JFXComboBox<String> JFxLightSelector;
 
     @FXML
     private Label waveLength;
 
-    @FXML
-    private Label Frequency;
 
     @FXML
     private JFXButton addNewLight;
@@ -132,7 +125,7 @@ public class DemoViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        JFxLensName.getItems().add(new Label("H-K10"));
+//        JFxLensSelector.getItems().add("H-K10");
 
         Label RED = new Label("RED");
         RED.setTextFill(Color.RED);
@@ -145,10 +138,13 @@ public class DemoViewController implements Initializable {
 
         lightColor_Red.setToggleGroup(lightColor);
         lightColor_Red.setSelected(true);
+        lightColor_Red.setUserData(LightInfo.RED);
 
         lightColor_Green.setToggleGroup(lightColor);
+        lightColor_Green.setUserData(LightInfo.GREEN);
 
         lightColor_Blue.setToggleGroup(lightColor);
+        lightColor_Blue.setUserData(LightInfo.BLUE);
 
     }
 
@@ -156,8 +152,8 @@ public class DemoViewController implements Initializable {
         return DemoName;
     }
 
-    public JFXComboBox<Label> getJFxLensName() {
-        return JFxLensName;
+    public JFXComboBox<String> getJFxLensSelector() {
+        return JFxLensSelector;
     }
 
     public Label getLensCode() {
@@ -192,7 +188,7 @@ public class DemoViewController implements Initializable {
         return Vd2;
     }
 
-    public JFXComboBox<Label> getJFxLightSelector() {
+    public JFXComboBox<String> getJFxLightSelector() {
         return JFxLightSelector;
     }
 
@@ -202,10 +198,6 @@ public class DemoViewController implements Initializable {
 
     public JFXSlider getLensPositionSlider() {
         return lensPositionSlider;
-    }
-
-    public Label getFrequency() {
-        return Frequency;
     }
 
     public JFXButton getAddNewLight() {
@@ -255,4 +247,37 @@ public class DemoViewController implements Initializable {
     public ToggleGroup getLightColorSelector() {
         return lightColor;
     }
+
+    public BorderPane getDemoPane() {
+        return demoPane;
+    }
+
+    public HBox getTopMenu() {
+        return TopMenu;
+    }
+
+    public HBox getBottomMenu() {
+        return BottomMenu;
+    }
+
+    public JFXRadioButton getLightColor_Red() {
+        return lightColor_Red;
+    }
+
+    public JFXRadioButton getLightColor_Green() {
+        return lightColor_Green;
+    }
+
+    public JFXRadioButton getLightColor_Blue() {
+        return lightColor_Blue;
+    }
+
+    public JFXButton getLightDirectionReset() {
+        return lightDirectionReset;
+    }
+
+    public ToggleGroup getLightColor() {
+        return lightColor;
+    }
+
 }

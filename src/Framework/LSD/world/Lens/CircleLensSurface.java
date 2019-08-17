@@ -13,7 +13,7 @@ public class CircleLensSurface {
     private double centerY;
     private double radius;
 
-    private LensInfo lensInfo;
+    private LensMaterial lensMaterial;
 
     //refractive indices of the material at the wavelengths of the Fraunhofer
     // D-, F- and C- spectral lines
@@ -26,12 +26,12 @@ public class CircleLensSurface {
     //传统上nD>1.60，VD>50和nD<1.60，VD>55的各类玻璃定为冕(K)玻璃，其余各类玻璃定为火石(F)玻璃。
     //冕玻璃一般作凸透镜，火石玻璃作凹透镜。
 
-    public CircleLensSurface(double centerX, double centerY, double radius, LensInfo lensInfo) {
+    public CircleLensSurface(double centerX, double centerY, double radius, LensMaterial lensMaterial) {
         this.centerX = centerX;
         this.centerY = centerY;
         this.radius = radius;
 
-        this.lensInfo = lensInfo;
+        this.lensMaterial = lensMaterial;
 //        temporary set to H-K10 glass
 //        this.nD = 1.51810;
 //        this.nF = 1.529;
@@ -65,8 +65,8 @@ public class CircleLensSurface {
         return radius;
     }
 
-    public LensInfo getLensInfo() {
-        return lensInfo;
+    public LensMaterial getLensMaterial() {
+        return lensMaterial;
     }
 
     public void setCenterX(double centerX) {
