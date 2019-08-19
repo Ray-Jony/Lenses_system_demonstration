@@ -286,6 +286,15 @@ public enum LensMaterial {
         return null;
     }
 
+    public static LensMaterial findViaLensID(int id){
+        for (LensMaterial lensMaterial :
+                values()) {
+            if (lensMaterial.sequenceNumber == id)
+                return lensMaterial;
+        }
+        return null;
+    }
+
     public int getSequenceNumber() {
         return sequenceNumber;
     }

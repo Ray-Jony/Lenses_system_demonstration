@@ -18,38 +18,37 @@ import java.util.Arrays;
 
 public class ZoomingDemo extends DemoView {
 
-
     @Override
     public void launch() {
         setDemoTitle("Zooming");
 
         addAnimatedLens("ConvexLens1", new ArrayList<>(Arrays.asList(
                 LensType.ConvexLens, 50D, 500D, 500D, 200D, LensMaterial.H_FK61
-        )));
+        )), false);
 
         addAnimatedLens("ConvexLens2", new ArrayList<>(Arrays.asList(
                 LensType.ConvexLens, 500D, 500D, 500D, 200D, LensMaterial.H_FK61
-        )));
+        )), false);
 
         addAnimatedLens("ConcaveLens", new ArrayList<>(Arrays.asList(
                 LensType.ConcaveLens, 300D, 500D, 500D, 200D, LensMaterial.H_FK61, 25D
-        )));
+        )), true);
 
         addAnimatedLight("Symmetrical Light1", new ArrayList<>(Arrays.asList(
                 75D, 0D, LightInfo.RED, true
-        )));
+        )), false);
 
         addAnimatedLight("Symmetrical Light2", new ArrayList<>(Arrays.asList(
                 65D, 0D, LightInfo.RED, true
-        )));
+        )), false);
 
         addAnimatedLight("Symmetrical Light3", new ArrayList<>(Arrays.asList(
                 55D, 0D, LightInfo.RED, true
-        )));
+        )), false);
 
         addAnimatedLight("Symmetrical Light4", new ArrayList<>(Arrays.asList(
                 45D, 0D, LightInfo.RED, true
-        )));
+        )), false);
 
 
     }
@@ -64,13 +63,14 @@ public class ZoomingDemo extends DemoView {
 
     @Override
     public void update() {
-        addStandardLine();
-
-        getLensPositionSlider().setMax(getMainDemoPane().getWidth() - 30);
-        getLensPositionSlider().setMin(30);
-
-        getLightPositionSlider().setMax((int) (getMainDemoPane().getHeight() / 2 - 25));
-        getLightPositionSlider().setMin(-(int) ((getMainDemoPane().getHeight() / 2 - 25)));
+        super.update();
+//        addStandardLine();
+//
+//        getLensPositionSlider().setMax(getMainDemoPane().getWidth() - 30);
+//        getLensPositionSlider().setMin(30);
+//
+//        getLightPositionSlider().setMax((int) (getMainDemoPane().getHeight() / 2 - 25));
+//        getLightPositionSlider().setMin(-(int) ((getMainDemoPane().getHeight() / 2 - 25)));
     }
 
 //    @Override

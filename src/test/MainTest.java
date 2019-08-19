@@ -9,9 +9,12 @@ import static Framework.Framework.app;
  * @author :
  * @version :
  */
-public class MainTest extends Initial {public static void main(String[] args) {
-    launch(args);
-}
+public class MainTest extends Initial {
+
+
+//    public static void main(String[] args) {
+//    launch(args);
+//}
 
     @Override
     public void onLaunch() {

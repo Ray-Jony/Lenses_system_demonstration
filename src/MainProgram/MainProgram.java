@@ -1,8 +1,7 @@
 package MainProgram;
 
 import Framework.LSD.app.Initial;
-
-import javax.print.attribute.standard.Finishings;
+import MainProgram.view.*;
 
 import static Framework.Framework.app;
 
@@ -20,6 +19,14 @@ public class MainProgram extends Initial {
         app.setTitle("JavaFX Lenses System Demo");
         app.setWidth(1280);
         app.setHeight(800);
+
+        app.regView("Home", new Home());
+        app.regView("Chromatic Aberration", new ChromaticAberration());
+        app.regView("Zooming Effect",new ZoomingEffect());
+        app.regView("Spherical Aberration", new SphericalAberration());
+        app.regView("Free Mode", new FreeMode());
+
+        app.gotoView("Home");
 
     }
 

@@ -30,7 +30,7 @@ import static Framework.Framework.app;
  * @version 07/08/2019
  **/
 
-public class DemoView extends View {
+public abstract class DemoView extends View {
 
     private BorderPane demoPane;
 
@@ -41,6 +41,9 @@ public class DemoView extends View {
     private String currentSelectedLight = "";
     private String currentSelectedLens = "";
     private String currentSelectedMirror = "";
+
+    private boolean enableHighlight = true;
+    private boolean enableLensRadius = true;
 
     private static final String SYMMETRICAL_ID = "[symmetrical]";
 
@@ -192,7 +195,7 @@ public class DemoView extends View {
                 temp.add(lightInfo.get(2));
                 temp.add(lightInfo.get(3));
                 temp.add(lightInfo.get(4));
-                animatedLightMap.put(name, temp);
+                animatedLightMap.put(name, new ArrayList<>(temp));
                 getLightSelector().getItems().add(name);
                 getLightSelector().getSelectionModel().select(name);
             });
@@ -262,18 +265,15 @@ public class DemoView extends View {
         getDeleteLightBtn().setOnAction(e -> {
             if (!currentSelectedLight.equals("") && animatedLightMap.containsKey(currentSelectedLight)) {
                 removeAnimatedComponent(ComponentType.LIGHT, currentSelectedLight);
-                getLightSelector().getItems().remove(currentSelectedLight);
+//                getLightSelector().getItems().remove(currentSelectedLight);
                 currentSelectedLight = "";
             }
         });
 
         getSymmetricalRayBtn().selectedProperty().addListener((observableValue, aBoolean, t1) -> {
             if (currentSelectedLight.equals("")) return;
+            animatedLightMap.get(currentSelectedLight).set(3, t1);
 
-            if (t1)
-                animatedLightMap.get(currentSelectedLight).set(3, true);
-            else
-                animatedLightMap.get(currentSelectedLight).set(3, false);
         });
 
         getLensSelector().setOnAction(e -> {
@@ -329,7 +329,7 @@ public class DemoView extends View {
             HashMap<String, LensMaterial> materialMap = new HashMap<>();
             for (LensMaterial l :
                     LensMaterial.values()) {
-                String listCellString = String.format("%-12s", l.toString())
+                String listCellString = String.format(l.getSequenceNumber() + " %-12s", l.toString())
                         + String.format("%-20s", "[LensCode]: " + l.getLensCode())
                         + "[Vd]: " + String.format("%.5f", l.getVd());
                 materialList.getItems().add(listCellString);
@@ -380,9 +380,7 @@ public class DemoView extends View {
 //        getLightSelector().getItems().addAll(getAnimatedLightMap().keySet());
     }
 
-    public void launch() {
-        //for sub class to finish
-    }
+    public abstract void launch();
 
 
     @Override
@@ -394,8 +392,11 @@ public class DemoView extends View {
     public void updateFrame() {
         intersectionDetect();
         drawMainDemoPane();
-        highLightLight(getCurrentSelectedLight());
-        highLightLens(getCurrentSelectedLens());
+
+        if (enableHighlight) {
+            highLightLight(getCurrentSelectedLight());
+            highLightLens(getCurrentSelectedLens());
+        }
     }
 
     public void addBorder() {
@@ -407,6 +408,13 @@ public class DemoView extends View {
     }
 
     public void update() {
+        addStandardLine();
+
+        getLensPositionSlider().setMax(getMainDemoPane().getWidth() - 30);
+        getLensPositionSlider().setMin(30);
+
+        getLightPositionSlider().setMax((int) (getMainDemoPane().getHeight() / 2 - 25));
+        getLightPositionSlider().setMin(-(int) ((getMainDemoPane().getHeight() / 2 - 25)));
         //for subclass to finish
     }
 
@@ -481,14 +489,16 @@ public class DemoView extends View {
         }
     }
 
-    public void addAnimatedLens(String lensName, ArrayList<Object> lensInfo) {
+    public void addAnimatedLens(String lensName, ArrayList<Object> lensInfo, boolean enableControl) {
         animatedLensMap.put(lensName, lensInfo);
-        getLensSelector().getItems().add(lensName);
+        if (enableControl)
+            getLensSelector().getItems().add(lensName);
     }
 
-    public void addAnimatedLight(String lightName, ArrayList<Object> lightInfo) {
+    public void addAnimatedLight(String lightName, ArrayList<Object> lightInfo, boolean enableControl) {
         animatedLightMap.put(lightName, lightInfo);
-        getLightSelector().getItems().add(lightName);
+        if (enableControl)
+            getLightSelector().getItems().add(lightName);
     }
 
 
@@ -534,14 +544,17 @@ public class DemoView extends View {
                 animatedLightMap.remove(name);
                 app.unregLight(name);
                 app.unregLight(name + SYMMETRICAL_ID);
+                getLightSelector().getItems().remove(name);
                 break;
             case LENS:
                 animatedLensMap.remove(name);
                 app.unregLens(name);
+                getLensSelector().getItems().remove(name);
                 break;
             case MIRROR:
                 animatedMirrorMap.remove(name);
                 app.unregMirror(name);
+                //TODO if there will be a Mirror selector
                 break;
             default:
                 break;
@@ -567,6 +580,10 @@ public class DemoView extends View {
     }
 
     //******************
+
+    public void enableHighlight(boolean enable) {
+        this.enableHighlight = enable;
+    }
 
     public void setDemoTitle(String name) {
         getController().getDemoName().setText(name);

@@ -11,6 +11,9 @@ import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXDrawersStack;
 import javafx.application.Platform;
 import javafx.beans.property.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
@@ -93,16 +96,11 @@ public class App {
 
         leftDrawer = new JFXDrawer();
         leftContent = new VBox();
-
-//        for (String viewName :
-//                viewMap.keySet()) {
-//            JFXButton viewBtn = new JFXButton(viewName);
-//            viewBtn.setOnAction(e -> gotoView(viewName));
-//            leftContent.getChildren().add(viewBtn);
-//        }
+        leftContent.setSpacing(2);
+        leftContent.setPadding(new Insets(10, 2, 10, 2));
 
         leftDrawer.setSidePane(leftContent);
-        leftDrawer.setDefaultDrawerSize(150);
+        leftDrawer.setDefaultDrawerSize(200);
         leftDrawer.setResizeContent(false);
         leftDrawer.setOverLayVisible(false);
         leftDrawer.setResizableOnDrag(true);
@@ -313,6 +311,29 @@ public class App {
         for (String viewName :
                 viewMap.keySet()) {
             JFXButton viewBtn = new JFXButton(viewName);
+            viewBtn.setPrefHeight(50);
+            viewBtn.setPrefWidth(200);
+            viewBtn.setStyle("-fx-background-color: #f0a9e9;" +
+                    "-fx-text-fill: #000000;" +
+                    "-fx-font-size: 20;" +
+                    "-jfx-button-type: FLAT");
+            viewBtn.setMinHeight(viewBtn.getPrefHeight());
+            viewBtn.setMinWidth(viewBtn.getPrefWidth());
+            viewBtn.hoverProperty().addListener((observableValue, aBoolean, t1) -> {
+                if (t1) {
+                    viewBtn.setStyle("-fx-background-color: #00C853;" +
+                            "-fx-text-fill: #ffffff;" +
+                            "-fx-text-alignment: center;" +
+                            "-fx-font-size: 20;" +
+                            "-jfx-button-type: RAISED");
+                } else {
+                    viewBtn.setStyle("-fx-background-color: #f0a9e9;" +
+                            "-fx-text-fill: #000000;" +
+                            "-fx-font-size: 20;" +
+                            "-jfx-button-type: FLAT");
+                }
+            });
+
             viewBtn.setOnAction(e -> {
                 gotoView(viewName);
                 leftDrawer.close();
