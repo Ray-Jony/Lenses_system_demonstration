@@ -161,6 +161,11 @@ public class App {
         }
     }
 
+    public void highlightLens(Pane pane, String LensName) {
+        if (lensMap.containsKey(LensName))
+            lensMap.get(LensName).highlightLens(pane);
+    }
+
     public void drawLens(Pane pane) {
 
         for (Lens l :
@@ -178,9 +183,10 @@ public class App {
     public void draw(Pane pane) {
         pane.getChildren().clear();
         pane.getChildren().removeAll();//This probably not working
-        drawLight(pane);
+
         drawMirror(pane);
         drawLens(pane);
+        drawLight(pane);
     }
 
     public void intersectionDetect() {

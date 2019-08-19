@@ -9,8 +9,6 @@ import Framework.LSD.world.Mirror.FlatMirror;
 import Framework.LSD.world.Mirror.Mirror;
 import com.jfoenix.controls.*;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -98,7 +96,7 @@ public class DemoView extends View {
 
         getAddNewLightBtn().setOnAction(e -> {
             Dialog<ArrayList<Object>> dialog = new Dialog<>();
-            dialog.setTitle("set a new light");
+            dialog.setTitle("Set a new light");
 //            dialog.setHeaderText("fill new light info");
 
             ButtonType addNewLight = new ButtonType("addNewLight", ButtonBar.ButtonData.OK_DONE);
@@ -111,10 +109,12 @@ public class DemoView extends View {
 
             TextField lightName = new TextField();
             lightName.setPromptText("LightName");
+
             JFXSlider positionSlider = new JFXSlider();
             positionSlider.setMax(200);
             positionSlider.setMin(-200);
             positionSlider.setValue(0);
+
             JFXSlider directionSlider = new JFXSlider();
             directionSlider.setMin(-90);
             directionSlider.setMax(90);
@@ -202,6 +202,7 @@ public class DemoView extends View {
             ArrayList<Object> defaultValue = new ArrayList<>(Arrays.asList(0D, 0D, LightInfo.RED, false));
             ArrayList<Object> selectedLightInfo =
                     new ArrayList<>(animatedLightMap.getOrDefault(currentSelectedLight, defaultValue));
+
             double light_Y_position = (double) selectedLightInfo.get(0);
             double light_direction = (double) selectedLightInfo.get(1);
             LightInfo lightInfo = (LightInfo) selectedLightInfo.get(2);
@@ -271,18 +272,141 @@ public class DemoView extends View {
                 animatedLightMap.get(currentSelectedLight).set(3, false);
         });
 
+        getLensSelector().setOnAction(e -> {
+            if (getLensSelector().getValue() == null) {
+                currentSelectedLens = "";
+            } else currentSelectedLens = getLensSelector().getValue();
+
+            ArrayList<Object> defaultValue =
+                    new ArrayList<>(Arrays.asList(LensType.ConvexLens, 50d, 250d, 250d, 200d, LensMaterial.H_K10, 50d));
+            ArrayList<Object> selectedLensInfo =
+                    new ArrayList<>(animatedLensMap.getOrDefault(currentSelectedLens, defaultValue));
+
+            LensType lensType = (LensType) selectedLensInfo.get(0);
+            double lens_X_position = (double) selectedLensInfo.get(1);
+            double lens_left_radius = (double) selectedLensInfo.get(2);
+            double lens_right_radius = (double) selectedLensInfo.get(3);
+            double lens_height = (double) selectedLensInfo.get(4);
+            LensMaterial lensMaterial = (LensMaterial) selectedLensInfo.get(5);
+            double concave_lens_minWidth;
+            if (selectedLensInfo.size() > 6) {
+                concave_lens_minWidth = (double) selectedLensInfo.get(6);
+            }
+
+            getLensPositionSlider().setValue(lens_X_position);
+            getController().getChoseLensMaterialBtn().setText(lensMaterial.toString());
+            getController().getLensCode().setText(lensMaterial.getLensCode());
+            getController().getnD().setText("nD = " + lensMaterial.getnD());
+            getController().getnC().setText("nC = " + lensMaterial.getnC());
+            getController().getnC2().setText("nC' = " + lensMaterial.getnC2());
+            getController().getnF().setText("nF = " + lensMaterial.getnF());
+            getController().getnF2().setText("nF' = " + lensMaterial.getnF2());
+            getController().getVd().setText("Vd = " + String.format("%.5f", lensMaterial.getVd()));
+            getController().getVd2().setText("V'd = " + String.format("%.5f", lensMaterial.getVd2()));
+
+        });
+
+        getController().getChoseLensMaterialBtn().setOnAction(e -> {
+            //TODO change to JFXTreeTableView to enable filter function
+            Dialog<LensMaterial> dialog = new Dialog<>();
+            dialog.setTitle("Chose Lens Material");
+
+            ButtonType chose = new ButtonType("Chose", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(chose, ButtonType.CANCEL);
+
+            GridPane gridPane = new GridPane();
+            gridPane.setHgap(10);
+            gridPane.setVgap(10);
+            gridPane.setPadding(new Insets(20, 10, 10, 10));
+
+            JFXListView<String> materialList = new JFXListView<>();
+            materialList.setMinWidth(300);
+
+            HashMap<String, LensMaterial> materialMap = new HashMap<>();
+            for (LensMaterial l :
+                    LensMaterial.values()) {
+                String listCellString = String.format("%-12s", l.toString())
+                        + String.format("%-20s", "[LensCode]: " + l.getLensCode())
+                        + "[Vd]: " + String.format("%.5f", l.getVd());
+                materialList.getItems().add(listCellString);
+                materialMap.put(listCellString, l);
+            }
+
+            gridPane.add(new Label("Material List:"), 0, 0);
+            gridPane.add(materialList, 0, 1);
+
+            Node choseBtn = dialog.getDialogPane().lookupButton(chose);
+            choseBtn.setDisable(true);
+
+            materialList.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) ->
+                    choseBtn.setDisable(t1 == null || t1.isEmpty()));
+
+            dialog.getDialogPane().setContent(gridPane);
+
+            dialog.setResultConverter(dialogBtn -> {
+                if (dialogBtn == chose)
+                    return materialMap.get(materialList.getSelectionModel().getSelectedItem());
+                return null;
+            });
+
+            Optional<LensMaterial> result = dialog.showAndWait();
+
+            result.ifPresent(lensMaterial -> {
+                System.out.println("lens material: " + lensMaterial);
+                getController().getChoseLensMaterialBtn().setText(lensMaterial.toString());
+                getController().getLensCode().setText(lensMaterial.getLensCode());
+                animatedLensMap.get(currentSelectedLens).set(5, lensMaterial);
+                String temp = currentSelectedLens;
+                getLensSelector().getSelectionModel().clearSelection();
+                getLensSelector().getSelectionModel().select(temp);
+            });
+
+        });
+
+
         getLensPositionSlider().valueProperty().addListener((observableValue, number, t1) -> {
             if (!currentSelectedLens.equals("") && animatedLensMap.containsKey(currentSelectedLens)) {
                 animatedLensMap.get(currentSelectedLens).set(1, t1);
             }
         });
 
+        launch();
 
+        getLensSelector().getItems().addAll(getAnimatedLensMap().keySet());
     }
+
+    public void launch() {
+        //for sub class to finish
+    }
+
 
     @Override
     public void onEnter() {
         app.reset();
+    }
+
+
+    public void updateFrame() {
+        intersectionDetect();
+        drawMainDemoPane();
+        highLightLight(getCurrentSelectedLight());
+        highLightLens(getCurrentSelectedLens());
+    }
+
+    public void addBorder() {
+        animatedBoard("TopBoard", 0, 5,
+                3000, 5);
+        animatedBoard("BottomBoard",
+                0, getMainDemoPane().getHeight() - 20,
+                3000, getMainDemoPane().getHeight() - 20);
+    }
+
+    public void update() {
+        //for subclass to finish
+    }
+
+    public void updateInitialization() {
+        //for subclass to finish
     }
 
     @Override
@@ -320,6 +444,12 @@ public class DemoView extends View {
                     break;
             }
         }
+
+        addBorder();
+        updateFrame();
+        update();
+        updateInitialization();
+
     }
 
 
@@ -410,6 +540,10 @@ public class DemoView extends View {
 
     public void highLightLight(String LightName) {
         app.highlightLight(getMainDemoPane(), LightName);
+    }
+
+    public void highLightLens(String LensName) {
+        app.highlightLens(getMainDemoPane(), LensName);
     }
 
     //*****************

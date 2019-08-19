@@ -276,7 +276,7 @@ public enum LensMaterial {
     }
 
 
-    public static LensMaterial find(String lensCode) {
+    public static LensMaterial findViaLensCode(String lensCode) {
         for (LensMaterial lensMaterial :
                 values()) {
             if (lensMaterial.lensCode != null && lensMaterial.lensCode.equals(lensCode)) {

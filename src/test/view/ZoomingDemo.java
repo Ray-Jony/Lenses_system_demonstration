@@ -20,18 +20,22 @@ public class ZoomingDemo extends DemoView {
 
 
     @Override
-    public void onLaunch() {
-        super.onLaunch();
-
-        //Set title of the demonstration
-
+    public void launch() {
         setDemoTitle("Zooming");
 
-        addAnimatedLens("ConvexLens2", new ArrayList<>(Arrays.asList(
+        addAnimatedLens("ConvexLens1", new ArrayList<>(Arrays.asList(
                 LensType.ConvexLens, 50D, 250D, 250D, 200D, LensMaterial.H_K10
         )));
 
-        getLensSelector().getItems().addAll(getAnimatedLensMap().keySet());
+        addAnimatedLens("ConvexLens2", new ArrayList<>(Arrays.asList(
+                LensType.ConvexLens, 500D, 250D, 250D, 200D, LensMaterial.H_K10
+        )));
+
+        addAnimatedLens("ConcaveLens", new ArrayList<>(Arrays.asList(
+                LensType.ConcaveLens, 300D, 250D, 250D, 200D, LensMaterial.H_K10, 50D
+        )));
+
+
 
     }
 
@@ -42,27 +46,9 @@ public class ZoomingDemo extends DemoView {
 
     }
 
+
     @Override
-    public void onUpdate(double time) {
-        super.onUpdate(time);
-
-
-//        animatedLight("BlueLight", getLightPositionSlider().getValue(),
-//                -Math.PI * (getLightDirectionSlider().getValue() / 180), LightInfo.BLUE);
-//        animatedConvexLens("ConvexLens1", getLensPositionSlider().getValue(),
-//                250, 250, 200, LensMaterial.H_K10);
-        animatedBoard("TopBoard", 0, 5,
-                3000, 5);
-        animatedBoard("BottomBoard",
-                0, getMainDemoPane().getHeight() - 20,
-                3000, getMainDemoPane().getHeight() - 20);
-
-        //************[Above] add animated light/lens******************/
-        intersectionDetect();
-        drawMainDemoPane();
-        highLightLight(getCurrentSelectedLight());
-        //************[Below] add others*******************************/
-
+    public void update() {
         addStandardLine();
 
         getLensPositionSlider().setMax(getMainDemoPane().getWidth() - 30);
@@ -70,10 +56,44 @@ public class ZoomingDemo extends DemoView {
 
         getLightPositionSlider().setMax((int) (getMainDemoPane().getHeight() / 2 - 25));
         getLightPositionSlider().setMin(-(int) ((getMainDemoPane().getHeight() / 2 - 25)));
+    }
 
-
-        //************[Below] initialization****************************/
+    @Override
+    public void updateInitialization() {
 
     }
+
+
+
+    //    @Override
+//    public void onUpdate(double time) {
+//        super.onUpdate(time);
+//
+//
+////        animatedBoard("TopBoard", 0, 5,
+////                3000, 5);
+////        animatedBoard("BottomBoard",
+////                0, getMainDemoPane().getHeight() - 20,
+////                3000, getMainDemoPane().getHeight() - 20);
+//
+//        //************[Above] add animated light/lens******************/
+////        intersectionDetect();
+////        drawMainDemoPane();
+////        highLightLight(getCurrentSelectedLight());
+////        highLightLens(getCurrentSelectedLens());
+//        //************[Below] add others*******************************/
+//
+////        addStandardLine();
+////
+////        getLensPositionSlider().setMax(getMainDemoPane().getWidth() - 30);
+////        getLensPositionSlider().setMin(30);
+////
+////        getLightPositionSlider().setMax((int) (getMainDemoPane().getHeight() / 2 - 25));
+////        getLightPositionSlider().setMin(-(int) ((getMainDemoPane().getHeight() / 2 - 25)));
+//
+//
+//        //************[Below] initialization****************************/
+//
+//    }
 
 }

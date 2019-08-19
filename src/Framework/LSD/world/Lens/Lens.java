@@ -65,4 +65,6 @@ public abstract class Lens {
 
     public abstract void drawLens(Pane pane);
 
+    public abstract void highlightLens(Pane pane);
+
 }

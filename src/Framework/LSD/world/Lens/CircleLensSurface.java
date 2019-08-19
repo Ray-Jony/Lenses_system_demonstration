@@ -1,5 +1,6 @@
 package Framework.LSD.world.Lens;
 
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
@@ -40,12 +41,18 @@ public class CircleLensSurface {
 //        this.Vd = 58.95;
     }
 
-    public void drawLens(Pane pane, double startDegree, double duration) {
+    public void drawLens(Pane pane, double startDegree, double duration, boolean isHighLighted) {
 
         Arc arc = new Arc(centerX, centerY, radius, radius, startDegree, duration);
-        arc.setFill(Color.TRANSPARENT);
+
         arc.setStroke(Color.BLACK);
         arc.setStrokeWidth(2);
+        if (isHighLighted) {
+            arc.setStroke(Color.BLUE);
+            arc.setFill(Color.TRANSPARENT);
+        } else
+            arc.setFill(Color.rgb(187, 255, 255));
+
         pane.getChildren().addAll(arc);
 //        Circle circle = new Circle(centerX, centerY, radius);
 //        circle.setFill(Color.TRANSPARENT);

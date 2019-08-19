@@ -49,9 +49,22 @@ public class ConcaveLens extends Lens {
     @Override
     public void drawLens(Pane pane) {
         double leftDegree = Math.toDegrees(Math.asin((getHeight() / 2) / getLeftRadius()));
-        leftSurface.drawLens(pane, leftDegree, -2 * leftDegree);
+        leftSurface.drawLens(pane, leftDegree, -2 * leftDegree, false);
         double rightDegree = Math.toDegrees(Math.asin((getHeight() / 2) / getRightRadius()));
-        rightSurface.drawLens(pane, rightDegree + 180, -2 * rightDegree);
+        rightSurface.drawLens(pane, rightDegree + 180, -2 * rightDegree, false);
+        drawTop_And_Bottom_Line(pane);
+    }
+
+    @Override
+    public void highlightLens(Pane pane) {
+        double leftDegree = Math.toDegrees(Math.asin((getHeight() / 2) / getLeftRadius()));
+        leftSurface.drawLens(pane, leftDegree, -2 * leftDegree, true);
+        double rightDegree = Math.toDegrees(Math.asin((getHeight() / 2) / getRightRadius()));
+        rightSurface.drawLens(pane, rightDegree + 180, -2 * rightDegree, true);
+        drawTop_And_Bottom_Line(pane);
+    }
+
+    public void drawTop_And_Bottom_Line(Pane pane) {
         Line upLine = new Line(
                 getCenterX() - (getMinWidth() / 2) - (getLeftRadius() -
                         Math.sqrt(getLeftRadius() * getLeftRadius() - (getHeight() / 2) * (getHeight() / 2))),
@@ -69,5 +82,6 @@ public class ConcaveLens extends Lens {
                 getCenterY() - getHeight() / 2
         );
         pane.getChildren().addAll(upLine, downLine);
+
     }
 }
