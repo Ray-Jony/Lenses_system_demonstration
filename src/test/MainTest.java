@@ -1,15 +1,17 @@
 package test;
 
-import static Framework.Framework.*;
-
 import Framework.LSD.app.Initial;
 import test.view.*;
 
-public class Test extends Initial {
+import static Framework.Framework.app;
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+/**
+ * @author :
+ * @version :
+ */
+public class MainTest extends Initial {public static void main(String[] args) {
+    launch(args);
+}
 
     @Override
     public void onLaunch() {
@@ -25,10 +27,6 @@ public class Test extends Initial {
         app.regView("Zooming", new ZoomingDemo());
 //        app.gotoView("ZoomingDemo");
         app.gotoView("Home");
-
-
-
-
 
 //        System.out.println(app.getHeight());
     }
