@@ -36,6 +36,8 @@ public class DemoView extends View {
 
     private Line standardLine;
 
+    private boolean updateInitializationFinished = false;
+
     private String currentSelectedLight = "";
     private String currentSelectedLens = "";
     private String currentSelectedMirror = "";
@@ -91,6 +93,8 @@ public class DemoView extends View {
 
         demoPane.prefWidthProperty().bind(app.widthProperty());
         demoPane.prefHeightProperty().bind(app.heightProperty());
+
+        app.addOpenSideBarHandler(getController().getDemoName());
 
         getLightDirectionSlider().setValue(0);
 
@@ -372,7 +376,8 @@ public class DemoView extends View {
 
         launch();
 
-        getLensSelector().getItems().addAll(getAnimatedLensMap().keySet());
+//        getLensSelector().getItems().addAll(getAnimatedLensMap().keySet());
+//        getLightSelector().getItems().addAll(getAnimatedLightMap().keySet());
     }
 
     public void launch() {
@@ -448,8 +453,11 @@ public class DemoView extends View {
         addBorder();
         updateFrame();
         update();
-        updateInitialization();
-
+//        updateInitialization();
+//        if (!updateInitializationFinished) {
+////            updateInitialization();
+//            updateInitializationFinished = true;
+//        }
     }
 
 
@@ -475,6 +483,12 @@ public class DemoView extends View {
 
     public void addAnimatedLens(String lensName, ArrayList<Object> lensInfo) {
         animatedLensMap.put(lensName, lensInfo);
+        getLensSelector().getItems().add(lensName);
+    }
+
+    public void addAnimatedLight(String lightName, ArrayList<Object> lightInfo) {
+        animatedLightMap.put(lightName, lightInfo);
+        getLightSelector().getItems().add(lightName);
     }
 
 

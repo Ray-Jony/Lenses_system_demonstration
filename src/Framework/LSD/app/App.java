@@ -6,12 +6,18 @@ import Framework.LSD.world.Light.Light;
 import Framework.LSD.world.Light.LightInfo;
 import Framework.LSD.world.Light.LightPath;
 import Framework.LSD.world.Mirror.Mirror;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXDrawersStack;
 import javafx.application.Platform;
 import javafx.beans.property.*;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -25,7 +31,10 @@ public class App {
 
     private final Stage stage;
     private final Scene scene;
-    private final Pane root;
+    //    private final Pane root;
+    private final JFXDrawersStack root;
+    private JFXDrawer leftDrawer;
+    private VBox leftContent;
 
     private final HashMap<String, View> viewMap;
     private final ObjectProperty<View> currentView;
@@ -49,7 +58,8 @@ public class App {
     public App(Stage stage) {
         this.stage = stage;
 
-        root = new AnchorPane();
+        root = new JFXDrawersStack();
+//        root = new AnchorPane();
         scene = new Scene(root);
         stage.setScene(scene);
 
@@ -81,6 +91,23 @@ public class App {
         scene.setFill(Color.WHITE);
         root.setBackground(Background.EMPTY);
 
+        leftDrawer = new JFXDrawer();
+        leftContent = new VBox();
+
+//        for (String viewName :
+//                viewMap.keySet()) {
+//            JFXButton viewBtn = new JFXButton(viewName);
+//            viewBtn.setOnAction(e -> gotoView(viewName));
+//            leftContent.getChildren().add(viewBtn);
+//        }
+
+        leftDrawer.setSidePane(leftContent);
+        leftDrawer.setDefaultDrawerSize(150);
+        leftDrawer.setResizeContent(false);
+        leftDrawer.setOverLayVisible(false);
+        leftDrawer.setResizableOnDrag(true);
+
+
         stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
             if (onExit != null && !onExit.handle()) {
                 event.consume();
@@ -90,11 +117,12 @@ public class App {
         currentView.addListener((o, ov, nv) -> {
             if (ov != null) {
                 ov.onLeave();
-                root.getChildren().remove(ov.getPane());
+//                root.getChildren().remove(ov.getPane());
             }
 
             if (nv != null) {
-                root.getChildren().add(nv.getPane());
+//                root.getChildren().add(nv.getPane());
+                root.setContent(nv.getPane());
                 nv.onEnter();
             }
         });
@@ -248,6 +276,10 @@ public class App {
         }
     }
 
+    public void addOpenSideBarHandler(Node node) {
+        node.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> root.toggle(leftDrawer));
+    }
+
     public View getView(String name) {
         return viewMap.get(name);
     }
@@ -277,6 +309,17 @@ public class App {
                 viewMap.values()) {
             v.onLaunch();
         }
+
+        for (String viewName :
+                viewMap.keySet()) {
+            JFXButton viewBtn = new JFXButton(viewName);
+            viewBtn.setOnAction(e -> {
+                gotoView(viewName);
+                leftDrawer.close();
+            });
+            leftContent.getChildren().add(viewBtn);
+        }
+
         stage.requestFocus();
         stage.show();
     }

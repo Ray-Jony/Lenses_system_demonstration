@@ -24,27 +24,42 @@ public class ZoomingDemo extends DemoView {
         setDemoTitle("Zooming");
 
         addAnimatedLens("ConvexLens1", new ArrayList<>(Arrays.asList(
-                LensType.ConvexLens, 50D, 250D, 250D, 200D, LensMaterial.H_K10
+                LensType.ConvexLens, 50D, 500D, 500D, 200D, LensMaterial.H_FK61
         )));
 
         addAnimatedLens("ConvexLens2", new ArrayList<>(Arrays.asList(
-                LensType.ConvexLens, 500D, 250D, 250D, 200D, LensMaterial.H_K10
+                LensType.ConvexLens, 500D, 500D, 500D, 200D, LensMaterial.H_FK61
         )));
 
         addAnimatedLens("ConcaveLens", new ArrayList<>(Arrays.asList(
-                LensType.ConcaveLens, 300D, 250D, 250D, 200D, LensMaterial.H_K10, 50D
+                LensType.ConcaveLens, 300D, 500D, 500D, 200D, LensMaterial.H_FK61, 25D
+        )));
+
+        addAnimatedLight("Symmetrical Light1", new ArrayList<>(Arrays.asList(
+                75D, 0D, LightInfo.RED, true
+        )));
+
+        addAnimatedLight("Symmetrical Light2", new ArrayList<>(Arrays.asList(
+                65D, 0D, LightInfo.RED, true
+        )));
+
+        addAnimatedLight("Symmetrical Light3", new ArrayList<>(Arrays.asList(
+                55D, 0D, LightInfo.RED, true
+        )));
+
+        addAnimatedLight("Symmetrical Light4", new ArrayList<>(Arrays.asList(
+                45D, 0D, LightInfo.RED, true
         )));
 
 
-
     }
 
-    @Override
-    public void onEnter() {
-        super.onEnter();
-//        System.out.println(getLensControl().widthProperty().doubleValue());
-
-    }
+//    @Override
+//    public void onEnter() {
+//        super.onEnter();
+////        System.out.println(getLensControl().widthProperty().doubleValue());
+//
+//    }
 
 
     @Override
@@ -58,11 +73,11 @@ public class ZoomingDemo extends DemoView {
         getLightPositionSlider().setMin(-(int) ((getMainDemoPane().getHeight() / 2 - 25)));
     }
 
-    @Override
-    public void updateInitialization() {
-
-    }
-
+//    @Override
+//    public void updateInitialization() {
+//        getLensSelector().getSelectionModel().select("ConcaveLens");
+//        getLightSelector().getSelectionModel().select("Symmetrical Light");
+//    }
 
 
     //    @Override

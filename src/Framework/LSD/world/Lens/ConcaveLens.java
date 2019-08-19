@@ -1,6 +1,7 @@
 package Framework.LSD.world.Lens;
 
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 /**
@@ -52,7 +53,7 @@ public class ConcaveLens extends Lens {
         leftSurface.drawLens(pane, leftDegree, -2 * leftDegree, false);
         double rightDegree = Math.toDegrees(Math.asin((getHeight() / 2) / getRightRadius()));
         rightSurface.drawLens(pane, rightDegree + 180, -2 * rightDegree, false);
-        drawTop_And_Bottom_Line(pane);
+        drawTop_And_Bottom_Line(pane,false);
     }
 
     @Override
@@ -61,10 +62,10 @@ public class ConcaveLens extends Lens {
         leftSurface.drawLens(pane, leftDegree, -2 * leftDegree, true);
         double rightDegree = Math.toDegrees(Math.asin((getHeight() / 2) / getRightRadius()));
         rightSurface.drawLens(pane, rightDegree + 180, -2 * rightDegree, true);
-        drawTop_And_Bottom_Line(pane);
+        drawTop_And_Bottom_Line(pane,true);
     }
 
-    public void drawTop_And_Bottom_Line(Pane pane) {
+    public void drawTop_And_Bottom_Line(Pane pane,boolean isHighlighted) {
         Line upLine = new Line(
                 getCenterX() - (getMinWidth() / 2) - (getLeftRadius() -
                         Math.sqrt(getLeftRadius() * getLeftRadius() - (getHeight() / 2) * (getHeight() / 2))),
@@ -81,6 +82,10 @@ public class ConcaveLens extends Lens {
                         Math.sqrt(getRightRadius() * getRightRadius() - (getHeight() / 2) * (getHeight() / 2))),
                 getCenterY() - getHeight() / 2
         );
+        if (isHighlighted){
+            upLine.setStroke(Color.BLUE);
+            downLine.setStroke(Color.BLUE);
+        }
         pane.getChildren().addAll(upLine, downLine);
 
     }

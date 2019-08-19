@@ -12,7 +12,7 @@ import Framework.LSD.app.View;
 
 public class HomeView extends View {
 
-
+    private Button openSideBarBtn;
     private Button playBtn;
     private Button exitBtn;
     private Button reflectionDemoBtn;
@@ -26,26 +26,31 @@ public class HomeView extends View {
     public void onLaunch() {
         listPane = new StackPane();
 
+        openSideBarBtn = new Button("open side bar");
+        app.addOpenSideBarHandler(openSideBarBtn);
+
         playBtn = new Button("Play");
         playBtn.setOnAction(e -> app.gotoView("Play"));
 
         reflectionDemoBtn = new Button("Reflection Demo");
-        reflectionDemoBtn.setOnAction(e -> app.gotoView("Demo"));
+        reflectionDemoBtn.setOnAction(e -> app.gotoView("Reflection"));
 
         SphericalAberrationDemoBtn = new Button("SphericalAberrationDemo");
-        SphericalAberrationDemoBtn.setOnAction(e -> app.gotoView("LensDemo"));
+        SphericalAberrationDemoBtn.setOnAction(e -> app.gotoView("Spherical Aberration"));
 
         chromaticAberrationDemoBtn = new Button("Chromatic Aberration Demo");
-        chromaticAberrationDemoBtn.setOnAction(e -> app.gotoView("ChromaticAberrationDemo"));
+        chromaticAberrationDemoBtn.setOnAction(e -> app.gotoView("Chromatic Aberration"));
 
-        controllerTestViewBtn = new Button("ZoomingDemo");
-        controllerTestViewBtn.setOnAction(e -> app.gotoView("ZoomingDemo"));
+        controllerTestViewBtn = new Button("Zooming");
+        controllerTestViewBtn.setOnAction(e -> app.gotoView("Zooming"));
 
         exitBtn = new Button("Exit");
         exitBtn.setOnAction(e -> app.exit());
 
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(reflectionDemoBtn,
+        vBox.getChildren().addAll(
+                openSideBarBtn,
+                reflectionDemoBtn,
                 SphericalAberrationDemoBtn,
                 chromaticAberrationDemoBtn,
                 controllerTestViewBtn,

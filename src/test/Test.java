@@ -19,12 +19,16 @@ public class Test extends Initial {
 
         app.regView("Home", new HomeView());
 //        app.regView("Play", new PlayView());
-        app.regView("Demo", new ReflectionDemo());
-        app.regView("LensDemo", new SphericalAberrationDemo());
-        app.regView("ChromaticAberrationDemo", new ChromaticAberrationDemo());
-        app.regView("ZoomingDemo", new ZoomingDemo());
+        app.regView("Reflection", new ReflectionDemo());
+        app.regView("Spherical Aberration", new SphericalAberrationDemo());
+        app.regView("Chromatic Aberration", new ChromaticAberrationDemo());
+        app.regView("Zooming", new ZoomingDemo());
 //        app.gotoView("ZoomingDemo");
         app.gotoView("Home");
+
+
+
+
 
 //        System.out.println(app.getHeight());
     }

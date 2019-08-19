@@ -47,11 +47,10 @@ public class CircleLensSurface {
 
         arc.setStroke(Color.BLACK);
         arc.setStrokeWidth(2);
+        arc.setFill(Color.TRANSPARENT);
         if (isHighLighted) {
             arc.setStroke(Color.BLUE);
-            arc.setFill(Color.TRANSPARENT);
-        } else
-            arc.setFill(Color.rgb(187, 255, 255));
+        }
 
         pane.getChildren().addAll(arc);
 //        Circle circle = new Circle(centerX, centerY, radius);
