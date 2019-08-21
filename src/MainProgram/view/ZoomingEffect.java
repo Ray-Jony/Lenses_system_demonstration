@@ -13,6 +13,8 @@ import java.util.Arrays;
 
 /**
  * Class ZoomingEffect is created on 19/08/2019 19:20.
+ * Predefined 3 lens (1 concave lens and 2 convex lens)
+ * 4 paralleled symmetrical lights to deliver zooming effect
  *
  * @author Ray
  * @version 19/08/2019

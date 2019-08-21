@@ -3,6 +3,9 @@ package Framework.LSD.app;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.*;
 
+/**
+ * Abstract Class View give a temple of views, for Class App to register and control
+ */
 public abstract class View {
 
     private final Pane pane;

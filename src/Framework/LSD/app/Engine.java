@@ -2,13 +2,17 @@ package Framework.LSD.app;
 
 import javafx.animation.AnimationTimer;
 
+/**
+ * Class Engine enable the functionality of refresh frames
+ */
+
 public class Engine {
 
     private final Timer timer;
 
-    private double nowNanos;
-    private double lastNanos;
-    private double deltaNanos;
+    private double currentTimeNanos;
+    private double lastTimeNanos;
+    private double deltaTimeNanos;
 
     //frames per second
     private double fps;
@@ -42,40 +46,40 @@ public class Engine {
         setFps(fps);
     }
 
-    public double getNowNanos() {
-        return nowNanos;
+    public double getCurrentTimeNanos() {
+        return currentTimeNanos;
     }
 
     public double getNowMillis() {
-        return nowNanos * 1E-6;
+        return currentTimeNanos * 1E-6;
     }
 
     public double getNowSeconds() {
-        return nowNanos * 1E-9;
+        return currentTimeNanos * 1E-9;
     }
 
-    public double getLastNanos() {
-        return lastNanos;
+    public double getLastTimeNanos() {
+        return lastTimeNanos;
     }
 
     public double getLastMillis() {
-        return lastNanos * 1E-6;
+        return lastTimeNanos * 1E-6;
     }
 
     public double getLastSeconds() {
-        return lastNanos * 1E-9;
+        return lastTimeNanos * 1E-9;
     }
 
-    public double getDeltaNanos() {
-        return deltaNanos;
+    public double getDeltaTimeNanos() {
+        return deltaTimeNanos;
     }
 
     public double getDeltaMillis() {
-        return deltaNanos * 1E-6;
+        return deltaTimeNanos * 1E-6;
     }
 
     public double getDeltaSec() {
-        return deltaNanos * 1E-9;
+        return deltaTimeNanos * 1E-9;
     }
 
     public double getNpf() {
@@ -122,25 +126,25 @@ public class Engine {
 
         @Override
         public void handle(long now) {
-            nowNanos = now;
-            if (lastNanos > 0) {
-                deltaNanos += nowNanos - lastNanos;
+            currentTimeNanos = now;
+            if (lastTimeNanos > 0) {
+                deltaTimeNanos += currentTimeNanos - lastTimeNanos;
             }
-            lastNanos = nowNanos;
+            lastTimeNanos = currentTimeNanos;
 
-            if (deltaNanos >= npf) {
+            if (deltaTimeNanos >= npf) {
                 if (onUpdate != null) {
-                    onUpdate.handle(deltaNanos);
+                    onUpdate.handle(deltaTimeNanos);
                 }
 
-                deltaNanos -= npf;
+                deltaTimeNanos -= npf;
             }
         }
 
         private void reset() {
-            nowNanos = 0;
-            lastNanos = 0;
-            deltaNanos = 0;
+            currentTimeNanos = 0;
+            lastTimeNanos = 0;
+            deltaTimeNanos = 0;
         }
 
     }

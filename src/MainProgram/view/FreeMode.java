@@ -23,6 +23,7 @@ import java.util.Optional;
 
 /**
  * Class FreeMode is created on 19/08/2019 19:21.
+ * Added a new functionality for users to customize their own lenses
  *
  * @author Ray
  * @version 19/08/2019

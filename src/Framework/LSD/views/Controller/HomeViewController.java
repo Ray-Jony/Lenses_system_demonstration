@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 
 /**
  * Class HomeViewController is created on 19/08/2019 02:49.
+ * Controller of the HomeView
  *
  * @author Ray
  * @version 19/08/2019

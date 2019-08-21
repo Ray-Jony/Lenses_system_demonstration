@@ -31,6 +31,12 @@ import Framework.LSD.input.KeyInput;
 import java.util.Collection;
 import java.util.HashMap;
 
+/**
+ * App is the core of the refreshable pane, it store the Mirrors, Lenses and Light Map data.
+ * It can deploy all the objects certain position to be ready to call or change
+ * With the help of Class Engine, it can deliver the functionality of refresh frame by time
+ */
+
 public class App {
 
     private final Stage stage;

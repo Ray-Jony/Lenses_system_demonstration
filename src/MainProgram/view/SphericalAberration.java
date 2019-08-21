@@ -14,6 +14,9 @@ import java.util.Arrays;
 
 /**
  * Class SphericalAberration is created on 19/08/2019 19:20.
+ * This is the Spherical Aberration Demo View
+ * Pre defined 7 paralleled symmetrical lights and enabled control
+ * one lens without radius control
  *
  * @author Ray
  * @version 19/08/2019

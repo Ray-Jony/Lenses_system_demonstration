@@ -10,6 +10,7 @@ import java.io.IOException;
 
 /**
  * Class HomeView is created on 19/08/2019 02:48.
+ * Defined the temple of the home view, initial basic functionality for the home view to extends
  *
  * @author Ray
  * @version 19/08/2019
@@ -23,6 +24,7 @@ public abstract class HomeView extends View {
 
     @Override
     public void onLaunch() {
+        //load HomeView's fxml file
         getFxmlLoader().setLocation(getFxmlLoader()
                 .getClassLoader()
                 .getResource("Framework/LSD/views/FXML/HomeView.fxml"));

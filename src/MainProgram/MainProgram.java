@@ -7,6 +7,7 @@ import static Framework.Framework.app;
 
 /**
  * Class MainProgram is created on 19/08/2019 02:38.
+ * This is the main program entrance, extends Initial
  *
  * @author Ray
  * @version 19/08/2019

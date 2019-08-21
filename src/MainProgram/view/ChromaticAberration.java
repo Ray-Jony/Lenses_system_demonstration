@@ -22,6 +22,9 @@ import java.util.Optional;
 
 /**
  * Class ChromaticAberration is created on 19/08/2019 19:19.
+ * This is the chromatic aberration demo view
+ * it give fixed lenses(tested position) with control enabled
+ * and one symmetrical light bundle to represent chromatic aberration
  *
  * @author Ray
  * @version 19/08/2019

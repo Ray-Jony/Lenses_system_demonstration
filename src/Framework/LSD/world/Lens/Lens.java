@@ -2,11 +2,19 @@ package Framework.LSD.world.Lens;
 
 import javafx.scene.layout.Pane;
 
+/**
+ * Class Lens is temple for all type of lenses
+ */
+
 public abstract class Lens {
 
     public static final int CONVEX_LENS = 1;
     public static final int CONCAVE_LENS = 2;
 
+    /**
+     * Typical Lens will contain two surface
+     * it will store the two surface here
+     */
     CircleLensSurface leftSurface;
     CircleLensSurface rightSurface;
 

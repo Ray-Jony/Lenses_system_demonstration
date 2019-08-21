@@ -5,6 +5,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 
+/**
+ * Class CircleLensSurface defined the Surface information for the lens
+ */
+
 public class CircleLensSurface {
 
     public static final int LEFT = 1;
@@ -24,8 +28,9 @@ public class CircleLensSurface {
 //
 //    private double Vd; //Abbe Number Vd = (nD - 1) / (nF - nC)
 
-    //传统上nD>1.60，VD>50和nD<1.60，VD>55的各类玻璃定为冕(K)玻璃，其余各类玻璃定为火石(F)玻璃。
-    //冕玻璃一般作凸透镜，火石玻璃作凹透镜。
+    //Traditionally the lens with nD>1.60，VD>50 and nD<1.60，VD> will be define with K indicator，all other lens
+    // defined with F indicator
+    //K lens normally as Convex lens, F lens normally as Concave lens
 
     public CircleLensSurface(double centerX, double centerY, double radius, LensMaterial lensMaterial) {
         this.centerX = centerX;

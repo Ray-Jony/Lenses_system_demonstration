@@ -15,6 +15,7 @@ import java.util.ResourceBundle;
 
 /**
  * Class DemoViewController is created on 11/08/2019 14:40.
+ * Controller of the DemoView
  *
  * @author Ray
  * @version 11/08/2019

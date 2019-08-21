@@ -27,6 +27,7 @@ import static Framework.Framework.app;
 
 /**
  * Class DemoView is created on 07/08/2019 23:55.
+ * Defined the temple of the demo views, initial basic functionality for the demo views to extends
  *
  * @author Ray
  * @version 07/08/2019

@@ -8,6 +8,8 @@ import javafx.scene.image.Image;
 
 /**
  * Class MainHomeView is created on 19/08/2019 19:13.
+ * This is the class for the HomeView
+ * Defined the contents function and styling
  *
  * @author Ray
  * @version 19/08/2019
@@ -34,10 +36,10 @@ public class Home extends HomeView {
                         .setImage(new Image("Framework/LSD/views/IMAGE/chromatic_aberration.jpg"));
                 getController().getDescription().setText("  In optics, chromatic aberration (abbreviated CA; also " +
                         "called chromatic distortion and spherochromatism) is a failure of a lens to focus all colors" +
-                        " to the same point.[1] It is caused by dispersion: the refractive index of the lens elements" +
+                        " to the same point. It is caused by dispersion: the refractive index of the lens elements" +
                         " varies with the wavelength of light. The refractive index of most transparent materials" +
-                        " decreases with increasing wavelength.[2] Since the focal length of a lens depends on the" +
-                        " refractive index, this variation in refractive index affects focusing.[3] Chromatic " +
+                        " decreases with increasing wavelength. Since the focal length of a lens depends on the" +
+                        " refractive index, this variation in refractive index affects focusing. Chromatic " +
                         "aberration manifests itself as \"fringes\" of color along boundaries that separate dark" +
                         " and bright parts of the image.");
             } else {
@@ -65,7 +67,7 @@ public class Home extends HomeView {
                         " length (FFL) lens (see prime lens).\n" +
                         "\n" +
                         "A true zoom lens, also called a parfocal lens, is one that maintains focus when its focal" +
-                        " length changes.[1] A lens that loses focus during zooming is more properly called a" +
+                        " length changes. A lens that loses focus during zooming is more properly called a" +
                         " varifocal lens. Despite being marketed as zoom lenses, virtually all consumer lenses with variable" +
                         " focal lengths use varifocal design.\n" +
                         "\n" +
@@ -75,7 +77,7 @@ public class Home extends HomeView {
                         "loss of image resolution at their maximum aperture, especially at the extremes of their " +
                         "focal length range. This effect is evident in the corners of the image, when displayed in" +
                         " a large format or high resolution. The greater the range of focal length a zoom lens" +
-                        " offers, the more exaggerated these compromises must become.[2]");
+                        " offers, the more exaggerated these compromises must become.");
             } else {
                 getController().getZoomingEffectBtn()
                         .setStyle("-fx-background-color: transparent;" +

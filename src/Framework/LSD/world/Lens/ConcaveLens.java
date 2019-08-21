@@ -82,6 +82,9 @@ public class ConcaveLens extends Lens {
                         Math.sqrt(getRightRadius() * getRightRadius() - (getHeight() / 2) * (getHeight() / 2))),
                 getCenterY() - getHeight() / 2
         );
+        upLine.setStrokeWidth(2);
+        downLine.setStrokeWidth(2);
+
         if (isHighlighted){
             upLine.setStroke(Color.BLUE);
             downLine.setStroke(Color.BLUE);

@@ -1,5 +1,10 @@
 package Framework.LSD.world.Lens;
 
+/**
+ * This class contains all the lens information from the manufacturer ChengDuGuangMing;
+ * defined some methods for searching
+ */
+
 public enum LensMaterial {
 
     H_FK61(1, "497816", 1.49513, 1.49543, 1.49694, 1.50123, 1.50157),

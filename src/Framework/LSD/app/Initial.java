@@ -3,6 +3,11 @@ package Framework.LSD.app;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+/**
+ * Abstract Class Initial extends from javafx.Application with a start method to initialize the stage of program
+ * Give a temple for the Lens demo application
+ */
+
 public abstract class Initial extends Application {
 
     private App app;
