@@ -1,0 +1,8 @@
+#homeExitBtn{
+    -fx-background-color: #ffa6b1;
+}
+
+#homeExitBtn:hover{
+    -fx-text-fill: white;
+    -fx-background-color: #ff3c3c;
+}

@@ -10,6 +10,8 @@ import Framework.LSD.world.Mirror.Mirror;
 import com.jfoenix.controls.*;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -43,7 +45,8 @@ public abstract class DemoView extends View {
     private String currentSelectedMirror = "";
 
     private boolean enableHighlight = true;
-    private boolean enableLensRadius = true;
+    private boolean enableLensRadius = false;
+    private boolean enableLightControl = true;
 
     private static final String SYMMETRICAL_ID = "[symmetrical]";
 
@@ -99,23 +102,39 @@ public abstract class DemoView extends View {
 
         app.addOpenSideBarHandler(getController().getDemoName());
 
+        JFXSlider leftRadiusSlider = new JFXSlider(220D, 2000D, 300D);
+        leftRadiusSlider.setOrientation(Orientation.VERTICAL);
+        JFXSlider rightRadiusSlider = new JFXSlider(220D, 2000D, 300D);
+        rightRadiusSlider.setOrientation(Orientation.VERTICAL);
+
+        leftRadiusSlider.valueProperty().addListener((observableValue, number, t1) -> {
+            if (!getCurrentSelectedLens().equals("") && getAnimatedLensMap().containsKey(getCurrentSelectedLens())) {
+                getAnimatedLensMap().get(getCurrentSelectedLens()).set(2, t1);
+            }
+        });
+        rightRadiusSlider.valueProperty().addListener((observableValue, number, t1) -> {
+            if (!getCurrentSelectedLens().equals("") && getAnimatedLensMap().containsKey(getCurrentSelectedLens())) {
+                getAnimatedLensMap().get(getCurrentSelectedLens()).set(3, t1);
+            }
+        });
+
         getLightDirectionSlider().setValue(0);
+
 
         getAddNewLightBtn().setOnAction(e -> {
             Dialog<ArrayList<Object>> dialog = new Dialog<>();
             dialog.setTitle("Set a new light");
-//            dialog.setHeaderText("fill new light info");
 
-            ButtonType addNewLight = new ButtonType("addNewLight", ButtonBar.ButtonData.OK_DONE);
+            ButtonType addNewLight = new ButtonType("Add New Light", ButtonBar.ButtonData.OK_DONE);
             dialog.getDialogPane().getButtonTypes().addAll(addNewLight, ButtonType.CANCEL);
 
             GridPane gridPane = new GridPane();
             gridPane.setHgap(10);
             gridPane.setVgap(10);
-            gridPane.setPadding(new Insets(20, 20, 10, 10));
+            gridPane.setPadding(new Insets(10, 10, 10, 10));
 
             TextField lightName = new TextField();
-            lightName.setPromptText("LightName");
+            lightName.setPromptText("Light Name");
 
             JFXSlider positionSlider = new JFXSlider();
             positionSlider.setMax(200);
@@ -297,8 +316,16 @@ public abstract class DemoView extends View {
                 concave_lens_minWidth = (double) selectedLensInfo.get(6);
             }
 
+            if (enableLensRadius) {
+                leftRadiusSlider.setValue(lens_left_radius);
+                rightRadiusSlider.setValue(lens_right_radius);
+                leftRadiusSlider.setMin((lens_height / 2) + 30);
+                rightRadiusSlider.setMin((lens_height / 2) + 30);
+            }
+
             getLensPositionSlider().setValue(lens_X_position);
-            getController().getChoseLensMaterialBtn().setText(lensMaterial.toString());
+            getController().getChoseLensMaterialBtn()
+                    .setText(lensMaterial.getSequenceNumber() + " " + lensMaterial.toString());
             getController().getLensCode().setText(lensMaterial.getLensCode());
             getController().getnD().setText("nD = " + lensMaterial.getnD());
             getController().getnC().setText("nC = " + lensMaterial.getnC());
@@ -324,7 +351,7 @@ public abstract class DemoView extends View {
             gridPane.setPadding(new Insets(20, 10, 10, 10));
 
             JFXListView<String> materialList = new JFXListView<>();
-            materialList.setMinWidth(300);
+            materialList.setMinWidth(350);
 
             HashMap<String, LensMaterial> materialMap = new HashMap<>();
             for (LensMaterial l :
@@ -357,7 +384,8 @@ public abstract class DemoView extends View {
 
             result.ifPresent(lensMaterial -> {
                 System.out.println("lens material: " + lensMaterial);
-                getController().getChoseLensMaterialBtn().setText(lensMaterial.toString());
+                getController().getChoseLensMaterialBtn()
+                        .setText(lensMaterial.getSequenceNumber() + " " + lensMaterial.toString());
                 getController().getLensCode().setText(lensMaterial.getLensCode());
                 animatedLensMap.get(currentSelectedLens).set(5, lensMaterial);
                 String temp = currentSelectedLens;
@@ -374,7 +402,39 @@ public abstract class DemoView extends View {
             }
         });
 
+        getController().getDeselectLightBtn().setOnAction(e -> {
+            getLightSelector().getSelectionModel().select(null);
+        });
+
+
         launch();
+
+        if (enableLensRadius) {
+
+            Label radiusControl = new Label("Radius Control");
+            radiusControl.setMinWidth(80);
+
+            HBox radiusControlHBox = new HBox(leftRadiusSlider, rightRadiusSlider);
+            radiusControlHBox.setSpacing(10);
+            radiusControlHBox.setPadding(new Insets(0, 10, 0, 10));
+            radiusControlHBox.setAlignment(Pos.CENTER);
+            getController().getTopMenu().getChildren()
+                    .add(1, new VBox(radiusControl, radiusControlHBox));
+//            getController().getTopMenu().getChildren().add(2, leftRadiusSlider);
+//            getController().getTopMenu().getChildren().add(3, rightRadiusSlider);
+        }
+
+
+        if (!enableLightControl) {
+            getAddNewLightBtn().setDisable(true);
+            getLightSelector().setDisable(true);
+            getController().getLightColor_Red().setDisable(true);
+            getController().getLightColor_Green().setDisable(true);
+            getController().getLightColor_Blue().setDisable(true);
+            getController().getDeleteThisLight().setDisable(true);
+            getController().getSymmetricalRayToggleBtn().setDisable(true);
+        }
+
 
 //        getLensSelector().getItems().addAll(getAnimatedLensMap().keySet());
 //        getLightSelector().getItems().addAll(getAnimatedLightMap().keySet());
@@ -401,10 +461,10 @@ public abstract class DemoView extends View {
 
     public void addBorder() {
         animatedBoard("TopBoard", 0, 5,
-                3000, 5);
+                10000, 5);
         animatedBoard("BottomBoard",
                 0, getMainDemoPane().getHeight() - 20,
-                3000, getMainDemoPane().getHeight() - 20);
+                10000, getMainDemoPane().getHeight() - 20);
     }
 
     public void update() {
@@ -581,9 +641,19 @@ public abstract class DemoView extends View {
 
     //******************
 
-    public void enableHighlight(boolean enable) {
+    public void SetEnableHighlight(boolean enable) {
         this.enableHighlight = enable;
     }
+
+    public void SetEnableLensRadius(boolean enable) {
+        this.enableLensRadius = enable;
+    }
+
+    public void setEnableLightControl(boolean enable) {
+        this.enableLightControl = enable;
+    }
+
+    //*******************
 
     public void setDemoTitle(String name) {
         getController().getDemoName().setText(name);
@@ -685,11 +755,27 @@ public abstract class DemoView extends View {
         return currentSelectedLight;
     }
 
+    public void setCurrentSelectedLight(String currentSelectedLight) {
+        this.currentSelectedLight = currentSelectedLight;
+    }
+
     public String getCurrentSelectedLens() {
         return currentSelectedLens;
     }
 
+    public void setCurrentSelectedLens(String currentSelectedLens) {
+        this.currentSelectedLens = currentSelectedLens;
+    }
+
     public String getCurrentSelectedMirror() {
         return currentSelectedMirror;
+    }
+
+    public void setCurrentSelectedMirror(String currentSelectedMirror) {
+        this.currentSelectedMirror = currentSelectedMirror;
+    }
+
+    public void setTopMenuColor(String colorCode) {
+        getController().getTopMenu().setStyle("-fx-background-color: " + colorCode);
     }
 }

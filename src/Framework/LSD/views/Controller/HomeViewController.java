@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
@@ -52,6 +53,15 @@ public class HomeViewController implements Initializable {
     @FXML
     private Label description;
 
+    @FXML
+    private VBox homeInfoPane;
+
+    @FXML
+    private ScrollPane homeInfoScrollPane;
+
+    @FXML
+    private JFXButton homeExitBtn;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -99,5 +109,17 @@ public class HomeViewController implements Initializable {
 
     public Label getDescription() {
         return description;
+    }
+
+    public VBox getHomeInfoPane() {
+        return homeInfoPane;
+    }
+
+    public ScrollPane getHomeInfoScrollPane() {
+        return homeInfoScrollPane;
+    }
+
+    public JFXButton getHomeExitBtn() {
+        return homeExitBtn;
     }
 }

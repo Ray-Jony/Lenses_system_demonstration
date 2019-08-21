@@ -10,7 +10,6 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -19,7 +18,6 @@ import javafx.scene.text.Font;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.Optional;
 
 /**
@@ -36,15 +34,55 @@ public class ChromaticAberration extends DemoView {
     public void launch() {
         setDemoTitle("Chromatic Aberration");
         getController().getDemoName().setFont(Font.font("Roboto Black", 20));
-        enableHighlight(false);
+        SetEnableHighlight(false);
+        SetEnableLensRadius(true);
+
+        addAnimatedLight("ColoredLight", new ArrayList<>(Arrays.asList(
+                150D, 0D, LightInfo.RED, true
+        )), true);
+
+        addAnimatedLight("ColoredLight[2]", new ArrayList<>(Arrays.asList(
+                150D, 0D, LightInfo.GREEN, true
+        )), false);
+
+        addAnimatedLight("ColoredLight[3]", new ArrayList<>(Arrays.asList(
+                150D, 0D, LightInfo.BLUE, true
+        )), false);
 
         addAnimatedLens("ConvexLens1", new ArrayList<>(Arrays.asList(
-                LensType.ConvexLens, 200D, 1000d, 1000d, 400D, LensMaterial.findViaLensID(247)
-        )), false);
+                LensType.ConvexLens, 200D, 1150d, 1150d, 400D, LensMaterial.findViaLensID(247)
+        )), true);
 
 
         VBox box = new VBox();
+        box.setSpacing(10);
+        box.setPadding(new Insets(10,10,10,10));
+
         JFXButton switchBtn = new JFXButton("Switch");
+        switchBtn.setPrefWidth(200);
+        switchBtn.setPrefHeight(50);
+        String switchBtnDefaultStyle = "-fx-background-color: #b0d8ff;" +
+                "-fx-font-size: 20;" +
+                "-fx-text-fill: black";
+        switchBtn.setStyle(switchBtnDefaultStyle);
+
+        switchBtn.hoverProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (t1){
+                switchBtn.setStyle("-fx-text-fill: white;" +
+                        "-fx-font-size: 20;" +
+                        "-fx-background-color: #4683ff");
+            }else {
+                switchBtn.setStyle(switchBtnDefaultStyle);
+            }
+        });
+
+        Label info = new Label();
+        info.setWrapText(true);
+
+        info.setMaxWidth(200);
+        info.setText("Try to Type the Switch Button!\n");
+        info.setStyle("-fx-font-size: 20");
+
         switchBtn.setOnAction(e -> {
             if (switchOn) {
                 switchOn = false;
@@ -52,53 +90,45 @@ public class ChromaticAberration extends DemoView {
 
                 addAnimatedLens("ConvexLens2", new ArrayList<>(Arrays.asList(
                         LensType.ConvexLens, 200D, 500d, 500d, 400D, LensMaterial.findViaLensID(247)
-                )), false);
+                )), true);
 
                 addAnimatedLens("ConcaveLens", new ArrayList<>(Arrays.asList(
-                        LensType.ConcaveLens, 255d, 500D, 5000D, 400D, LensMaterial.findViaLensID(156), 25D
+                        LensType.ConcaveLens, 255d, 500D, 2000D, 400D, LensMaterial.findViaLensID(156), 25D
                 )), true);
 
                 getLensSelector().getSelectionModel().select("ConcaveLens");
+
+                info.setText("Explanation:\n" +
+                        "   add a concave lens beside with different material, will significantly reduce the" +
+                        " chromatic aberration, but it still require non-spherical lens to achieve full range" +
+                        "(Any light enter position) eliminating chromatic aberration.");
+
             } else {
                 switchOn = true;
                 removeAnimatedComponent(ComponentType.LENS, "ConvexLens2");
                 removeAnimatedComponent(ComponentType.LENS, "ConcaveLens");
 
                 addAnimatedLens("ConvexLens1", new ArrayList<>(Arrays.asList(
-                        LensType.ConvexLens, 200D, 1000d, 1000d, 400D, LensMaterial.findViaLensID(247)
-                )), false);
+                        LensType.ConvexLens, 200D, 1150d, 1150d, 400D, LensMaterial.findViaLensID(247)
+                )), true);
+
+                getLensSelector().getSelectionModel().select("ConvexLens1");
             }
 
         });
 
-        box.getChildren().add(switchBtn);
+
+        box.getChildren().addAll(info, switchBtn);
+        box.setPadding(new Insets(10,10,10,10));
         getInfoPane().getChildren().addAll(box);
 
-        JFXSlider leftRadiusSlider = new JFXSlider(220D, 2000D, 300D);
-        leftRadiusSlider.setOrientation(Orientation.VERTICAL);
-        JFXSlider rightRadiusSlider = new JFXSlider(220D, 2000D, 300D);
-        rightRadiusSlider.setOrientation(Orientation.VERTICAL);
 
-        leftRadiusSlider.valueProperty().addListener((observableValue, number, t1) -> {
-            if (!getCurrentSelectedLens().equals("") && getAnimatedLensMap().containsKey(getCurrentSelectedLens())) {
-                getAnimatedLensMap().get(getCurrentSelectedLens()).set(2, t1);
-            }
-        });
-        rightRadiusSlider.valueProperty().addListener((observableValue, number, t1) -> {
-            if (!getCurrentSelectedLens().equals("") && getAnimatedLensMap().containsKey(getCurrentSelectedLens())) {
-                getAnimatedLensMap().get(getCurrentSelectedLens()).set(3, t1);
-            }
-        });
-
-        getController().getTopMenu().getChildren().add(1, leftRadiusSlider);
-        getController().getTopMenu().getChildren().add(2, rightRadiusSlider);
 
         getAddNewLightBtn().setOnAction(e -> {
             Dialog<ArrayList<Object>> dialog = new Dialog<>();
             dialog.setTitle("Set a new light");
-//            dialog.setHeaderText("fill new light info");
 
-            ButtonType addNewLight = new ButtonType("addNewLight", ButtonBar.ButtonData.OK_DONE);
+            ButtonType addNewLight = new ButtonType("Add New Light", ButtonBar.ButtonData.OK_DONE);
             dialog.getDialogPane().getButtonTypes().addAll(addNewLight, ButtonType.CANCEL);
 
             GridPane gridPane = new GridPane();
@@ -207,6 +237,13 @@ public class ChromaticAberration extends DemoView {
             getAnimatedLightMap().get(getCurrentSelectedLight() + "[2]").set(3, t1);
             getAnimatedLightMap().get(getCurrentSelectedLight() + "[3]").set(3, t1);
 
+        });
+
+        getDeleteLightBtn().setOnAction(e -> {
+            String light = getCurrentSelectedLight();
+            removeAnimatedComponent(ComponentType.LIGHT, light);
+            removeAnimatedComponent(ComponentType.LIGHT, light + "[2]");
+            removeAnimatedComponent(ComponentType.LIGHT, light + "[3]");
         });
 
 

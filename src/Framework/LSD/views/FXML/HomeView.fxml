@@ -2,24 +2,26 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../CSS/HomeView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Framework.LSD.views.Controller.HomeViewController">
+<HBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #FFDAB9;" stylesheets="@../CSS/HomeView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Framework.LSD.views.Controller.HomeViewController">
    <children>
       <VBox minWidth="-Infinity" prefHeight="200.0" prefWidth="300.0" spacing="10.0" HBox.hgrow="NEVER">
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="107.0" prefWidth="290.0" style="-fx-background-color: gray; -fx-background-radius: 10;">
                <children>
-                  <VBox fx:id="chromaticAberrationTextBackground" prefHeight="200.0" prefWidth="284.0" style="-fx-background-color: white; -fx-background-radius: 8;">
+                  <VBox fx:id="chromaticAberrationTextBackground" prefHeight="200.0" prefWidth="284.0" style="-fx-background-color: #FFE4E1; -fx-background-radius: 8;">
                      <children>
                         <JFXButton fx:id="chromaticAberrationBtn" buttonType="RAISED" prefHeight="82.0" prefWidth="284.0" style="-fx-background-radius: 8;" text="Chromatic Aberration">
                            <font>
-                              <Font name="Consolas" size="21.0" />
+                              <Font name="Roboto Black" size="21.0" />
                            </font>
                         </JFXButton>
                         <Label alignment="TOP_CENTER" prefHeight="62.0" prefWidth="284.0" />
@@ -32,11 +34,11 @@
             </VBox>
             <VBox alignment="TOP_CENTER" layoutX="20.0" layoutY="20.0" prefHeight="107.0" prefWidth="290.0" style="-fx-background-color: gray; -fx-background-radius: 10;">
                <children>
-                  <VBox fx:id="ZoomingEffectTextBackground" prefHeight="200.0" prefWidth="284.0" style="-fx-background-color: white; -fx-background-radius: 8;">
+                  <VBox fx:id="ZoomingEffectTextBackground" prefHeight="200.0" prefWidth="284.0" style="-fx-background-color: #87CEEB; -fx-background-radius: 8;">
                      <children>
                         <JFXButton fx:id="zoomingEffectBtn" buttonType="RAISED" prefHeight="82.0" prefWidth="284.0" style="-fx-background-radius: 8;" text="Zooming Effect">
                            <font>
-                              <Font name="Consolas" size="21.0" />
+                              <Font name="Roboto Black" size="21.0" />
                            </font>
                         </JFXButton>
                         <Label alignment="TOP_CENTER" prefHeight="62.0" prefWidth="284.0" />
@@ -49,11 +51,11 @@
             </VBox>
             <VBox alignment="TOP_CENTER" layoutX="20.0" layoutY="137.0" prefHeight="107.0" prefWidth="290.0" style="-fx-background-color: gray; -fx-background-radius: 10;">
                <children>
-                  <VBox fx:id="sphericalAberrationTextBackground" prefHeight="200.0" prefWidth="284.0" style="-fx-background-color: white; -fx-background-radius: 8;">
+                  <VBox fx:id="sphericalAberrationTextBackground" prefHeight="200.0" prefWidth="284.0" style="-fx-background-color: #FFD700; -fx-background-radius: 8;">
                      <children>
                         <JFXButton fx:id="sphericalAberrationBtn" buttonType="RAISED" prefHeight="82.0" prefWidth="284.0" style="-fx-background-radius: 8;" text="Spherical Aberration">
                            <font>
-                              <Font name="Consolas" size="21.0" />
+                              <Font name="Roboto Black" size="21.0" />
                            </font>
                         </JFXButton>
                         <Label alignment="TOP_CENTER" prefHeight="62.0" prefWidth="284.0" />
@@ -66,14 +68,30 @@
             </VBox>
             <VBox alignment="TOP_CENTER" layoutX="20.0" layoutY="254.0" prefHeight="107.0" prefWidth="290.0" style="-fx-background-color: gray; -fx-background-radius: 10;">
                <children>
-                  <VBox fx:id="freeModeTextBackground" prefHeight="200.0" prefWidth="284.0" style="-fx-background-color: white; -fx-background-radius: 8;">
+                  <VBox fx:id="freeModeTextBackground" prefHeight="200.0" prefWidth="284.0" style="-fx-background-color: #FFFAFA; -fx-background-radius: 8;">
                      <children>
                         <JFXButton fx:id="freeModeBtn" buttonType="RAISED" prefHeight="82.0" prefWidth="284.0" style="-fx-background-radius: 8;" text="Free Mode">
                            <font>
-                              <Font name="Consolas" size="21.0" />
+                              <Font name="Roboto Black" size="21.0" />
                            </font>
                         </JFXButton>
                         <Label alignment="TOP_CENTER" prefHeight="62.0" prefWidth="284.0" />
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="TOP_CENTER" layoutX="20.0" layoutY="20.0" prefHeight="65.0" prefWidth="280.0" style="-fx-background-color: gray; -fx-background-radius: 10;">
+               <children>
+                  <VBox fx:id="chromaticAberrationTextBackground1" prefHeight="64.0" prefWidth="276.0" style="-fx-background-color: #FFE4E1; -fx-background-radius: 8;">
+                     <children>
+                        <JFXButton fx:id="homeExitBtn" buttonType="RAISED" prefHeight="82.0" prefWidth="284.0" style="-fx-background-radius: 8;" text="Exit">
+                           <font>
+                              <Font name="Roboto Black" size="21.0" />
+                           </font>
+                        </JFXButton>
                      </children>
                   </VBox>
                </children>
@@ -86,20 +104,34 @@
             <Insets />
          </HBox.margin>
          <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            <Insets bottom="10.0" left="10.0" top="10.0" />
          </padding>
       </VBox>
       <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" prefHeight="107.0" prefWidth="3000.0" style="-fx-background-color: gray; -fx-background-radius: 10;">
          <children>
-            <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" prefHeight="416.0" prefWidth="3000.0" style="-fx-background-color: white; -fx-background-radius: 8;" VBox.vgrow="ALWAYS">
+            <VBox fx:id="homeInfoPane" alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" prefHeight="416.0" prefWidth="3000.0" style="-fx-background-color: white; -fx-background-radius: 8;" VBox.vgrow="ALWAYS">
                <children>
-                  <Label fx:id="descriptionTitle" alignment="TOP_CENTER" prefHeight="27.0" prefWidth="276.0" text="Select a item to see intorduction" />
-                  <ImageView fx:id="descriptionImage" fitHeight="148.0" fitWidth="202.0" pickOnBounds="true" preserveRatio="true">
+                  <Label fx:id="descriptionTitle" alignment="TOP_CENTER" minHeight="-Infinity" prefHeight="44.0" prefWidth="934.0" text="Select an item to see intorduction" underline="true" wrapText="true">
+                     <font>
+                        <Font name="Bell MT" size="38.0" />
+                     </font></Label>
+                  <ImageView fx:id="descriptionImage" fitHeight="309.0" fitWidth="428.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
                      <image>
                         <Image url="@../IMAGE/chromatic_aberration.jpg" />
                      </image>
+                     <viewport>
+                        <Rectangle2D />
+                     </viewport>
                   </ImageView>
-                  <Label fx:id="description" alignment="TOP_LEFT" prefHeight="3000.0" prefWidth="3000.0" text="Decription" wrapText="true" />
+                  <ScrollPane fx:id="homeInfoScrollPane" prefHeight="489.0" prefWidth="981.0" style="-fx-background-color: #FFFFF0;">
+                     <content>
+                        <Label fx:id="description" alignment="TOP_LEFT" text="Decription" wrapText="true">
+                           <font>
+                              <Font name="Microsoft YaHei" size="20.0" />
+                           </font>
+                        </Label>
+                     </content>
+                  </ScrollPane>
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

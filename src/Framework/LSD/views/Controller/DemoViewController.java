@@ -114,6 +114,9 @@ public class DemoViewController implements Initializable {
     @FXML
     private JFXToggleButton SymmetricalRayToggleBtn;
 
+    @FXML
+    private JFXButton deselectLightBtn;
+
 
     private ToggleGroup lightColor;
 
@@ -280,6 +283,7 @@ public class DemoViewController implements Initializable {
         return lightColor;
     }
 
-
-
+    public JFXButton getDeselectLightBtn() {
+        return deselectLightBtn;
+    }
 }

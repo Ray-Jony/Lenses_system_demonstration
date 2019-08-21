@@ -6,27 +6,45 @@
     -fx-background-color: #ffef79;
 }
 
-#JFxLensSelector {
-    -fx-font-size: 20;
+#choseLensMaterialBtn{
+    -fx-background-color: #757bb1;
+}
+
+#choseLensMaterialBtn:hover {
+    -fx-background-color: #2d55a9;
+    -fx-text-fill: white;
+}
+
+
+#DemoName:hover {
+    -fx-text-fill: white;
 }
 
 #addNewLight {
-    -fx-background-color: #f477ff;
+    -fx-background-color: #77ff6f;
 }
 
 #addNewLight:hover {
-    -fx-background-color: #7836a4;
+    -fx-background-color: #1aa40d;
     -fx-text-fill: white;
 }
 
 #deleteThisLight {
-    -fx-background-color: #77ff1b;
+    -fx-background-color: #ff8a80;
 }
 
 #deleteThisLight:hover {
-    -fx-background-color: #144e00;
+    -fx-background-color: #ff3c3c;
     -fx-text-fill: white;
+}
 
+#deselectLightBtn{
+    -fx-background-color: #ffffff;
+}
+
+#deselectLightBtn:hover{
+    -fx-background-color: #b29817;
+    -fx-text-fill: white;
 }
 
 #lightColor_Red {

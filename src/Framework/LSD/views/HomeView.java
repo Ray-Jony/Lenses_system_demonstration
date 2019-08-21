@@ -41,6 +41,13 @@ public abstract class HomeView extends View {
         homePane.prefWidthProperty().bind(app.widthProperty());
         homePane.prefHeightProperty().bind(app.heightProperty());
 
+        getController().getDescriptionImage().fitWidthProperty()
+                .bind(getController().getHomeInfoPane().widthProperty().divide(2));
+        getController().getDescription().prefWidthProperty()
+                .bind(getController().getHomeInfoScrollPane().widthProperty().subtract(15));
+
+        getController().getHomeExitBtn().setOnAction(e -> app.exit());
+
         launch();
 
     }

@@ -4,6 +4,9 @@ import Framework.LSD.views.DemoView;
 import Framework.LSD.world.Lens.LensMaterial;
 import Framework.LSD.world.Lens.LensType;
 import Framework.LSD.world.Light.LightInfo;
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +21,8 @@ import java.util.Arrays;
 public class ZoomingEffect extends DemoView {
     @Override
     public void launch() {
+
+        setTopMenuColor("A5BEFF");
         setDemoTitle("Zooming Effect");
 
         addAnimatedLens("ConvexLens1", new ArrayList<>(Arrays.asList(
@@ -47,6 +52,22 @@ public class ZoomingEffect extends DemoView {
         addAnimatedLight("Symmetrical Light4", new ArrayList<>(Arrays.asList(
                 45D, 0D, LightInfo.RED, true
         )), false);
+
+        VBox box = new VBox();
+        box.setSpacing(10);
+        box.setPadding(new Insets(10,10,10,10));
+
+        Label info = new Label();
+        info.setWrapText(true);
+        info.setMaxWidth(200);
+        info.setText("Try To change the Concave Lens's position to see the zooming effect");
+        info.setStyle("-fx-font-size: 20");
+        box.getChildren().add(info);
+
+        getInfoPane().getChildren().add(box);
+
+
+
 
     }
 

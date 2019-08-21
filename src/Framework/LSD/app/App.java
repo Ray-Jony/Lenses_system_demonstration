@@ -1,6 +1,7 @@
 package Framework.LSD.app;
 
 import Framework.LSD.input.MouseInput;
+import Framework.LSD.views.HomeView;
 import Framework.LSD.world.Lens.Lens;
 import Framework.LSD.world.Light.Light;
 import Framework.LSD.world.Light.LightInfo;
@@ -102,8 +103,8 @@ public class App {
         leftDrawer.setSidePane(leftContent);
         leftDrawer.setDefaultDrawerSize(200);
         leftDrawer.setResizeContent(false);
-        leftDrawer.setOverLayVisible(false);
-        leftDrawer.setResizableOnDrag(true);
+        leftDrawer.setOverLayVisible(true);
+        leftDrawer.setResizableOnDrag(false);
 
 
         stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
@@ -308,15 +309,49 @@ public class App {
             v.onLaunch();
         }
 
+        leftContent.setStyle("-fx-background-color: #ffffc2");
+
+        JFXButton closeLeftDrawerBtn = new JFXButton("Close");
+        closeLeftDrawerBtn.setPrefHeight(30);
+        closeLeftDrawerBtn.setPrefWidth(100);
+        String defaultStyle = "-fx-background-color: #f05963;" +
+                "-fx-text-fill: #000000;" +
+                "-fx-font-size: 16;" +
+                "-jfx-button-type: FLAT";
+        closeLeftDrawerBtn.setStyle(defaultStyle);
+        addOpenSideBarHandler(closeLeftDrawerBtn);
+        closeLeftDrawerBtn.hoverProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (t1) {
+                closeLeftDrawerBtn.setStyle("-fx-background-color: #f03c4c;" +
+                        "-fx-text-fill: #ffffff;" +
+                        "-fx-font-size: 16;" +
+                        "-jfx-button-type: FLAT");
+            } else {
+                closeLeftDrawerBtn.setStyle(defaultStyle);
+            }
+        });
+
+
+        leftContent.getChildren().add(closeLeftDrawerBtn);
+
         for (String viewName :
                 viewMap.keySet()) {
             JFXButton viewBtn = new JFXButton(viewName);
             viewBtn.setPrefHeight(50);
             viewBtn.setPrefWidth(200);
-            viewBtn.setStyle("-fx-background-color: #f0a9e9;" +
-                    "-fx-text-fill: #000000;" +
-                    "-fx-font-size: 20;" +
-                    "-jfx-button-type: FLAT");
+            String btnDefaultStyle;
+            if (viewName.equals("Home")) {
+                btnDefaultStyle = "-fx-background-color: #70baf0;" +
+                        "-fx-text-fill: #000000;" +
+                        "-fx-font-size: 16;" +
+                        "-jfx-button-type: FLAT";
+            } else {
+                btnDefaultStyle = "-fx-background-color: #ffd1e3;" +
+                        "-fx-text-fill: #000000;" +
+                        "-fx-font-size: 16;" +
+                        "-jfx-button-type: FLAT";
+            }
+            viewBtn.setStyle(btnDefaultStyle);
             viewBtn.setMinHeight(viewBtn.getPrefHeight());
             viewBtn.setMinWidth(viewBtn.getPrefWidth());
             viewBtn.hoverProperty().addListener((observableValue, aBoolean, t1) -> {
@@ -324,13 +359,10 @@ public class App {
                     viewBtn.setStyle("-fx-background-color: #00C853;" +
                             "-fx-text-fill: #ffffff;" +
                             "-fx-text-alignment: center;" +
-                            "-fx-font-size: 20;" +
+                            "-fx-font-size: 16;" +
                             "-jfx-button-type: RAISED");
                 } else {
-                    viewBtn.setStyle("-fx-background-color: #f0a9e9;" +
-                            "-fx-text-fill: #000000;" +
-                            "-fx-font-size: 20;" +
-                            "-jfx-button-type: FLAT");
+                    viewBtn.setStyle(btnDefaultStyle);
                 }
             });
 
@@ -340,6 +372,30 @@ public class App {
             });
             leftContent.getChildren().add(viewBtn);
         }
+
+        JFXButton exitBtn = new JFXButton("Exit");
+        exitBtn.setPrefHeight(30);
+        exitBtn.setPrefWidth(200);
+        String exitBtnDefaultStyle = "-fx-background-color: #f05963;" +
+                "-fx-text-fill: #000000;" +
+                "-fx-font-size: 16;" +
+                "-jfx-button-type: FLAT";
+        exitBtn.setStyle(exitBtnDefaultStyle);
+        exitBtn.setOnAction(e -> exit());
+        exitBtn.hoverProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (t1) {
+                exitBtn.setStyle("-fx-background-color: #f03c4c;" +
+                        "-fx-text-fill: #ffffff;" +
+                        "-fx-font-size: 16;" +
+                        "-jfx-button-type: FLAT");
+            } else {
+                exitBtn.setStyle(exitBtnDefaultStyle);
+            }
+        });
+
+
+        leftContent.getChildren().add(exitBtn);
+
 
         stage.requestFocus();
         stage.show();
