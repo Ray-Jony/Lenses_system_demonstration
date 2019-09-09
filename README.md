@@ -1,6 +1,5 @@
-**MSc Project -- _Lenses system_**
-University of Birmingham
-MSc Compuster Science
+** _Lenses system_**
+
 RuiGuo
 
 This project is demand to deliver an demonstrable application for explaining how the lenses works together.
